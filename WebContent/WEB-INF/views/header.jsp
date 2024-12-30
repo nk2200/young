@@ -41,7 +41,7 @@
                             <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                         </ul>
                         <!-- <div class="header__cart__price">item: <span>$150.00</span></div> -->
-                        <div class="header__cart__price"><a href="MypageServlet">MyPage</a></div> <!-- 마이페이지 메뉴로 수정,yhl -->
+                        <div class="header__cart__price"><a href="MyPage.do">MyPage</a></div> <!-- 마이페이지 메뉴로 수정,yhl -->
                     </div>
                 </div>
             </div>
