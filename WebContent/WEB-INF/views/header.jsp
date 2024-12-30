@@ -5,8 +5,27 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+  <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="/resource/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/resource/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/resource/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/resource/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/resource/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="/resource/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/resource/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/resource/css/style.css" type="text/css">
+
 </head>
 <body>
+ <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
 <!-- Header Section Begin -->
     <header class="header">
         <div class="container">
