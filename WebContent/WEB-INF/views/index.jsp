@@ -32,7 +32,7 @@
     </div>
 
     <jsp:include page="header.jsp"></jsp:include>
-
+ 
     <!-- Hero Section Begin -->
     <section class="hero">
         <div class="container">
@@ -558,8 +558,8 @@
         </div>
     </section>
     <!-- Blog Section End -->
-
-    <jsp:include page="footer.jsp">
+<%-- 
+     <jsp:include page="footer.jsp">  --%>
 
     <!-- Js Plugins -->
     <script src="resource/js/jquery-3.3.1.min.js"></script>
