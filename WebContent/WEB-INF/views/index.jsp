@@ -11,26 +11,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ogani </title>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="resource/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/style.css" type="text/css">
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
-
+  
     <jsp:include page="header.jsp"></jsp:include>
  
     <!-- Hero Section Begin -->
@@ -558,20 +542,8 @@
         </div>
     </section>
     <!-- Blog Section End -->
-<%-- 
-     <jsp:include page="footer.jsp">  --%>
-
-    <!-- Js Plugins -->
-    <script src="resource/js/jquery-3.3.1.min.js"></script>
-    <script src="resource/js/bootstrap.min.js"></script>
-    <script src="resource/js/jquery.nice-select.min.js"></script>
-    <script src="resource/js/jquery-ui.min.js"></script>
-    <script src="resource/js/jquery.slicknav.js"></script>
-    <script src="resource/js/mixitup.min.js"></script>
-    <script src="resource/js/owl.carousel.min.js"></script>
-    <script src="resource/js/main.js"></script>
-
-
+ 
+     <jsp:include page="footer.jsp"></jsp:include>
 
 </body>
 
