@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>올리브영 온라인몰</title>
 </head>
 <body>
 <!-- Footer Section Begin -->

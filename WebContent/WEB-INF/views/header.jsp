@@ -4,12 +4,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-
-  <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
-    <!-- Css Styles -->
+<title>올리브영 온라인몰</title>
+	<style>
+		body, html{
+			font-family: Montserrat, -apple-system, NotoSansCJKkr, AppleSDGothicNeo, Roboto, dotum, "돋움", sans-serif;
+		}
+	</style>
+	
+ 	<!-- Css Styles -->
+ 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/resource/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="/resource/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="/resource/css/elegant-icons.css" type="text/css">
@@ -32,10 +35,61 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="./index.jsp"><img src="../resource/img/logo.png" alt=""></a>
+                        <a href="./index.jsp"><img src="../resource/img/logo1.png" alt=""></a>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
+                    <div class="hero__search">
+                        <div class="hero__search__form">
+                            <form action="#">
+                               
+                                <input type="text" placeholder="상품 검색">
+                                <button type="submit" class="site-btn"><i class="bi bi-search text-dark"></i></button>
+                            </form>
+                        </div>
+                       
+                    </div>
+                </div>
+                
+                <div class="col-lg-2">
+                    <div class="header__cart">
+                        <ul>
+                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                        </ul>
+                        <!-- <div class="header__cart__price">item: <span>$150.00</span></div> -->
+                        <div class="header__cart__price"><a href="MyPage.do">MyPage</a></div> <!-- 마이페이지 메뉴로 수정,yhl -->
+                    </div>
+                </div>
+            </div>
+            <div class="humberger__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+    
+    <!-- Hero Section Begin -->
+    <section class="hero hero-normal">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="hero__categories">
+                        <div class="hero__categories__all">
+                            <i class="fa fa-bars"></i>
+                            <span>카테고리</span>
+                        </div>
+                        <ul>
+                            <li><a href="#">스킨케어</a></li>
+                            <li><a href="#">메이크업</a></li>
+                            <li><a href="#">헤어케어</a></li>
+                            <li><a href="#">바디케어</a></li>
+                            <li><a href="#">향수/디퓨저</a></li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-9">
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="./index.jsp">Home</a></li>
@@ -53,22 +107,10 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="col-lg-3">
-                    <div class="header__cart">
-                        <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
-                        </ul>
-                        <!-- <div class="header__cart__price">item: <span>$150.00</span></div> -->
-                        <div class="header__cart__price"><a href="MyPage.do">MyPage</a></div> <!-- 마이페이지 메뉴로 수정,yhl -->
-                    </div>
-                </div>
-            </div>
-            <div class="humberger__open">
-                <i class="fa fa-bars"></i>
             </div>
         </div>
-    </header>
-    <!-- Header Section End -->
+    </section>
+    <!-- Hero Section End -->
+    
 </body>
 </html>

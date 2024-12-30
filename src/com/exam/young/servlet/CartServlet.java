@@ -9,16 +9,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.exam.young.dao.CartDao;
+
 /**
  * Servlet implementation class CartServlet
  */
 @WebServlet("/cart/Cart.do")
 public class CartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	CartDao dao = new CartDao();
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
+	
+		int empCount = dao.getEmpCount();
+		System.out.println(empCount);
+		
 		String view = "shop-details.jsp";
 		
 		RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/views/" + view);
