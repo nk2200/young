@@ -15,6 +15,7 @@ public class RegisterServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //		String action = request.getParameter("action");
+		
 		String view = "register/goodsList.jsp";
 		
 		RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/views/" + view);
