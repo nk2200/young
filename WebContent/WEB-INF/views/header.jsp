@@ -100,9 +100,10 @@ body, html {
 				<div class="col-lg-7">
 					<div class="hero__search">
 						<div class="hero__search__form">
-							<form action="#">
+						<!-- 검색 폼으로 수정,yhl -->
+							<form action="/main" method="get">
 
-								<input type="text" placeholder="상품 검색">
+								<input type="text" name="searchName" placeholder="상품 검색" value="${param.searchName}">
 								<button type="submit" class="site-btn">
 									<i class="bi bi-search text-dark"></i>
 								</button>
