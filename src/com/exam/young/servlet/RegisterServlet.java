@@ -27,6 +27,8 @@ public class RegisterServlet extends HttpServlet {
 			List<GoodsDto> goods = dao.getGoodsList();
 			request.setAttribute("goods", goods);
 			request.setAttribute("count", dao.getCount());
+		} else if ("insert".equals(action)) {
+			view = "register/registerGoods.jsp";
 		}
 		
 		RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/views/" + view);
