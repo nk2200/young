@@ -69,6 +69,9 @@
 	                            <li><a href="#">향수/디퓨저</a></li>
                             </ul>
                         </div>
+                        <div>
+                        	<a href="/register/Register.do?action=insert" style="padding: 14px 32px;" class="primary-btn">상품 등록</a>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-7">
@@ -78,7 +81,7 @@
                             </div>
                             <div class="col-lg-4 col-md-4">
                                 <div class="filter__found">
-                                    <h6><span>16</span> Products found</h6>
+                                    <h6><span>${count}</span> Products found</h6>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-3">
@@ -112,7 +115,6 @@
     </section>
     <!-- Product Section End -->
 
-
     <!-- Js Plugins -->
     <script src="../resource/js/jquery-3.3.1.min.js"></script>
     <script src="../resource/js/bootstrap.min.js"></script>
@@ -122,8 +124,6 @@
     <script src="../resource/js/mixitup.min.js"></script>
     <script src="../resource/js/owl.carousel.min.js"></script>
     <script src="../resource/js/main.js"></script>
-
-
 
 </body>
 

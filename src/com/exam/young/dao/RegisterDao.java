@@ -59,6 +59,27 @@ public class RegisterDao {
 		}
 		return goodsList;
 	}
+	
+	public int getCount() {
+		int count = 0;
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			String sql = "select count(*) from goods";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException(e.getMessage());
+		} finally {
+			closeConnection(con);
+		}
+		return count;
+	}
+
 
 	private void closeConnection(Connection con) {
 		if (con != null) {
