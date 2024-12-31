@@ -40,4 +40,15 @@ public class CartDao {
 		
 		return count;
 	}
+//	한번 머지하고 만들게여
+//	public void addCart(CartDto cart) {
+//		Connection conn = null;
+//		try {
+//			conn = dataSource.getConnection();
+//			String sql = "INSERT INTO cart(customerid,goodsid,cart_qty) "
+//					+ "values(?,?,?)";
+//			PreparedStatement pstmt = conn.prepareStatement(sql);
+//			pstmt.setString(1, );
+//		}
+//	}
 }

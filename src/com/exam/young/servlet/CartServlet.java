@@ -32,7 +32,16 @@ public class CartServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+//		doGet(request, response);
+		request.setCharacterEncoding("utf-8");
+		String action = request.getParameter("action");
+		if("cart".equals(action)) {
+			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
+			int goods_qty = Integer.parseInt(request.getParameter("goods_qty"));
+			String customerid = request.getParameter("customerid");
+			System.out.println(goodsid+", "+goods_qty+", "+customerid);
+			
+		}
 	}
 
 }
