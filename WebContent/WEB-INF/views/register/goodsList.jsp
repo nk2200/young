@@ -70,7 +70,7 @@
                             </ul>
                         </div>
                         <div>
-                        	<a href="/register/Register.do?action=insert" style="padding: 14px 32px;" class="primary-btn">상품 등록</a>
+                        	<a href="/register/Register.do?action=register" style="padding: 14px 32px;" class="primary-btn">상품 등록</a>
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
 	                    <c:forEach var="item" items="${goods}">
 	                        <div class="col-lg-4 col-md-6 col-sm-6">
 	                            <div class="product__item">
-	                                <div class="product__item__pic set-bg" data-setbg="../${item.goods_filename}">
+	                                <div class="product__item__pic set-bg" data-setbg="../${item.goods_fname_main}">
 	                                </div>
 	                                <div class="product__item__text">
 	                                    <h6><b><a href="#">${item.goods_name}</a></b></h6>

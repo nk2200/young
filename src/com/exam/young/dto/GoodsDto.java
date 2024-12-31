@@ -16,5 +16,6 @@ public class GoodsDto {
     private String goods_category;
     private int goods_qty;
     private Date goods_regidate;
-    private String goods_filename;
+    private String goods_fname_main;
+    private String goods_fname_sub;
 }

@@ -32,28 +32,25 @@ public class RegisterDao {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			String sql = "select goodsid, goods_name, goods_price, goods_desc, goods_likes, goods_category, goods_qty, "
-					+ "goods_regidate, goods_filename from goods";
+			String sql = "select * from goods order by goodsid desc";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				int goodsId = rs.getInt("goodsid");
-				String goods_name = rs.getString("goods_name");
-				int goods_price = rs.getInt("goods_price");
-				String goods_desc = rs.getString("goods_desc");
-				int goods_likes = rs.getInt("goods_likes");
-				String goods_category = rs.getString("goods_category");
-				int goods_qty = rs.getInt("goods_qty");
-				Date goods_regidate = rs.getDate("goods_regidate");
-				String goods_filename = rs.getString("goods_filename");
+				GoodsDto goods = new GoodsDto();
+				
+				goods.setGoodsid(rs.getInt("goodsid"));
+				goods.setGoods_name(rs.getString("goods_name"));
+				goods.setGoods_price(rs.getInt("goods_price"));
+				goods.setGoods_category(rs.getString("goods_category"));
+				goods.setGoods_qty(rs.getInt("goods_qty"));
+				goods.setGoods_fname_main(rs.getString("goods_fname_main"));
+				goods.setGoods_fname_sub(rs.getString("goods_fname_sub"));
 
-				GoodsDto goods = new GoodsDto(goodsId, goods_name, goods_price, goods_desc, goods_likes, goods_category,
-						goods_qty, goods_regidate, goods_filename);
 				goodsList.add(goods);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			throw new RuntimeException(e.getMessage());
+			throw new RuntimeException(e);
 		} finally {
 			closeConnection(con);
 		}
@@ -73,11 +70,39 @@ public class RegisterDao {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			throw new RuntimeException(e.getMessage());
+			throw new RuntimeException(e);
 		} finally {
 			closeConnection(con);
 		}
 		return count;
+	}
+	
+	public void insertGoods(GoodsDto goods) {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			String sql = "insert into goods (goods_name, goods_price, goods_desc, goods_category, "
+					+ "goods_qty, goods_fname_main, goods_fname_sub) "
+					+ "values(?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, goods.getGoods_name());
+			stmt.setInt(2, goods.getGoods_price());
+			stmt.setString(3, goods.getGoods_desc());
+			stmt.setString(4, goods.getGoods_category());
+			stmt.setInt(5, goods.getGoods_qty());
+			stmt.setString(6, goods.getGoods_fname_main());
+			stmt.setString(7, goods.getGoods_fname_sub());
+			
+			int rowCount = stmt.executeUpdate();
+			if (rowCount <= 0) {
+				throw new SQLException("저장된 행이 없습니다.");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(con);
+		}
 	}
 
 

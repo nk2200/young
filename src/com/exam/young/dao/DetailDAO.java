@@ -56,7 +56,7 @@ public class DetailDAO {
 				goods.setGoods_category(rs.getString("goods_category"));
 				goods.setGoods_qty(rs.getInt("goods_qty"));
 				goods.setGoods_regidate(rs.getDate("goods_regidate"));
-				goods.setGoods_filename(rs.getString("goods_filename"));
+				//goods.setGoods_filename(rs.getString("goods_filename"));
 			}else {
 				throw new RuntimeException("선택한 goods가 없습니다.");
 			}

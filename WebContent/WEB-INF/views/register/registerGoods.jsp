@@ -57,7 +57,8 @@
     <section class="checkout spad">
         <div class="container">
             <div class="checkout__form">
-                <form action="#">
+            	<!-- <img src="../resource/img/goods/hair.jpg"> -->
+                <form action="/register/Register.do" method="post" enctype="multipart/form-data">
 	                <div class="checkout__input">
 	                    <p>상품명<span>*</span></p>
 	                    <input type="text" name="goods_name">
@@ -82,7 +83,7 @@
 	                    <div class="col-lg-6">
 			                <div class="checkout__input">
 			                    <p>수량<span>*</span></p>
-			                    <input type="number" name="goods_gty">
+			                    <input type="number" name="goods_qty">
 			                </div>
 	                    </div>
 	                </div>
@@ -90,39 +91,22 @@
 	                    <p>상품 설명<span>*</span></p>
 	                    <input type="file" name="goods_desc" style="padding-left:0px;border:none;">
 	                </div>
-	                <div class="checkout__input">
-	                    <p>메인 이미지<span>*</span></p>
-	                    <input type="file" name="main_image" style="padding-left:0px;border:none;">
-	                </div>
 	                <div class="row">
 	                    <div class="col-lg-6">
 	                        <div class="checkout__input">
-	                            <p>상세 이미지1<span>*</span></p>
-			                    <input type="file" name="detail_image" style="padding-left:0px;border:none;">
+			                    <p>메인 이미지<span>*</span></p>
+			                    <input type="file" name="main_image" style="padding-left:0px;border:none;">
 	                        </div>
 	                    </div>
 	                    <div class="col-lg-6">
 	                        <div class="checkout__input">
-	                            <p>1-1<span>*</span></p>
-			                    <input type="file" name="detail_image" style="padding-left:0px;border:none;">
-	                        </div>
-	                    </div>
-	                </div>
-	                <div class="row">
-	                    <div class="col-lg-6">
-	                        <div class="checkout__input">
-	                            <p>상세 이미지2<span>*</span></p>
-			                    <input type="file" name="detail_image" style="padding-left:0px;border:none;">
-	                        </div>
-	                    </div>
-	                    <div class="col-lg-6">
-	                        <div class="checkout__input">
-	                            <p>2-1<span>*</span></p>
-			                    <input type="file" name="detail_image" style="padding-left:0px;border:none;">
+	                            <p>상세 이미지<span>*</span></p>
+			                    <input type="file" name="sub_image" style="padding-left:0px;border:none;">
 	                        </div>
 	                    </div>
 	                </div>
 	                <div style="padding-top:30px;text-align:center;">
+	                	<input type="hidden" name="action" value="insert">
 		                <button type="submit" class="site-btn" style="width:200px;">등록</button>
 	                </div>
                 </form>
