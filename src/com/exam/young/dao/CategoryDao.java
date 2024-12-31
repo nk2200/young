@@ -45,7 +45,8 @@ static DataSource dataSource;
 				goods.setGoods_category(rs.getString("goods_category"));
 				goods.setGoods_qty(rs.getInt("goods_qty"));
 				goods.setGoods_regidate(rs.getDate("goods_regidate"));
-				goods.setGoods_filename(rs.getString("goods_filename"));
+				goods.setGoods_fname_main(rs.getString("goods_filename"));
+				
 				
 			}else {
 				throw new RuntimeException("해당 카테고리에 goods가 없습니다.");
@@ -62,7 +63,7 @@ static DataSource dataSource;
 		
 		try {
 			conn = dataSource.getConnection();
-			String sql = "SELECT goodsid, goods_name, goods_price, goods_desc, goods_likes,goods_category,goods_qty,goods_regidate,goods_filename FROM goods WHERE goods_category = ? order by goods_likes desc";
+			String sql = "SELECT goodsid, goods_name, goods_price, goods_desc, goods_likes,goods_category,goods_qty,goods_regidate,goods_fname_main FROM goods WHERE goods_category = ? order by goods_likes desc";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 	        pstmt.setString(1, goodsCategory); // 매개변수 설정
 
@@ -76,7 +77,8 @@ static DataSource dataSource;
 				goods.setGoods_category(rs.getString("goods_category"));
 				goods.setGoods_qty(rs.getInt("goods_qty"));
 				goods.setGoods_regidate(rs.getDate("goods_regidate"));
-				goods.setGoods_filename(rs.getString("goods_filename"));
+				goods.setGoods_fname_main(rs.getString("goods_fname_main"));
+				
 				
 			}else {
 				throw new RuntimeException("해당 카테고리에 goods가 없습니다.");

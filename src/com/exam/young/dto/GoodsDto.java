@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data @AllArgsConstructor @NoArgsConstructor
 public class GoodsDto {
     private int goodsid;
@@ -17,6 +16,6 @@ public class GoodsDto {
     private String goods_category;
     private int goods_qty;
     private Date goods_regidate;
-    private String goods_filename;
-    private String goods_filedetail;
+    private String goods_fname_main;
+    private String goods_fname_sub;
 }

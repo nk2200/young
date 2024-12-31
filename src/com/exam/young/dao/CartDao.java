@@ -34,7 +34,7 @@ public class CartDao {
 		conn = dataSource.getConnection();
 		String query = "SELECT c.cartid, c.customerid, c.cart_qty, g.goodsid, g.goods_name, g.goods_price, "
 				+ "g.goods_desc, g.goods_likes, g.goods_category, g.goods_qty, g.goods_regidate, "
-				+ "g.goods_filename, g.goods_filedetail " + "FROM CART c " + "JOIN GOODS g ON c.goodsid = g.goodsid "
+				+ "g.goods_fname_main, g.goods_fname_sub " + "FROM CART c " + "JOIN GOODS g ON c.goodsid = g.goodsid "
 				+ "WHERE c.customerid = ?";
 
 		PreparedStatement pstmt = conn.prepareStatement(query);
@@ -56,8 +56,8 @@ public class CartDao {
 			goods.setGoods_category(rs.getString("goods_category"));
 			goods.setGoods_qty(rs.getInt("goods_qty"));
 			goods.setGoods_regidate(rs.getDate("goods_regidate"));
-			goods.setGoods_filename(rs.getString("goods_filename"));
-			goods.setGoods_filedetail(rs.getString("goods_filedetail"));
+			goods.setGoods_fname_main(rs.getString("goods_filename"));
+			goods.setGoods_fname_sub(rs.getNString("goods_filedetail"));
 
 			cart.setGoods(goods);
 			cartDetails.add(cart);
@@ -109,4 +109,15 @@ public class CartDao {
 		}
 
 	}
+//	한번 머지하고 만들게여
+//	public void addCart(CartDto cart) {
+//		Connection conn = null;
+//		try {
+//			conn = dataSource.getConnection();
+//			String sql = "INSERT INTO cart(customerid,goodsid,cart_qty) "
+//					+ "values(?,?,?)";
+//			PreparedStatement pstmt = conn.prepareStatement(sql);
+//			pstmt.setString(1, );
+//		}
+//	}
 }

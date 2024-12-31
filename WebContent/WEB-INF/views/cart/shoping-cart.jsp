@@ -60,7 +60,7 @@
 										<td class="shoping__cart__item__check"><input
 											type="checkbox" /></td>
 										<td class="shoping__cart__item"><img
-											src="${cart.goods.goods_filename}" alt="">
+											src="${cart.goods.goods_fname_main}" alt="">
 											<h5>${cart.goods.goods_name}</h5></td>
 										<td class="shoping__cart__price">
 											${cart.goods.goods_price}</td>
