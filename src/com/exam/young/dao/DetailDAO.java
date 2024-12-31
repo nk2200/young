@@ -42,7 +42,7 @@ public class DetailDAO {
 			conn = dataSource.getConnection();
 			String sql = "SELECT goodsid, goods_name, goods_price, goods_desc,"
 					+ " goods_likes, goods_category, goods_qty, "
-					+ "goods_regidate, goods_filename "
+					+ "goods_regidate, goods_fname_main, goods_fname_sub "
 					+ "FROM goods WHERE goodsid=?";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, goodsid);
@@ -56,7 +56,8 @@ public class DetailDAO {
 				goods.setGoods_category(rs.getString("goods_category"));
 				goods.setGoods_qty(rs.getInt("goods_qty"));
 				goods.setGoods_regidate(rs.getDate("goods_regidate"));
-				goods.setGoods_filename(rs.getString("goods_filename"));
+				goods.setGoods_fname_main(rs.getString("goods_fname_main"));
+				goods.setGoods_fname_sub(rs.getString("goods_fname_sub"));
 			}else {
 				throw new RuntimeException("선택한 goods가 없습니다.");
 			}
