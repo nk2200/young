@@ -492,9 +492,11 @@ ol {
 	display: block;
 }
 
+/* 위로 올림,yhl */
 .header__cart {
 	text-align: right;
-	padding: 24px 0;
+	margin-top: -40px;
+	
 }
 
 .header__cart ul {
@@ -633,9 +635,11 @@ ol {
 	display: block;
 }
 
+/* 오른쪽으로 이동,yhl */
 .hero__search {
 	overflow: hidden;
 	margin-bottom: 30px;
+	margin-left: 30px;
 }
 
 .hero__search__form {
