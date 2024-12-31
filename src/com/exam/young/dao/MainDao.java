@@ -32,7 +32,7 @@ static DataSource dataSource;
 		try {
 			con = dataSource.getConnection();
 			
-			String sql = "SELECT GOODS_NAME,GOODS_PRICE,GOODS_FILENAME FROM GOODS";
+			String sql = "SELECT GOODS_NAME,GOODS_PRICE,GOODS_fname_main FROM GOODS";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			
 			ResultSet rs = stmt.executeQuery();
@@ -42,7 +42,7 @@ static DataSource dataSource;
                 
                 goods.setGoods_name(rs.getString("GOODS_NAME"));
                 goods.setGoods_price(rs.getInt("GOODS_PRICE"));
-                goods.setGoods_fname_main(rs.getString("goods_filename"));
+                goods.setGoods_fname_main(rs.getString("goods_fname_main"));
     		
                 
                 goodsList.add(goods);
