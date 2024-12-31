@@ -30,7 +30,7 @@ public class MyPageServlet extends HttpServlet {
 	        //CustomerDao user = userDAO.getUserInfo(userId);
     	}
         // 유저 정보를 JSP에 전달
-        request.setAttribute("user", user);
+        request.setAttribute("user", userId);
 
         // 마이페이지 JSP로 포워드
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/mypage/mypage.jsp");

@@ -42,7 +42,8 @@ static DataSource dataSource;
                 
                 goods.setGoods_name(rs.getString("GOODS_NAME"));
                 goods.setGoods_price(rs.getInt("GOODS_PRICE"));
-                goods.setGoods_filename(rs.getString("GOODS_FILENAME"));
+                goods.setGoods_fname_main(rs.getString("goods_filename"));
+    		
                 
                 goodsList.add(goods);
 			}
@@ -63,7 +64,7 @@ static DataSource dataSource;
 		try {
 			con = dataSource.getConnection();
 			
-			String sql = "SELECT GOODS_NAME,GOODS_PRICE,GOODS_FILENAME FROM goods WHERE goods_name LIKE ?";
+			String sql = "SELECT GOODS_NAME,GOODS_PRICE,goods_fname_main FROM goods WHERE goods_name LIKE ?";
 			
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, "%" + searchName + "%");
@@ -75,7 +76,7 @@ static DataSource dataSource;
                 
                 goods.setGoods_name(rs.getString("GOODS_NAME"));
                 goods.setGoods_price(rs.getInt("GOODS_PRICE"));
-                goods.setGoods_filename(rs.getString("GOODS_FILENAME"));
+                goods.setGoods_fname_main(rs.getString("goods_fname_main"));
                 
                 selectedGoodsList.add(goods);
 			}
