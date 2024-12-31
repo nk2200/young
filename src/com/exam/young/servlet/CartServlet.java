@@ -84,7 +84,7 @@ public class CartServlet extends HttpServlet {
 			} else if ("deleteCart".equals(action)) {
 
 				cartdao.deleteCart(cartid);
-
+				//test
 				String redirectUrl = "/cart/Cart.do?action=select&customerid=" + customerid;
 				response.sendRedirect(redirectUrl);
 			}
