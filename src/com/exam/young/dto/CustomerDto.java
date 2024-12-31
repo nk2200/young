@@ -1,15 +1,16 @@
 package com.exam.young.dto;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @AllArgsConstructor @NoArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CustomerDto {
 	private String customerid;
-    private String customerName;
-    private String password;
-    private String customerAddress;
+	private String customer_name;
+	private String password;
+	private String customer_address;
 }
+
