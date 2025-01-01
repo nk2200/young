@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.exam.young.dao.RegisterDao;
@@ -44,6 +45,10 @@ public class RegisterServlet extends HttpServlet {
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
 			request.setAttribute("goods", dao.getOneGoods(goodsid));
 			view = "register/updateGoods.jsp";
+		} else if ("delete".equals(action)) {
+			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
+			request.setAttribute("goods", dao.getOneGoods(goodsid));
+			view = "register/deleteGoods.jsp";
 		}
 		
 		RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/views/" + view);
@@ -159,6 +164,14 @@ public class RegisterServlet extends HttpServlet {
 				System.out.println(goods);
 				dao.updateGoods(goods);
 				response.sendRedirect("/register/Register.do");
+			}
+		} else if ("delete".equals(action)) {
+			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
+			if (goodsid != 0) {
+				dao.deleteGoods(goodsid);
+				response.sendRedirect("/register/Register.do");
+			} else {
+				throw new RuntimeException("상품이 존재하지 않습니다.");
 			}
 		}
 	}

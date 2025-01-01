@@ -159,6 +159,26 @@ public class RegisterDao {
 			closeConnection(con);
 		}
 	}
+	
+	public void deleteGoods(int goodsid) {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			String sql = "delete from goods where goodsid=?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, goodsid);
+			
+			int rowCount = stmt.executeUpdate();
+			if (rowCount <= 0) {
+				throw new RuntimeException("상품이 존재하지 않습니다.");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(con);
+		}
+	}
 
 	private void closeConnection(Connection con) {
 		if (con != null) {

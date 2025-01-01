@@ -77,7 +77,7 @@
 	                                <div class="product__item__pic set-bg" data-setbg="../${item.goods_fname_main}">
 	                                	<ul class="product__item__pic__hover">
 	                                        <li><a href="/register/Register.do?action=update&goodsid=${item.goodsid}"><i class="fa fa-pencil"></i></a></li>
-	                                        <li><a href="/register/Register.do?action=update&goodsid=${item.goodsid}"><i class="fa fa-trash"></i></a></li>
+	                                        <li><a href="/register/Register.do?action=delete&goodsid=${item.goodsid}"><i class="fa fa-trash"></i></a></li>
 	                                    </ul>
 	                                </div>
 	                                <div class="product__item__text">
