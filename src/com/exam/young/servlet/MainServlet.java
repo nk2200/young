@@ -32,7 +32,7 @@ public class MainServlet extends HttpServlet {
                 request.setAttribute("noResult", true);
             }
         } else {
-            goodsList = maindao.getAllGoods(); 
+            goodsList = maindao.getRankedGoods(); 
         }
 
         request.setAttribute("goodsList", goodsList);

@@ -26,13 +26,17 @@ static DataSource dataSource;
 		}
 	}
 	
-	public List<GoodsDto> getAllGoods() {
+	public List<GoodsDto> getRankedGoods() {
 		Connection con = null;
 		List<GoodsDto> goodsList = new ArrayList<>();
 		try {
 			con = dataSource.getConnection();
 			
-			String sql = "SELECT GOODS_NAME,GOODS_PRICE,GOODS_fname_main FROM GOODS";
+			String sql = "SELECT g.goods_name, g.goods_price, g.goods_fname_main, NVL(SUM(b.buy_qty), 0) AS goods_cnt "
+						+"FROM goods g LEFT JOIN buy b ON g.goodsid = b.goodsid "
+						+"GROUP BY g.goods_name, g.goods_price,g.goods_fname_main "
+						+"ORDER BY goods_cnt DESC";
+			
 			PreparedStatement stmt = con.prepareStatement(sql);
 			
 			ResultSet rs = stmt.executeQuery();
@@ -40,8 +44,8 @@ static DataSource dataSource;
 			while(rs.next()) {
                 GoodsDto goods = new GoodsDto();
                 
-                goods.setGoods_name(rs.getString("GOODS_NAME"));
-                goods.setGoods_price(rs.getInt("GOODS_PRICE"));
+                goods.setGoods_name(rs.getString("goods_name"));
+                goods.setGoods_price(rs.getInt("goods_price"));
                 goods.setGoods_fname_main(rs.getString("goods_fname_main"));
     		
                 
