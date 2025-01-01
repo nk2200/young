@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.exam.young.dao.RegisterDao;
@@ -27,6 +27,7 @@ import com.exam.young.dto.GoodsDto;
 )
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String GOODS_DIRECTORY = "resource/img/goods";
      
 	RegisterDao dao = new RegisterDao();
 	
@@ -40,6 +41,14 @@ public class RegisterServlet extends HttpServlet {
 			request.setAttribute("count", dao.getCount());
 		} else if ("register".equals(action)) {
 			view = "register/registerGoods.jsp";
+		} else if ("update".equals(action)) {
+			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
+			request.setAttribute("goods", dao.getOneGoods(goodsid));
+			view = "register/updateGoods.jsp";
+		} else if ("delete".equals(action)) {
+			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
+			request.setAttribute("goods", dao.getOneGoods(goodsid));
+			view = "register/deleteGoods.jsp";
 		}
 		
 		RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/views/" + view);
@@ -49,6 +58,11 @@ public class RegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("action");
+		
+		String imageUploadPath = getServletContext().getRealPath("");
+//		String imageUploadPath2 = "C:\\dev\\young\\WebContent";
+		new File(imageUploadPath).mkdirs();
+		
 		if ("insert".equals(action)) {
 			GoodsDto goods = new GoodsDto();
 			
@@ -61,38 +75,24 @@ public class RegisterServlet extends HttpServlet {
 			goods.setGoods_category(category);
 			goods.setGoods_qty(qty);
 			
-			String goodsDirectory = "resource/img/goods";
-			String imageUploadPath = getServletContext().getRealPath(goodsDirectory);
-//			String imageUploadPath2 = "C:\\Users\\kosa\\git\\young\\WebContent\\resource\\img\\goods";
-			System.out.println(imageUploadPath);
-		    new File(imageUploadPath).mkdirs();
-	        
 		    for (Part part : request.getParts()) {
-		    	if (part.getSubmittedFileName() != null) {
-		    		String fileName = category;
+		    	if (part.getSubmittedFileName() != null && part.getSize() > 0) {
+		    		String fileName = getFileName(category, part);
 		    		
-		    		if ("goods_desc".equals(part.getName())) {
-		    			fileName += "_desc";
-		    		} else if("sub_image".equals(part.getName())) {
-		    			fileName += "_1";
-		    		}
-		    		fileName += "_" + System.currentTimeMillis() + ".jpg";
-		    		
-		    		if (fileName != null && !fileName.isEmpty()) {
+		    		if (fileName != null) {
 		    			String filePath = imageUploadPath + File.separator + fileName;
 		    			saveFile(part.getInputStream(), filePath);
 //		    			saveFile(part.getInputStream(), imageUploadPath2 + File.separator + fileName);
 		    		}
 		    		
 		    		if ("goods_desc".equals(part.getName())) {
-		    			goods.setGoods_desc(goodsDirectory + "/" + fileName);
+		    			goods.setGoods_desc(fileName);
 		    		} else if("main_image".equals(part.getName())) {
-		    			goods.setGoods_fname_main(goodsDirectory + "/" + fileName);
+		    			goods.setGoods_fname_main(fileName);
 		    		} else {
-						goods.setGoods_fname_sub(goodsDirectory + "/" + fileName);
+						goods.setGoods_fname_sub(fileName);
 					}
 		    	}
-	            
 	        }
 		    System.out.println(goods);
 		    
@@ -102,9 +102,78 @@ public class RegisterServlet extends HttpServlet {
 			} catch (Exception e) {
 				response.sendRedirect("/register/Register.do?action=register");
 			}
+		} else if ("update".equals(action)) {
+			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
+			if (goodsid == 0) {
+				throw new RuntimeException("상품이 존재하지 않습니다.");
+			} else {
+				GoodsDto goods = new GoodsDto();
+				
+				int price = Integer.parseInt(request.getParameter("goods_price"));
+				int qty = Integer.parseInt(request.getParameter("goods_qty"));
+				String category = request.getParameter("goods_category");
+				
+				goods.setGoodsid(goodsid);
+				goods.setGoods_name(request.getParameter("goods_name"));
+				goods.setGoods_price(price);
+				goods.setGoods_category(category);
+				goods.setGoods_qty(qty);
+				
+				//이전 이미지 경로
+				String desc = request.getParameter("oldDescPath");
+				String mainImage = request.getParameter("oldMainPath");
+				String subImage = request.getParameter("oldSubPath");
+				
+				for (Part part : request.getParts()) {
+					String partName = part.getName();
+			    	if (part.getSubmittedFileName() != null && part.getSize() > 0) {
+			    		String newFileName = getFileName(category, part);
+			    		
+			    		if ("goods_desc".equals(partName)) {
+			    			deleteFile(imageUploadPath, desc);
+//			    			deleteFile(imageUploadPath2, desc);
+				    		desc = newFileName;
+				    	} else if("main_image".equals(partName)) {
+				    		deleteFile(imageUploadPath, mainImage);
+//				    		deleteFile(imageUploadPath2, mainImage);
+				    		mainImage = newFileName;
+				    	} else {
+				    		deleteFile(imageUploadPath, subImage);
+//				    		deleteFile(imageUploadPath2, subImage);
+				    		subImage = newFileName;
+				    	}
+			    		
+		    			String filePath = imageUploadPath + File.separator + newFileName;
+		    			saveFile(part.getInputStream(), filePath);
+//		    			saveFile(part.getInputStream(), imageUploadPath2 + File.separator + newFileName);
+			    	}
+			    	
+			    	if ("goods_desc".equals(part.getName())) {
+			    		goods.setGoods_desc(desc);
+			    	} else if("main_image".equals(part.getName())) {
+			    		goods.setGoods_fname_main(mainImage);
+			    	} else {
+			    		goods.setGoods_fname_sub(subImage);
+			    	}
+		        }
+				
+				goods.setGoods_desc(desc);
+				goods.setGoods_fname_main(mainImage);
+				goods.setGoods_fname_sub(subImage);
+				
+				System.out.println(goods);
+				dao.updateGoods(goods);
+				response.sendRedirect("/register/Register.do");
+			}
+		} else if ("delete".equals(action)) {
+			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
+			if (goodsid != 0) {
+				dao.deleteGoods(goodsid);
+				response.sendRedirect("/register/Register.do");
+			} else {
+				throw new RuntimeException("상품이 존재하지 않습니다.");
+			}
 		}
-		
-		
 	}
 	
 	private void saveFile(InputStream inputStream, String path) throws IOException {
@@ -113,6 +182,26 @@ public class RegisterServlet extends HttpServlet {
             final byte[] bytes = new byte[1024];
             while ((read = inputStream.read(bytes)) != -1) {
                 outputStream.write(bytes, 0, read);
+            }
+        }
+    }
+	
+	private String getFileName(String category, Part part) {
+		String fileName = GOODS_DIRECTORY + "/" + category + "_" + System.currentTimeMillis();
+		if ("goods_desc".equals(part.getName())) {
+			fileName += "_desc";
+		} else if("sub_image".equals(part.getName())) {
+			fileName += "_1";
+		}
+		fileName += ".jpg";
+		return fileName;
+	}
+	
+	private void deleteFile(String directory, String fileName) {
+        if (fileName != null && !fileName.isEmpty()) {
+            File oldFile = new File(directory + File.separator + fileName);
+            if (oldFile.exists()) {
+                oldFile.delete();
             }
         }
     }

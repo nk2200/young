@@ -10,30 +10,11 @@
     <meta name="keywords" content="Ogani, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>상품 등록</title>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="../resource/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="../resource/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="../resource/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="../resource/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="../resource/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="../resource/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="../resource/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="../resource/css/style.css" type="text/css">
+    <title>상품 목록</title>
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
-	
-	<%-- <jsp:include page="../header.jsp"></jsp:include> --%>
-
+	<jsp:include page="../header.jsp"></jsp:include>
 
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="../resource/img/breadcrumb.jpg">
@@ -62,6 +43,7 @@
                         <div class="sidebar__item">
                             <h4>카테고리</h4>
                             <ul>
+                            	<li><a href="#">전체</a></li>
                             	<li><a href="#">스킨케어</a></li>
 	                            <li><a href="#">메이크업</a></li>
 	                            <li><a href="#">헤어케어</a></li>
@@ -93,9 +75,13 @@
 	                        <div class="col-lg-4 col-md-6 col-sm-6">
 	                            <div class="product__item">
 	                                <div class="product__item__pic set-bg" data-setbg="../${item.goods_fname_main}">
+	                                	<ul class="product__item__pic__hover">
+	                                        <li><a href="/register/Register.do?action=update&goodsid=${item.goodsid}"><i class="fa fa-pencil"></i></a></li>
+	                                        <li><a href="/register/Register.do?action=delete&goodsid=${item.goodsid}"><i class="fa fa-trash"></i></a></li>
+	                                    </ul>
 	                                </div>
 	                                <div class="product__item__text">
-	                                    <h6><b><a href="#">${item.goods_name}</a></b></h6>
+	                                    <h6><b><a href="/detail/Detail.do?goodsid=${item.goodsid}">${item.goods_name}</a></b></h6>
 	                                    <h6>${item.goods_price}원</h6>
 	                                    <h6>수량: ${item.goods_qty}</h6>
 	                                </div>
@@ -114,16 +100,7 @@
         </div>
     </section>
     <!-- Product Section End -->
-
-    <!-- Js Plugins -->
-    <script src="../resource/js/jquery-3.3.1.min.js"></script>
-    <script src="../resource/js/bootstrap.min.js"></script>
-    <script src="../resource/js/jquery.nice-select.min.js"></script>
-    <script src="../resource/js/jquery-ui.min.js"></script>
-    <script src="../resource/js/jquery.slicknav.js"></script>
-    <script src="../resource/js/mixitup.min.js"></script>
-    <script src="../resource/js/owl.carousel.min.js"></script>
-    <script src="../resource/js/main.js"></script>
+<jsp:include page="../footer.jsp"></jsp:include>
 
 </body>
 

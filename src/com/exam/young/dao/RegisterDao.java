@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.naming.Context;
@@ -57,6 +56,33 @@ public class RegisterDao {
 		return goodsList;
 	}
 	
+	public GoodsDto getOneGoods(int goodsid) {
+		GoodsDto goods = new GoodsDto();
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			String sql = "select * from goods where goodsid = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, goodsid);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				goods.setGoods_name(rs.getString("goods_name"));
+				goods.setGoods_price(rs.getInt("goods_price"));
+				goods.setGoods_category(rs.getString("goods_category"));
+				goods.setGoods_qty(rs.getInt("goods_qty"));
+				goods.setGoods_desc(rs.getString("goods_desc"));
+				goods.setGoods_fname_main(rs.getString("goods_fname_main"));
+				goods.setGoods_fname_sub(rs.getString("goods_fname_sub"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(con);
+		}
+		return goods;
+	}
+	
 	public int getCount() {
 		int count = 0;
 		Connection con = null;
@@ -105,6 +131,54 @@ public class RegisterDao {
 		}
 	}
 
+	public void updateGoods(GoodsDto goods) {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			String sql = "update goods set goods_name=?, goods_price=?, goods_category=?, goods_qty=?, "
+					   + "goods_desc=?, goods_fname_main=?, goods_fname_sub=? "
+					   + "where goodsid=?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, goods.getGoods_name());
+			stmt.setInt(2, goods.getGoods_price());
+			stmt.setString(3, goods.getGoods_category());
+			stmt.setInt(4, goods.getGoods_qty());
+			stmt.setString(5, goods.getGoods_desc());
+			stmt.setString(6, goods.getGoods_fname_main());
+			stmt.setString(7, goods.getGoods_fname_sub());
+			stmt.setInt(8, goods.getGoodsid());
+			
+			int rowCount = stmt.executeUpdate();
+			if (rowCount <= 0) {
+				throw new RuntimeException("변경된 행이 없습니다.");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(con);
+		}
+	}
+	
+	public void deleteGoods(int goodsid) {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			String sql = "delete from goods where goodsid=?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, goodsid);
+			
+			int rowCount = stmt.executeUpdate();
+			if (rowCount <= 0) {
+				throw new RuntimeException("상품이 존재하지 않습니다.");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(con);
+		}
+	}
 
 	private void closeConnection(Connection con) {
 		if (con != null) {
