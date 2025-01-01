@@ -14,9 +14,9 @@ import com.exam.young.dto.GoodsDto;
 
 @WebServlet("/main")
 public class MainServlet extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
        
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		MainDao maindao = new MainDao();
@@ -32,7 +32,7 @@ public class MainServlet extends HttpServlet {
                 request.setAttribute("noResult", true);
             }
         } else {
-            goodsList = maindao.getAllGoods(); 
+            goodsList = maindao.getRankedGoods(); 
         }
 
         request.setAttribute("goodsList", goodsList);
