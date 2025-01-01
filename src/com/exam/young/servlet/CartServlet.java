@@ -45,8 +45,9 @@ public class CartServlet extends HttpServlet {
 		if (action != null) {
 			if ("select".equals(action)) {
 				try {
-					List<CartDto> cartList = cartdao.getCartDetails(customerid);
-
+					List<CartDto> cartList = cartdao.getCartList(customerid);
+					System.out.println("cartList"+ cartList);
+					
 					int totalPrice = 0;
 					for (CartDto cart : cartList) {
 						GoodsDto goods = cart.getGoods(); // CartDto에서 GoodsDto 가져오기
@@ -65,29 +66,17 @@ public class CartServlet extends HttpServlet {
 					request.setAttribute("totalQty", totalQty);
 					request.setAttribute("totalPrice", totalPrice);
 					request.setAttribute("cartList", cartList);
-					session.setAttribute("customerid", customerid);
+					//session.setAttribute("customerid", customerid);
 					String view = "cart/shoping-cart.jsp";
 
 					RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/views/" + view);
 					disp.forward(request, response);
 				} catch (SQLException e) {
+					System.out.println("오류 발생");
+					e.getStackTrace();
 					e.getMessage();
 				}
-			} else if ("pay".equals(action)) {
-
-				request.setAttribute("customerid", customerid);
-				request.setAttribute("cartid", cartid);
-				session.setAttribute("customerid", customerid);
-
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/pay/Pay.do");
-				dispatcher.forward(request, response);
-			} else if ("deleteCart".equals(action)) {
-
-				cartdao.deleteCart(cartid);
-				//test
-				String redirectUrl = "/cart/Cart.do?action=select&customerid=" + customerid;
-				response.sendRedirect(redirectUrl);
-			}
+			} 
 
 		} else {
 			System.out.println("request 넘어온 action 없음");
@@ -96,16 +85,49 @@ public class CartServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-//		doGet(request, response);
+		
+		String customerid = request.getParameter("customerid");
+		// String customerid = session.getAttribute("customerid");
+		String cartidParam = request.getParameter("cartid");
+
+		int cartid=0;
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("action");
 		if("cart".equals(action)) {
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
 			int goods_qty = Integer.parseInt(request.getParameter("goods_qty"));
-			String customerid = request.getParameter("customerid");
+			customerid = request.getParameter("customerid");
 			System.out.println(goodsid+", "+goods_qty+", "+customerid);
 			
+		}else if ("pay".equals(action)) { //이따 해야지
+			//cartdao.payByCartId(customerid);
+			
+			request.setAttribute("customerid", customerid);
+			request.setAttribute("cartid", cartid);
+			//session.setAttribute("customerid", customerid);
+
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/pay/Pay.do");
+			dispatcher.forward(request, response);
+		} else if ("deleteCart".equals(action)) {
+			cartid = Integer.parseInt(request.getParameter("cartid"));
+			customerid="user1";
+			
+			cartdao.deleteCart(cartid);
+			//test
+			String redirectUrl = "/cart/Cart.do?action=select&customerid=" + customerid;
+			response.sendRedirect(redirectUrl);
+		} else if("selectDelete".equals(action)) {
+			String selectItems = request.getParameter("selectedItems");
+			customerid="user1";
+			String[] items = selectItems.split(",");
+			
+			for (String item : items) {
+				String number = item.replaceAll("[^0-9]", "");
+				cartid = Integer.parseInt(number);
+				cartdao.deleteCart(cartid);
+			}
+			String redirectUrl = "/cart/Cart.do?action=select&customerid=" + customerid;
+			response.sendRedirect(redirectUrl);
 		}
 	}
 
