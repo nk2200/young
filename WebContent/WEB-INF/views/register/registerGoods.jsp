@@ -11,6 +11,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>상품 등록</title>
+    <script type="text/javascript">
+	    function checkForm() {
+	        if(form.goods_name.value.trim() === '') {
+	            alert("상품명을 입력해주세요.");
+	            form.goods_name.focus();
+	            return false;
+	        }
+	        
+	        const price = form.goods_price.value.trim();
+	        const qty = form.goods_qty.value.trim();
+	        if(price === '' || isNaN(price)) {
+	            alert("가격을 숫자로 입력해주세요.");
+	            form.goods_price.focus();
+	            return false;
+	        }
+	        if(qty === '' || isNaN(qty)) {
+	            alert("수량을 숫자로 입력해주세요.");
+	            form.goods_qty.focus();
+	            return false;
+	        }
+	        
+	        if(form.goods_category.value === 'none') {
+	            alert("카테고리를 선택해주세요.");
+	            return false;
+	        }
+	        if(form.goods_desc.value === '') {
+	            alert("상품 설명 이미지를 업로드 해주세요.");
+	            return false;
+	        }
+	        if(form.main_image.value === '') {
+	            alert("상품 메인 이미지를 업로드 해주세요.");
+	            return false;
+	        }
+	        return true;
+	    }
+    </script>
 </head>
 
 <body>
@@ -38,8 +74,7 @@
     <section class="checkout spad">
         <div class="container">
             <div class="checkout__form">
-            	<!-- <img src="../resource/img/goods/hair.jpg"> -->
-                <form action="/register/Register.do" method="post" enctype="multipart/form-data">
+                <form action="/register/Register.do" method="post" enctype="multipart/form-data" name="form" onsubmit="return checkForm();">
 	                <div class="checkout__input">
 	                    <p>상품명<span>*</span></p>
 	                    <input type="text" name="goods_name">
@@ -53,6 +88,7 @@
 			                <div class="checkout__input">
 			                    <p>카테고리<span>*</span></p>
 			                    <select name="goods_category">
+									<option value="none">선택
 									<option value="skin">스킨케어
 									<option value="makeup">메이크업
 									<option value="hair">헤어케어
@@ -81,7 +117,7 @@
 	                    </div>
 	                    <div class="col-lg-6">
 	                        <div class="checkout__input">
-	                            <p>상세 이미지<span>*</span></p>
+	                            <p>서브 이미지</p>
 			                    <input type="file" name="sub_image" style="padding-left:0px;border:none;">
 	                        </div>
 	                    </div>

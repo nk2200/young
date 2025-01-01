@@ -11,6 +11,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>상품 수정</title>
+    <script type="text/javascript">
+	    function checkForm() {
+	        if(form.goods_name.value.trim() === '') {
+	            alert("상품명을 입력해주세요.");
+	            form.goods_name.focus();
+	            return false;
+	        }
+	        
+	        const price = form.goods_price.value.trim();
+	        const qty = form.goods_qty.value.trim();
+	        if(price === '' || isNaN(price)) {
+	            alert("가격을 숫자로 입력해주세요.");
+	            form.goods_price.focus();
+	            return false;
+	        }
+	        if(qty === '' || isNaN(qty)) {
+	            alert("수량을 숫자로 입력해주세요.");
+	            form.goods_qty.focus();
+	            return false;
+	        }
+	        
+	        if(form.goods_category.value === 'none') {
+	            alert("카테고리를 선택해주세요.");
+	            return false;
+	        }
+	        return true;
+	    }
+    </script>
 </head>
 
 <body>
@@ -38,8 +66,7 @@
     <section class="checkout spad">
         <div class="container">
             <div class="checkout__form">
-            	<!-- <img src="../resource/img/goods/hair.jpg"> -->
-                <form action="/register/Register.do" method="post" enctype="multipart/form-data">
+                <form action="/register/Register.do" method="post" enctype="multipart/form-data" name="form" onsubmit="return checkForm();">
 	                <div class="checkout__input">
 	                    <p>상품명<span>*</span></p>
 	                    <input type="text" name="goods_name" value="${goods.goods_name}">
@@ -53,6 +80,7 @@
 			                <div class="checkout__input">
 			                    <p>카테고리<span>*</span></p>
 			                    <select name="goods_category">
+			                    	<option value="none">선택
 									<option value="skin" ${goods.goods_category=='skin'?'selected':''}>스킨케어
 									<option value="makeup" ${goods.goods_category=='makeup'?'selected':''}>메이크업
 									<option value="hair" ${goods.goods_category=='hair'?'selected':''}>헤어케어
@@ -85,7 +113,7 @@
 	                    </div>
 	                    <div class="col-lg-6">
 	                        <div class="checkout__input">
-	                            <p>상세 이미지<span>*</span></p>
+	                            <p>서브 이미지</p>
 			                    <input type="file" name="sub_image" style="padding-left:0px;border:none;">
 			                    <img src="../${goods.goods_fname_sub}" style="width:150px;">
 			                    <input type="hidden" name="oldSubPath" value="${goods.goods_fname_sub}">
@@ -95,7 +123,7 @@
 	                <div style="padding-top:30px;text-align:center;">
 	                	<input type="hidden" name="goodsid" value="${param.goodsid}">
 	                	<input type="hidden" name="action" value="update">
-		                <button type="submit" class="site-btn" style="width:200px;">등록</button>
+		                <button type="submit" class="site-btn" style="width:200px;">수정</button>
 	                </div>
                 </form>
             </div>
