@@ -62,6 +62,7 @@
                         <div class="sidebar__item">
                             <h4>카테고리</h4>
                             <ul>
+                            	<li><a href="#">전체</a></li>
                             	<li><a href="#">스킨케어</a></li>
 	                            <li><a href="#">메이크업</a></li>
 	                            <li><a href="#">헤어케어</a></li>
@@ -93,9 +94,13 @@
 	                        <div class="col-lg-4 col-md-6 col-sm-6">
 	                            <div class="product__item">
 	                                <div class="product__item__pic set-bg" data-setbg="../${item.goods_fname_main}">
+	                                	<ul class="product__item__pic__hover">
+	                                        <li><a href="/register/Register.do?action=update&goodsid=${item.goodsid}"><i class="fa fa-pencil"></i></a></li>
+	                                        <li><a href="/register/Register.do?action=update&goodsid=${item.goodsid}"><i class="fa fa-trash"></i></a></li>
+	                                    </ul>
 	                                </div>
 	                                <div class="product__item__text">
-	                                    <h6><b><a href="#">${item.goods_name}</a></b></h6>
+	                                    <h6><b><a href="/detail/Detail.do?goodsid=${item.goodsid}">${item.goods_name}</a></b></h6>
 	                                    <h6>${item.goods_price}원</h6>
 	                                    <h6>수량: ${item.goods_qty}</h6>
 	                                </div>
