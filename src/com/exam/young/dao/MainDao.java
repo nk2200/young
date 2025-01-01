@@ -16,7 +16,6 @@ import com.exam.young.dto.GoodsDto;
 
 public class MainDao {
 static DataSource dataSource;	
-
 	static {
 		try {
 			Context context = new InitialContext();
