@@ -10,6 +10,88 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>올리브영 온라인몰</title>
+<script type='text/javascript'>
+	function deleteCart(){
+		const deleteId = document.getElementById("cartid_value");
+		const cartid = deleteId.value;
+		
+		console.log('cartid' + cartid);
+		if(confirm('삭제하시겠습니까 ?')){
+			fetch('/cart/Cart.do',{
+				method : 'POST',
+				headers :{
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body : new URLSearchParams({
+					action : "deleteCart",
+					cartid : cartid
+				})
+			}).then(response =>{
+				if(response.ok){
+					alert('상품을 삭제했습니다.');
+					location.reload();
+				}else{
+					alert('상품 삭제에 실패했습니다.');
+					location.reload();
+				}
+			})
+			.catch(error => {
+				console.error('Error :', error);
+				alert('오류가 발생했습니다.');
+			})
+			
+		}else {
+			alert('삭제를 취소하였습니다.');
+		}
+		
+	}
+	
+	
+	function deleteSelect(){
+		const checkboxes = document.querySelectorAll('.item-checkbox');
+		
+		const selectedItems = Array.from(checkboxes)
+	        .filter(checkbox => checkbox.checked) 
+	        .map(checkbox => checkbox.value);   
+
+	    if (selectedItems.length === 0) {
+	        alert('선택된 상품이 없습니다.');
+	        return;
+	    }
+	    
+	    const params = new URLSearchParams();
+	    params.append("selectedItems", selectedItems.join(','));  // 배열을 ','로 구분된 문자열로 변환
+
+        
+	    console.log('선택된 항목', selectedItems);
+	    
+		fetch('/cart/Cart.do',{
+			method: 'POST',
+			headers :{
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body :  new URLSearchParams({
+				action : "selectDelete",
+				selectedItems : params
+			})
+		})
+		.then(response =>{
+			if(response.ok){
+				alert('상품을 삭제했습니다.');
+				location.reload();
+			}else{
+				alert('상품 삭제에 실패했습니다.');
+			}
+		})
+		.catch(error => {
+			console.error('Error :', error);
+			alert('오류가 발생했습니다.');
+		})
+	}
+
+
+</script>
+
 </head>
 
 <body>
@@ -57,8 +139,10 @@
 							<tbody>
 								<c:forEach var="cart" items="${cartList}">
 									<tr>
-										<td class="shoping__cart__item__check"><input
-											type="checkbox" /></td>
+										<td class="shoping__cart__item__check">
+										<input type="checkbox" value="${cart.cartid}" checked class="item-checkbox"/>
+										<input type="hidden" value="${cart.cartid}" id="cartid_value"/>
+										</td>
 										<td class="shoping__cart__item"><img
 											src="${cart.goods.goods_fname_main}" alt="">
 											<h5>${cart.goods.goods_name}</h5></td>
@@ -73,7 +157,7 @@
 										</td>
 										<td class="shoping__cart__total">
 											<a href="#" class="heart-icon"><span class="icon_heart_alt"></span>
-												쇼핑찜</a> <br> <a href="#" class="icon_close"><span
+												쇼핑찜</a> <br> <a href="#" onclick="deleteCart()" class="icon_close"><span
 												class="icon"></span> 삭제</a></td>
 									</tr>
 								</c:forEach>
@@ -87,9 +171,9 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="shoping__cart__btns">
-						<a href="#" class="primary-btn cart-btn">선택 상품 삭제</a>
+						<a href="#" class="primary-btn cart-btn" onclick="deleteSelect()">선택 상품 삭제</a>
 					</div>
-					<
+					
 				</div>
 
 				<div class="col-lg-12">

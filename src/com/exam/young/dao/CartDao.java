@@ -27,7 +27,7 @@ public class CartDao {
 		}
 	}
 
-	public List<CartDto> getCartDetails(String customerId) throws SQLException {
+	public List<CartDto> getCartList(String customerId) throws SQLException {
 		Connection conn = null;
 		List<CartDto> cartDetails = new ArrayList<>();
 
@@ -56,8 +56,8 @@ public class CartDao {
 			goods.setGoods_category(rs.getString("goods_category"));
 			goods.setGoods_qty(rs.getInt("goods_qty"));
 			goods.setGoods_regidate(rs.getDate("goods_regidate"));
-			goods.setGoods_fname_main(rs.getString("goods_filename"));
-			goods.setGoods_fname_sub(rs.getNString("goods_filedetail"));
+			goods.setGoods_fname_main(rs.getString("goods_fname_main"));
+			goods.setGoods_fname_sub(rs.getNString("goods_fname_sub"));
 
 			cart.setGoods(goods);
 			cartDetails.add(cart);
@@ -87,16 +87,19 @@ public class CartDao {
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+		}finally {
+			closeConnection(conn);
 		}
 
 		return goods;
 	}
 
 	public void deleteCart(int cartid) {
+		System.out.println("삭제");
 		Connection conn = null;
 		try {
 			conn = dataSource.getConnection();
-			String sql = "SELECT * FROM cart WHERE cartid =? ";
+			String sql = "DELETE FROM cart WHERE cartid =? ";
 			PreparedStatement pstm = null;
 
 			pstm = conn.prepareStatement(sql);
@@ -106,6 +109,8 @@ public class CartDao {
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+		}finally {
+			closeConnection(conn);
 		}
 
 	}
@@ -120,4 +125,32 @@ public class CartDao {
 //			pstmt.setString(1, );
 //		}
 //	}
+	
+//	public void payByCartId(String customerid) {
+//		Connection conn = null;
+//		
+//		try {
+//			conn = dataSource.getConnection();
+//			String sql = "SELECT "
+//			
+//		} catch (SQLException e) {
+//			System.out.println(e.getMessage());
+//		}finally {
+//			closeConnection(conn);
+//		}
+//	}
+	
+	
+	
+	private void closeConnection(Connection con) {
+		if(con!=null) {
+			try {
+				con.close();
+			}catch(Exception e) {
+				//nothing
+			}
+		}
+ 	}
+	
+	
 }
