@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.exam.young.dao.CartDao;
+import com.exam.young.dao.DetailDAO;
 import com.exam.young.dto.CartDto;
 import com.exam.young.dto.GoodsDto;
 
@@ -98,6 +99,17 @@ public class CartServlet extends HttpServlet {
 			int goods_qty = Integer.parseInt(request.getParameter("goods_qty"));
 			customerid = request.getParameter("customerid");
 			System.out.println(goodsid+", "+goods_qty+", "+customerid);
+			
+			CartDto cart = new CartDto();
+			cart.setGoodsid(goodsid);
+			cart.setCart_qty(goods_qty);
+			cart.setCustomerid(customerid);
+			cartdao.addCart(cart);
+			
+			response.setContentType("text/plain");
+	        response.setCharacterEncoding("UTF-8");
+//			String redirectUrl = "/cart/Cart.do?action=select&customerid=" + customerid;
+//			response.sendRedirect(redirectUrl);
 			
 		}else if ("pay".equals(action)) { //이따 해야지
 			//cartdao.payByCartId(customerid);
