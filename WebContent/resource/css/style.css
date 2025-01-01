@@ -1735,6 +1735,16 @@ ol {
 	margin-top: 50px;
 }
 
+.product__details__text .product__details__text__list {
+	border-bottom: 1px solid #ebebeb;
+	padding-top: 20px;
+	margin-bottom: 50px;
+	padding-bottom: 20px;
+	/* ul에서 상속된 스타일 초기화 */
+	border-top: none; /* border-top 제거 */
+	margin-top: 0; /* margin-top 제거 */
+}
+
 .product__details__text ul li {
 	font-size: 16px;
 	color: #1c1c1c;

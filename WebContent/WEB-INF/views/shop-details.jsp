@@ -93,6 +93,19 @@
 		var urlParams = new URLSearchParams(window.location.search);
 		return urlParams.get(name);
 	}
+	//숫자 콤마형식으로 바꾸기
+	function makeComma(number){
+		const c = number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+		return c;
+	}
+	$(document).ready(function(){
+		console.log("작동됨");
+		const price = ${goods.goods_price};
+		console.log(price);
+		const formattedPrice = makeComma(price);
+		$('#price').html(`&#8361;${formattedPrice}`);
+	});
+	
 </script>
 </head>
 
@@ -100,7 +113,7 @@
 	<!-- Page Preloder -->
 	<jsp:include page="header.jsp"></jsp:include>
 	<!-- Breadcrumb Section Begin -->
-	<section class="breadcrumb-section set-bg"
+<%-- 	<section class="breadcrumb-section set-bg"
 		data-setbg="/resource/img/breadcrumb.jpg">
 		<div class="container">
 			<div class="row">
@@ -114,8 +127,21 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> --%>
 	<!-- Breadcrumb Section End -->
+	<!--카테고리 만들기  -->
+	<nav class="container">
+		<ul style="list-style-type: none; display: flex; align-items: center;">
+			<li style="margin-right: 10px;"><a href="#" aria-label="홈">
+					<img src="/resource/home-icon.png" alt="홈 아이콘"
+					style="vertical-align: middle;" width="15px" height="15px">
+			</a> <span>></span></li>
+			<li style="margin-right: 10px;"><a href="#">${goods.goods_category }</a>
+				<span>></span></li>
+			<li style="margin-right: 10px;"><span>${goods.goods_name }</span>
+			</li>
+		</ul>
+	</nav>
 
 	<!-- Product Details Section Begin -->
 	<section class="product-details spad">
@@ -135,16 +161,16 @@
 					</div>
 				</div>
 				<div class="col-lg-6 col-md-6">
-					<div class="product__details__text">
+					<div class="product__details__text detailpage">
 						<h3>${goods.goods_name }</h3>
 						<div class="product__details__rating">
 							<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
 								class="fa fa-star"></i> <i class="fa fa-star"></i> <i
 								class="fa fa-star-half-o"></i> <span>(18 reviews)</span>
 						</div>
-						<div class="product__details__price">&#8361;${goods.goods_price }</div>
+						<div class="product__details__price" id="price">&#8361;${goods.goods_price }</div>
 						
-						<ul>
+						<ul class="product__details__text__list">
 							<li><b>Availability</b> <span>In Stock</span></li>
 							<li><b>Shipping</b> <span>01 day shipping. <samp>Free
 										pickup today</samp></span></li>
