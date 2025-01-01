@@ -32,6 +32,8 @@
             </div>
         </div>
     </section>
+    <!-- 고객정보 추가,yhl -->
+    <div>${customer.customer_name}</div>
     <!-- Breadcrumb Section End -->
 
     <!-- Shoping Cart Section Begin -->
