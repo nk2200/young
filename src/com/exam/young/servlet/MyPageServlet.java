@@ -19,7 +19,7 @@ public class MyPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
            
-    	String userId = request.getParameter("userId");
+    	//String userId = request.getParameter("userId");
     	
     	if(userId != null) {
 	        HttpSession session = request.getSession();
