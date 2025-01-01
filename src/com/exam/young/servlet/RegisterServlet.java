@@ -55,8 +55,7 @@ public class RegisterServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		
 		String imageUploadPath = getServletContext().getRealPath("");
-		String imageUploadPath2 = "C:\\dev\\young\\WebContent";
-//		System.out.println(imageUploadPath);
+//		String imageUploadPath2 = "C:\\dev\\young\\WebContent";
 		new File(imageUploadPath).mkdirs();
 		
 		if ("insert".equals(action)) {
@@ -78,7 +77,7 @@ public class RegisterServlet extends HttpServlet {
 		    		if (fileName != null) {
 		    			String filePath = imageUploadPath + File.separator + fileName;
 		    			saveFile(part.getInputStream(), filePath);
-		    			saveFile(part.getInputStream(), imageUploadPath2 + File.separator + fileName);
+//		    			saveFile(part.getInputStream(), imageUploadPath2 + File.separator + fileName);
 		    		}
 		    		
 		    		if ("goods_desc".equals(part.getName())) {
@@ -92,12 +91,12 @@ public class RegisterServlet extends HttpServlet {
 	        }
 		    System.out.println(goods);
 		    
-//			try {
-//				dao.insertGoods(goods);
-//				response.sendRedirect("/register/Register.do");
-//			} catch (Exception e) {
-//				response.sendRedirect("/register/Register.do?action=register");
-//			}
+			try {
+				dao.insertGoods(goods);
+				response.sendRedirect("/register/Register.do");
+			} catch (Exception e) {
+				response.sendRedirect("/register/Register.do?action=register");
+			}
 		} else if ("update".equals(action)) {
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
 			if (goodsid == 0) {
@@ -119,7 +118,6 @@ public class RegisterServlet extends HttpServlet {
 				String desc = request.getParameter("oldDescPath");
 				String mainImage = request.getParameter("oldMainPath");
 				String subImage = request.getParameter("oldSubPath");
-				System.out.println(desc);
 				
 				for (Part part : request.getParts()) {
 					String partName = part.getName();
@@ -128,21 +126,21 @@ public class RegisterServlet extends HttpServlet {
 			    		
 			    		if ("goods_desc".equals(partName)) {
 			    			deleteFile(imageUploadPath, desc);
-			    			deleteFile(imageUploadPath2, desc);
+//			    			deleteFile(imageUploadPath2, desc);
 				    		desc = newFileName;
 				    	} else if("main_image".equals(partName)) {
 				    		deleteFile(imageUploadPath, mainImage);
-				    		deleteFile(imageUploadPath2, mainImage);
+//				    		deleteFile(imageUploadPath2, mainImage);
 				    		mainImage = newFileName;
 				    	} else {
 				    		deleteFile(imageUploadPath, subImage);
-				    		deleteFile(imageUploadPath2, subImage);
+//				    		deleteFile(imageUploadPath2, subImage);
 				    		subImage = newFileName;
 				    	}
 			    		
 		    			String filePath = imageUploadPath + File.separator + newFileName;
 		    			saveFile(part.getInputStream(), filePath);
-		    			saveFile(part.getInputStream(), imageUploadPath2 + File.separator + newFileName);
+//		    			saveFile(part.getInputStream(), imageUploadPath2 + File.separator + newFileName);
 			    	}
 			    	
 			    	if ("goods_desc".equals(part.getName())) {
