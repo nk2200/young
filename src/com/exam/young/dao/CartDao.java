@@ -267,5 +267,29 @@ public class CartDao {
 		}
  	}
 	
+	public boolean plusQty(int goodsid, int goods_qty) {
+		Connection conn = null;
+		System.out.println("plusQty 실행");
+		
+	    try {
+	        conn = dataSource.getConnection(); // DataSource로부터 연결 가져오기
+	        String sql = "UPDATE cart SET cart_qty = cart_qty + ? WHERE goodsid = ?"; // 올바른 SQL 작성
+	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        conn.setAutoCommit(false); // Auto-commit 비활성화
+	        stmt.setInt(1, goods_qty);
+	        stmt.setInt(2, goodsid);
+	        int rowsAffected = stmt.executeUpdate();
+	       
+	        conn.commit(); 
+	        return rowsAffected > 0; 
+
+	    } catch (SQLException e) {
+	        System.out.println("Error updating cart quantity: " + e.getMessage());
+	        return false;
+	    } finally {
+	        closeConnection(conn);
+	    }
+	}
+	
 	
 }

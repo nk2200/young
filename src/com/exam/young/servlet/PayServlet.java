@@ -36,7 +36,7 @@ public class PayServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("action");
-	  //HttpSession session = request.getSession();
+		HttpSession session = request.getSession();
 		String customerid = (String) session.getAttribute("customerid");
 	
 		

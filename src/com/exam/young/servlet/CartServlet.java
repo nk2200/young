@@ -92,17 +92,20 @@ public class CartServlet extends HttpServlet {
 			int goods_qty = Integer.parseInt(request.getParameter("goods_qty"));
 			customerid = request.getParameter("customerid");
 			System.out.println(goodsid+", "+goods_qty+", "+customerid);
-			
-			CartDto cart = new CartDto();
-			cart.setGoodsid(goodsid);
-			cart.setCart_qty(goods_qty);
-			cart.setCustomerid(customerid);
-			cartdao.addCart(cart);
+			//원래 cart에 있는 goods면 추가, 아니면 새로 cart삽입
+			if(cartdao.existCart(goodsid) != 0) {
+				cartdao.plusQty(goodsid, goods_qty);
+			}else {
+				CartDto cart = new CartDto();
+				cart.setGoodsid(goodsid);
+				cart.setCart_qty(goods_qty);
+				cart.setCustomerid(customerid);
+				cartdao.addCart(cart);
+			}
 			
 			response.setContentType("text/plain");
 	        response.setCharacterEncoding("UTF-8");
-//			String redirectUrl = "/cart/Cart.do?action=select&customerid=" + customerid;
-//			response.sendRedirect(redirectUrl);
+	        response.getWriter().write("카트에 넣기 성공");
 			
 		}else if ("pay".equals(action)) { //이따 해야지
 			//cartdao.payByCartId(customerid);

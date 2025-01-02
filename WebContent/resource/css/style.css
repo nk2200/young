@@ -1691,6 +1691,11 @@ ol {
 	min-width: 100%;
 }
 
+.detail_img img{
+	max-width: 25%;
+	cursor : pointer;
+}
+
 .product__details__pic__slider img {
 	cursor: pointer;
 }
