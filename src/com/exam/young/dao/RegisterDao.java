@@ -26,13 +26,18 @@ public class RegisterDao {
 		}
 	}
 
-	public List<GoodsDto> getGoodsList() {
+	public List<GoodsDto> getGoodsList(int pageNumber, int pageSize) {
 		List<GoodsDto> goodsList = new ArrayList<>();
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			String sql = "select * from goods order by goodsid desc";
+			String sql = "SELECT goodsid, goods_name, goods_price, goods_desc, goods_category, goods_qty, goods_fname_main " + 
+					"FROM (SELECT g.*, ROW_NUMBER() OVER (ORDER BY g.goodsid) AS rn FROM goods g) " + 
+					"WHERE rn BETWEEN ? AND ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, getStartRow(pageNumber, pageSize));
+			stmt.setInt(2, getEndRow(pageNumber, pageSize));
+			
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				GoodsDto goods = new GoodsDto();
@@ -82,23 +87,27 @@ public class RegisterDao {
 		return goods;
 	}
 	
-	public List<GoodsDto> searchGoods(String keyword, String type) {
+	public List<GoodsDto> searchGoods(String keyword, String type, int pageNumber, int pageSize) {
 		List<GoodsDto> goodsList = new ArrayList<>();
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			String sql = "select * from goods where ";
+			String sql = "SELECT goodsid, goods_name, goods_price, goods_desc, goods_category, goods_qty, goods_fname_main " + 
+					"FROM (SELECT g.*, ROW_NUMBER() OVER (ORDER BY g.goodsid) AS rn FROM goods g where ";
 
 	        // 조건 추가
 	        if ("name".equals(type)) {
-	            sql += "goods_name like ?";
+	            sql += "goods_name like ?)";
 	        } else if ("category".equals(type)) {
-	        	sql += "goods_category like ?";
+	        	sql += "goods_category like ?)";
 			}
-	        sql += " order by goodsid desc";
+	        sql += " WHERE rn BETWEEN ? AND ?";
 	        
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, "%" + keyword + "%");
+			stmt.setInt(2, getStartRow(pageNumber, pageSize));
+			stmt.setInt(3, getEndRow(pageNumber, pageSize));
+			
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				GoodsDto goods = new GoodsDto();
@@ -172,6 +181,14 @@ public class RegisterDao {
 	
 	private boolean isCategoryEmpty(String category) {
 		return category == null || category.isEmpty();
+	}
+	
+	private int getStartRow(int pageNumber, int pageSize) {
+		return (pageNumber - 1) * pageSize + 1;
+	}
+	
+	private int getEndRow(int pageNumber, int pageSize) {
+		return pageNumber * pageSize;
 	}
 	
 	public void insertGoods(GoodsDto goods) {

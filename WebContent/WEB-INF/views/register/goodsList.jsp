@@ -21,6 +21,21 @@
 		        	link.href = '/register/Register.do?category=' + id;
 				}
 		    });
+		    
+		    document.querySelectorAll(".product__pagination a").forEach(link => {
+		    	const params = new URLSearchParams(window.location.search);
+		    	let url = link.href;
+
+		    	const category = params.get("category");
+		    	if (category != null) {
+		    		link.href = url + '&category=' + category;
+		    	}
+
+		    	const searchName = params.get("searchName");
+		    	if (searchName != null) {
+		    		link.href = url + '&searchName=' + searchName;
+		    	}
+		    });
 	    });
     </script>
     <style>
@@ -54,6 +69,12 @@
 		    flex-direction: column;
 		    align-items: center;
 			font-size: 14px;
+		}
+		
+		#current_page {
+			background: #7fad39;
+			border-color: #7fad39;
+			color: #ffffff;
 		}
 </style>
 </head>
@@ -136,7 +157,7 @@
 	                    <c:forEach var="item" items="${goods}">
 	                        <div class="col-lg-4 col-md-6 col-sm-6">
 	                            <div class="product__item">
-	                                <div class="product__item__pic set-bg" data-setbg="../${item.goods_fname_main}">
+	                                <div class="product__item__pic set-bg" data-setbg="../resource/img/goods/${item.goods_fname_main}">
 	                                	<ul class="product__item__pic__hover">
 	                                        <li><a href="/register/Register.do?action=update&goodsid=${item.goodsid}"><i class="fa fa-pencil"></i></a></li>
 	                                        <li><a href="/register/Register.do?action=delete&goodsid=${item.goodsid}"><i class="fa fa-trash"></i></a></li>
@@ -151,11 +172,31 @@
 	                        </div>
                         </c:forEach>
                     </div>
+                    
                     <div class="product__pagination">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                    	<!-- 이전 페이지 버튼 -->
+                    	<c:if test="${param.page > 1}">
+	                        <a href="/register/Register.do?page=${param.page-1}">
+	                        <i class="fa fa-long-arrow-left"></i></a>
+                    	</c:if>
+                    	
+                    	<!-- 페이지 번호 -->
+                    	<c:set var="currentPage" value="${empty param.page ? 1 : param.page}" />
+                    	<c:forEach var="i" begin="1" end="${totalPages}">
+                    		<c:choose>
+                    			<c:when test="${currentPage == i}">
+	                        		<a id="current_page" onclick="event.preventDefault();">${i}</a>
+                    			</c:when>
+                    			<c:otherwise>
+                    				<a href="/register/Register.do?page=${i}">${i}</a>
+                    			</c:otherwise>
+                    		</c:choose>
+                    	</c:forEach>
+                    	
+                    	<!-- 다음 페이지 -->
+                    	<c:if test="${currentPage < totalPages}">
+                        	<a href="/register/Register.do?page=${currentPage+1}"><i class="fa fa-long-arrow-right"></i></a>
+                        </c:if>
                     </div>
                 </div>
             </div>

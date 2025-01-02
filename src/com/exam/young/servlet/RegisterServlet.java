@@ -26,7 +26,6 @@ import com.exam.young.dto.GoodsDto;
 )
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String GOODS_DIRECTORY = "resource/img/goods";
      
 	RegisterDao dao = new RegisterDao();
 	
@@ -37,20 +36,34 @@ public class RegisterServlet extends HttpServlet {
 		if (action == null) {
 			String searchName = request.getParameter("searchName");
 			String category = request.getParameter("category");
+			
+			int count = dao.getCount(searchName, category);
+			int pageSize = 2;
+			int totalPages = (int) Math.ceil((double) count / pageSize);
+			String page = request.getParameter("page");
+			int pageNumber = 0;
+			if (page == null) {
+				pageNumber = 1;
+			} else {
+				pageNumber = Integer.parseInt(page);
+			}
+			
 			List<GoodsDto> goods;
 			if (searchName == null && category == null) {
-				goods = dao.getGoodsList();
+				goods = dao.getGoodsList(pageNumber, pageSize);
 			} else if (category == null) {
-				goods = dao.searchGoods(searchName, "name");
+				goods = dao.searchGoods(searchName, "name", pageNumber, pageSize);
 			} else {
-				goods = dao.searchGoods(category, "category");
+				goods = dao.searchGoods(category, "category", pageNumber, pageSize);
 			}
 			
 			if (goods.isEmpty()) {
                 request.setAttribute("noResult", true);
             }
 			request.setAttribute("goods", goods);
-			request.setAttribute("count", dao.getCount(searchName, category));
+			request.setAttribute("count", count);
+			request.setAttribute("page", pageNumber);
+			request.setAttribute("totalPages", totalPages);
 		} else if ("register".equals(action)) {
 			view = "register/registerGoods.jsp";
 		} else if ("update".equals(action)) {
@@ -71,7 +84,7 @@ public class RegisterServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("action");
 		
-		String imageUploadPath = getServletContext().getRealPath("");
+		String imageUploadPath = getServletContext().getRealPath("resource/img/goods");
 //		String imageUploadPath2 = "C:\\dev\\young\\WebContent";
 		new File(imageUploadPath).mkdirs();
 		
@@ -199,7 +212,7 @@ public class RegisterServlet extends HttpServlet {
     }
 	
 	private String getFileName(String category, Part part) {
-		String fileName = GOODS_DIRECTORY + "/" + category + "_" + System.currentTimeMillis();
+		String fileName = category + "_" + System.currentTimeMillis();
 		if ("goods_desc".equals(part.getName())) {
 			fileName += "_desc";
 		} else if("sub_image".equals(part.getName())) {
