@@ -75,6 +75,9 @@
                 <div class="col-lg-12">
                 	<form action="/register/Register.do" method="post">
                 		<input type="hidden" name="goodsid" value="${param.goodsid}">
+                		<input type="hidden" name="searchName" value="${param.searchName}">
+	                	<input type="hidden" name="searchCate" value="${param.category}">
+	                	<input type="hidden" name="page" value="${param.page}">
 	                	<input type="hidden" name="action" value="delete">
 	                    <div class="shoping__cart__btns" style="text-align:center;">
 	                        <button type="submit" class="site-btn" style="padding:14px 30px 12px;margin-right:10px;">삭제</button>
