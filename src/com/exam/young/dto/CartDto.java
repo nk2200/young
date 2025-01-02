@@ -10,6 +10,6 @@ public class CartDto {
 	private String customerid;
 	private int goodsid;
 	private int cart_qty;
-	private GoodsDto goods; 
-	
+	private GoodsDto goods;
+
 }

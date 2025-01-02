@@ -121,17 +121,29 @@ public class CartDao {
 		}
 
 	}
-//	한번 머지하고 만들게여
-//	public void addCart(CartDto cart) {
-//		Connection conn = null;
-//		try {
-//			conn = dataSource.getConnection();
-//			String sql = "INSERT INTO cart(customerid,goodsid,cart_qty) "
-//					+ "values(?,?,?)";
-//			PreparedStatement pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, );
-//		}
-//	}
+
+	public void addCart(CartDto cart) {
+		Connection conn = null;
+		try {
+			conn = dataSource.getConnection();
+			String sql = "INSERT INTO cart(customerid,goodsid,cart_qty) "
+					+ "values(?,?,?)";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cart.getCustomerid());
+			pstmt.setInt(2, cart.getGoodsid());
+			pstmt.setInt(3, cart.getCart_qty());
+			int rs = pstmt.executeUpdate();
+			System.out.println(cart.toString()+"\n"+rs+"행 삽입 완료");
+			if(rs <= 0) {
+				throw new RuntimeException("저장된 행이 없습니다.");
+			}
+		}catch(Exception e) {
+			System.out.println("addCart() 예외: "+e.getMessage());
+			 throw new RuntimeException(e);
+		}finally {
+			closeConnection(conn);
+		}
+	}
 	
 //	public void payByCartId(String customerid) {
 //		Connection conn = null;

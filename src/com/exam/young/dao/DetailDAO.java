@@ -34,7 +34,7 @@ public class DetailDAO {
 			}
 		}
 	}
-	
+	//goods 가져오기
 	public GoodsDto getGoods(int goodsid) {
 		GoodsDto goods = new GoodsDto();
 		Connection conn = null;
@@ -68,5 +68,26 @@ public class DetailDAO {
 		}
 		return goods;
 	}
-	
+	//goods likes 증가 메소드
+	public void updateGoodsLikes(int goodsid) {
+		int plus_goods_likes = getGoods(goodsid).getGoods_likes()+1;
+		Connection conn = null;
+		try {
+			conn = dataSource.getConnection();
+			String sql = "UPDATE goods SET goods_likes=? WHERE goodsid=?";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, plus_goods_likes);
+			pstmt.setInt(2, goodsid);
+			int rs = pstmt.executeUpdate();
+			if(rs<=0) {
+				System.out.println("updateGoodsLikes() 예외: ");
+				throw new RuntimeException("변경된 행이 없습니다.");
+			}
+		}catch(Exception e) {
+			System.out.println("updateGoodsLikes() 예외: ");
+			throw new RuntimeException(e.getMessage());
+		}finally {
+			closeConnection(conn);
+		}
+	}
 }
