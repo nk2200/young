@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.exam.young.dao.BuyDao;
 
@@ -33,8 +34,17 @@ public class PayServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		
-		
+		String action = request.getParameter("action");
+		HttpSession session = request.getSession();
+		String customerid = (String) session.getAttribute("customerid");
+		//detail에서 구매하기 버튼 누름
+		if("detail".equals(action)) {
+			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
+			int goods_qty = Integer.parseInt(request.getParameter("goods_qty"));
+			customerid = request.getParameter("customerid");
+			System.out.println(goodsid+", "+goods_qty+", "+customerid);
+			//이 정보를 /pay/Pay.do로 다시 뿌려주시는 작업을 하면될것같아용 이상하면 연락주세요 by가은
+		}
 		try {
 			//여기에 insert 구문 기입
 			
