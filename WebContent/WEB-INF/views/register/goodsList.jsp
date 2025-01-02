@@ -36,6 +36,27 @@
 		    		link.href = url + '&searchName=' + searchName;
 		    	}
 		    });
+		    
+		    document.querySelectorAll(".product__item__pic__hover a").forEach(link => {
+		    	const params = new URLSearchParams(window.location.search);
+		    	let url = link.href;
+
+		    	const category = params.get("category");
+		    	if (category != null) {
+		    		url += '&category=' + category;
+		    	}
+
+		    	const searchName = params.get("searchName");
+		    	if (searchName != null) {
+		    		url += '&searchName=' + searchName;
+		    	}
+
+		    	const page = params.get("page");
+		    	if (page != null) {
+		    		url += '&page=' + page;
+		    	}
+		    	link.href = url;
+		    });
 	    });
     </script>
     <style>
