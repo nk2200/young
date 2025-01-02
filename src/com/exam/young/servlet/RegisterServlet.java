@@ -17,6 +17,7 @@ import javax.servlet.http.Part;
 
 import com.exam.young.dao.RegisterDao;
 import com.exam.young.dto.GoodsDto;
+import com.exam.young.dto.SearchDto;
 
 @WebServlet("/register/Register.do")
 @MultipartConfig(
@@ -38,7 +39,7 @@ public class RegisterServlet extends HttpServlet {
 			String category = request.getParameter("category");
 			
 			int count = dao.getCount(searchName, category);
-			int pageSize = 2;
+			int pageSize = 9;
 			int totalPages = (int) Math.ceil((double) count / pageSize);
 			String page = request.getParameter("page");
 			int pageNumber = 0;
@@ -52,9 +53,11 @@ public class RegisterServlet extends HttpServlet {
 			if (searchName == null && category == null) {
 				goods = dao.getGoodsList(pageNumber, pageSize);
 			} else if (category == null) {
-				goods = dao.searchGoods(searchName, "name", pageNumber, pageSize);
+				SearchDto search = new SearchDto(searchName, "name", pageNumber, pageSize);
+				goods = dao.searchGoods(search);
 			} else {
-				goods = dao.searchGoods(category, "category", pageNumber, pageSize);
+				SearchDto search = new SearchDto(category, "category", pageNumber, pageSize);
+				goods = dao.searchGoods(search);
 			}
 			
 			if (goods.isEmpty()) {

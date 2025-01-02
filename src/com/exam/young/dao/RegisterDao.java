@@ -13,6 +13,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.exam.young.dto.GoodsDto;
+import com.exam.young.dto.SearchDto;
 
 public class RegisterDao {
 	static DataSource dataSource;
@@ -32,7 +33,7 @@ public class RegisterDao {
 		try {
 			con = dataSource.getConnection();
 			String sql = "SELECT goodsid, goods_name, goods_price, goods_desc, goods_category, goods_qty, goods_fname_main " + 
-					"FROM (SELECT g.*, ROW_NUMBER() OVER (ORDER BY g.goodsid) AS rn FROM goods g) " + 
+					"FROM (SELECT g.*, ROW_NUMBER() OVER (ORDER BY g.goodsid desc) AS rn FROM goods g) " + 
 					"WHERE rn BETWEEN ? AND ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1, getStartRow(pageNumber, pageSize));
@@ -87,26 +88,26 @@ public class RegisterDao {
 		return goods;
 	}
 	
-	public List<GoodsDto> searchGoods(String keyword, String type, int pageNumber, int pageSize) {
+	public List<GoodsDto> searchGoods(SearchDto search) {
 		List<GoodsDto> goodsList = new ArrayList<>();
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			String sql = "SELECT goodsid, goods_name, goods_price, goods_desc, goods_category, goods_qty, goods_fname_main " + 
-					"FROM (SELECT g.*, ROW_NUMBER() OVER (ORDER BY g.goodsid) AS rn FROM goods g where ";
+					"FROM (SELECT g.*, ROW_NUMBER() OVER (ORDER BY g.goodsid desc) AS rn FROM goods g where ";
 
 	        // 조건 추가
-	        if ("name".equals(type)) {
+	        if ("name".equals(search.getType())) {
 	            sql += "goods_name like ?)";
-	        } else if ("category".equals(type)) {
+	        } else if ("category".equals(search.getType())) {
 	        	sql += "goods_category like ?)";
 			}
 	        sql += " WHERE rn BETWEEN ? AND ?";
 	        
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, "%" + keyword + "%");
-			stmt.setInt(2, getStartRow(pageNumber, pageSize));
-			stmt.setInt(3, getEndRow(pageNumber, pageSize));
+			stmt.setString(1, "%" + search.getKeyword() + "%");
+			stmt.setInt(2, getStartRow(search.getPageNumber(), search.getPageSize()));
+			stmt.setInt(3, getEndRow(search.getPageNumber(), search.getPageSize()));
 			
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
