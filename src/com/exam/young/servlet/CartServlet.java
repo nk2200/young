@@ -1,8 +1,11 @@
 package com.exam.young.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -46,24 +49,13 @@ public class CartServlet extends HttpServlet {
 		if (action != null) {
 			if ("select".equals(action)) {
 				try {
+					System.out.println("select 실행");
 					List<CartDto> cartList = cartdao.getCartList(customerid);
-					System.out.println("cartList"+ cartList);
+					System.out.println("cartList" + cartList);
 					
-					int totalPrice = 0;
-					for (CartDto cart : cartList) {
-						GoodsDto goods = cart.getGoods(); // CartDto에서 GoodsDto 가져오기
-						int price = goods.getGoods_price(); // 상품 가격 가져오기
-						int quantity = cart.getCart_qty(); // 장바구니 수량 가져오기
-
-						totalPrice += price * quantity; // 가격 * 수량 계산하여 총합에 더하기
-					}
-
-					int totalQty = 0;
-					for (CartDto cart : cartList) {
-
-						totalQty += cart.getCart_qty();
-					}
-
+					int totalPrice = gettotalPrice(cartList);
+					int totalQty = getQty(cartList);
+					
 					request.setAttribute("totalQty", totalQty);
 					request.setAttribute("totalPrice", totalPrice);
 					request.setAttribute("cartList", cartList);
@@ -87,7 +79,8 @@ public class CartServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String customerid = request.getParameter("customerid");
+		String customerid ="cust001"; 
+				//request.getParameter("customerid");
 		// String customerid = session.getAttribute("customerid");
 		String cartidParam = request.getParameter("cartid");
 
@@ -125,12 +118,12 @@ public class CartServlet extends HttpServlet {
 			customerid="user1";
 			
 			cartdao.deleteCart(cartid);
-			//test
+		
 			String redirectUrl = "/cart/Cart.do?action=select&customerid=" + customerid;
 			response.sendRedirect(redirectUrl);
 		} else if("selectDelete".equals(action)) {
 			String selectItems = request.getParameter("selectedItems");
-			customerid="user1";
+			
 			String[] items = selectItems.split(",");
 			
 			for (String item : items) {
@@ -140,7 +133,87 @@ public class CartServlet extends HttpServlet {
 			}
 			String redirectUrl = "/cart/Cart.do?action=select&customerid=" + customerid;
 			response.sendRedirect(redirectUrl);
+		}else if ("updateQty".equals(action)) {
+		    cartid = Integer.parseInt(request.getParameter("cartid"));
+		    int cart_qty = Integer.parseInt(request.getParameter("cart_qty"));
+		    
+		    boolean isUpdated = false;
+		    try {
+		        // 수량 업데이트
+		        isUpdated = cartdao.updateQty(cartid, cart_qty);
+		        
+		        if (isUpdated) {
+		            try {
+		               
+		                List<CartDto> cartList = cartdao.getCartList(customerid); // customerid는 세션에서 가져와야 함
+		                int totalPrice = gettotalPrice(cartList);
+		                int totalQty = getQty(cartList);
+		                
+		                StringBuilder jsonResponse = new StringBuilder();
+		                jsonResponse.append("{");
+		                jsonResponse.append("\"status\":\"success\",");
+		                jsonResponse.append("\"totalPrice\":").append(totalPrice).append(",");
+		                jsonResponse.append("\"totalQty\":").append(totalQty);
+		                jsonResponse.append("}");
+
+		                response.setContentType("application/json");
+		                response.setCharacterEncoding("UTF-8");
+
+		                PrintWriter out = response.getWriter();
+		                out.print(jsonResponse.toString());
+		                out.flush();
+
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		                response.getWriter().write("{\"status\":\"fail\", \"error\":\"장바구니 목록을 가져오는 중 오류가 발생했습니다.\"}");
+		            }
+		        } else {
+		            response.getWriter().write("{\"status\":\"fail\", \"error\":\"수량 업데이트 실패\"}");
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        response.getWriter().write("{\"status\":\"fail\", \"error\":\"알 수 없는 오류가 발생했습니다.\"}");
+		    }
+		    return;
+		}else if("addCart".equals(action)) {
+			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
+			customerid="cust001";
+		
+			if(cartdao.existCart(goodsid) != 0) {
+				cartdao.plusQty(goodsid); 
+			}else {
+				cartdao.addCart(customerid, goodsid, 1);
+			}
 		}
+
+
+
+	}
+	
+	private int gettotalPrice(List<CartDto> cartList){
+		int totalPrice = 0;
+	
+		for (CartDto cart : cartList) {
+			GoodsDto goods = cart.getGoods(); // CartDto에서 GoodsDto 가져오기
+			int price = goods.getGoods_price(); // 상품 가격 가져오기
+			int quantity = cart.getCart_qty(); // 장바구니 수량 가져오기
+			
+			totalPrice += price * quantity; // 가격 * 수량 계산하여 총합에 더하기
+		}
+		
+		return totalPrice;
+	}
+	
+	private int getQty(List<CartDto> cartList) {
+
+		int totalQty = 0;
+		
+		for (CartDto cart : cartList) {
+
+			totalQty += cart.getCart_qty();
+		}
+		
+		return totalQty;
 	}
 
 }
