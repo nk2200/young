@@ -58,7 +58,7 @@ body, html {
                   <div class="header__cart__price">
                      <ul>
                         <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                        <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                          <li><a href="/cart/Cart.do?action=select&customerid=${customerid }"><i class="fa fa-shopping-bag"></i><span>3</span></a></li>
                      </ul>
                      <!-- admin일 때는 상품관리만 보이고, 그 외 사용자에게는 마이페이지만 보이게 처리 -->
                      <c:choose>
@@ -103,11 +103,11 @@ body, html {
                      <i class="fa fa-bars"></i> <span>카테고리</span>
                   </div>
                   <ul>
-                     <li><a href="#">스킨케어</a></li>
-                     <li><a href="#">메이크업</a></li>
-                     <li><a href="#">헤어케어</a></li>
-                     <li><a href="#">바디케어</a></li>
-                     <li><a href="#">향수/디퓨저</a></li>
+<li><a href="/category/Category.do?action=selectMain&goodsCategory=skin">스킨케어</a></li>
+                     <li><a href="/category/Category.do?action=selectMain&goodsCategory=makeup">메이크업</a></li>
+                     <li><a href="/category/Category.do?action=selectMain&goodsCategory=hair">헤어케어</a></li>
+                     <li><a href="/category/Category.do?action=selectMain&goodsCategory=body">바디케어</a></li>
+                     <li><a href="/category/Category.do?action=selectMain&goodsCategory=perfume">향수/디퓨저</a></li>
 
                   </ul>
                </div>
