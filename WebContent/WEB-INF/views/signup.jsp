@@ -30,26 +30,28 @@
         <!-- Sign up form -->
         <div id="sign-up-container">
           <h3>Get Started</h3>
-          <form method="post" action="/customer/Login.do?action=login">
-<!--             <label for="name">Name</label>
-            <input type="text" name="name" id="name" placeholder="Name">
- -->
+          <form method="post" action="/customer/Login.do?action=signup">
+           <label for="customer_name">Name</label>
+            <input type="text" name="customer_name" id="name" placeholder="이름">
+
             <label for="customerid">ID</label>
-            <input type="text" name="customerid" id="email" placeholder="아이디">
+            <input type="text" name="customerid" id="customerid" placeholder="아이디">
 
             <label for="password">Password</label>
             <input type="password" name="password" id="password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
-
+			
+			<label for="customer_address">Address</label>
+            <input type="text" name="customer_address" id="address" placeholder="주소">
+            
             <div id="form-controls">
-              <button type="submit">Sign In</button>
-              <button type="button" id="toggleSignIn" onclick="window.location.href='/customer/Login.do?action=signup';">Sign Up</button>
+              <button type="submit">Sign Up</button>
+              <button type="button" id="toggleSignIn" onclick="window.location.href='/customer/Login.do';">Sign In</button>
             </div>
 
             <input type="checkbox" name="terms" id="terms">
             <label for="terms">I agree to the <a href="#" class="termsLink">Terms of service</a> and <a href="#" class="termsLink">Privacy Policy</a>.</label>
           </form>
         </div>
-
 
         <!-- Lottie animation -->
 <!--         <div id="animation-container">

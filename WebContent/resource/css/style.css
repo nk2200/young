@@ -139,9 +139,9 @@ ol {
 	background-size: cover;
 	background-position: top center;
 }
-
+/* 위치 이동, yhl */
 .spad {
-	padding-top: 100px;
+	/* padding-top: 100px; */
 	padding-bottom: 100px;
 }
 
@@ -495,7 +495,7 @@ ol {
 /* 위로 올림,yhl */
 .header__cart {
 	text-align: right;
-	margin-top: -40px;
+	margin-top: 20px; 
 	
 }
 
@@ -1911,8 +1911,8 @@ ol {
   Shop Cart
 -----------------------*/
 
+/* 위치 이동, yhl */
 .shoping-cart {
-	padding-top: 80px;
 	padding-bottom: 80px;
 }
 
@@ -1950,10 +1950,10 @@ ol {
 	padding-bottom: 30px;
 	border-bottom: 1px solid #ebebeb;
 }
-
+/* 위치수정, yhl */
 .shoping__cart__table table tbody tr td.shoping__cart__item {
 	width: 580px;
-	text-align: left;
+	text-align: center;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item img {

@@ -56,7 +56,7 @@
                             <tbody>
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <img src="../${goods.goods_fname_main}" alt="" style="margin-right:20px;">
+                                        <img src="../resource/img/goods/${goods.goods_fname_main}" alt="" style="margin-right:20px;">
                                         <h5>${goods.goods_name}</h5>
                                     </td>
                                     <td class="shoping__cart__price">
