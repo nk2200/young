@@ -122,6 +122,9 @@
 	                </div>
 	                <div style="padding-top:30px;text-align:center;">
 	                	<input type="hidden" name="goodsid" value="${param.goodsid}">
+	                	<input type="hidden" name="searchName" value="${param.searchName}">
+	                	<input type="hidden" name="searchCate" value="${param.category}">
+	                	<input type="hidden" name="page" value="${param.page}">
 	                	<input type="hidden" name="action" value="update">
 		                <button type="submit" class="site-btn" style="width:200px;">수정</button>
 	                </div>

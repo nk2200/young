@@ -27,7 +27,7 @@ import com.exam.young.dto.SearchDto;
 )
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-     
+    
 	RegisterDao dao = new RegisterDao();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -87,6 +87,34 @@ public class RegisterServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("action");
 		
+		String view = "/register/Register.do";
+		String searchName = request.getParameter("searchName");
+		String searchCate = request.getParameter("searchCate");
+		String page = request.getParameter("page");
+		boolean hasCondition = false;
+		
+		if (!"".equals(page) && page != null) {
+			view += "?page=" + page;
+			hasCondition = true;
+		}
+		if (!"".equals(searchName) && searchName != null) {
+			if (hasCondition) {
+				view += "&";
+			} else {
+				view += "?";
+				hasCondition = true;
+			}
+			view += "searchName=" + searchName;
+		}
+		if (!"".equals(searchCate) && searchCate != null) {
+			if (hasCondition) {
+				view += "&";
+			} else {
+				view += "?";
+			}
+			view += "category=" + searchCate;
+		}
+		
 		String imageUploadPath = getServletContext().getRealPath("resource/img/goods");
 //		String imageUploadPath2 = "C:\\dev\\young\\WebContent";
 		new File(imageUploadPath).mkdirs();
@@ -126,9 +154,9 @@ public class RegisterServlet extends HttpServlet {
 		    
 			try {
 				dao.insertGoods(goods);
-				response.sendRedirect("/register/Register.do");
+				response.sendRedirect(view);
 			} catch (Exception e) {
-				response.sendRedirect("/register/Register.do?action=register");
+				response.sendRedirect(view + "?action=register");
 			}
 		} else if ("update".equals(action)) {
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
@@ -191,13 +219,13 @@ public class RegisterServlet extends HttpServlet {
 				
 				System.out.println(goods);
 				dao.updateGoods(goods);
-				response.sendRedirect("/register/Register.do");
+				response.sendRedirect(view);
 			}
 		} else if ("delete".equals(action)) {
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
 			if (goodsid != 0) {
 				dao.deleteGoods(goodsid);
-				response.sendRedirect("/register/Register.do");
+				response.sendRedirect(view);
 			} else {
 				throw new RuntimeException("상품이 존재하지 않습니다.");
 			}

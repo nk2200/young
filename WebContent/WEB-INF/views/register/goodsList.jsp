@@ -185,6 +185,9 @@
 	                                    </ul>
 	                                </div>
 	                                <div class="product__item__text">
+	                                    <span style="color:#b2b2b2;margin-bottom:7px;display:block;font-size:14px;">
+	                                    	${item.goods_category}
+	                                    </span>
 	                                    <h6><b><a href="/detail/Detail.do?goodsid=${item.goodsid}">${item.goods_name}</a></b></h6>
 	                                    <h6>${item.goods_price}원</h6>
 	                                    <h6>수량: ${item.goods_qty}</h6>
