@@ -42,13 +42,13 @@
 
 	<!-- Breadcrumb Section Begin -->
 	<section class="breadcrumb-section set-bg"
-		data-setbg="/resource/img/breadcrumb.jpg">
+		data-setbg="/resource/img/categories/rankheader.jpg">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12 text-center">
+				<div class="col-lg-12">
 					<div class="breadcrumb__text">
-						<h2>랭킹</h2>
-						<span>오늘의 랭킹! 요즘 가장 핫한 상푼</span>
+						<h2 style="color:black;">랭킹</h2>
+						<span style="color:black;">오늘의 랭킹! 요즘 가장 핫한 상품</span>
 
 					</div>
 				</div>
@@ -109,9 +109,9 @@
 							<div class="col-lg-3 col-md-6 col-sm-6">
 								<div class="product__item">
 									<div class="product__item__pic set-bg"
-										data-setbg="${goods.goods_fname_main}">
+										data-setbg="/resource/img/goods/${goods.goods_fname_main}">
 										<ul class="product__item__pic__hover">
-											<li><a href="#"><i class="fa fa-heart"></i></a></li>
+											
 											<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
 										</ul>
 									</div>

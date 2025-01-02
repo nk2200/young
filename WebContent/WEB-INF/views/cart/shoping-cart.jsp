@@ -256,16 +256,17 @@
 
 	<!-- Breadcrumb Section Begin -->
 	<section class="breadcrumb-section set-bg"
-		data-setbg="/resource/img/breadcrumb.jpg">
+		data-setbg="/resource/img/cart/cartheader.jpg">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12 text-center">
-					<div class="breadcrumb__text">
-						<h2>Shopping Cart</h2>
-						<div class="breadcrumb__option">
-							<a href="./index.jsp"><i class="bi bi-house-door"></i></a> <span>Shopping
+				<div class="col-lg-12">
+					<div style="color:black;"class="breadcrumb__text" >
+						<h2 style="color:black;">장바구니</h2>
+							<a href="/" style="color:black;"><i class="bi bi-house-door"></i></a>
+							 <span>&nbsp;></span> 
+							<span style="color:black;">Shopping
 								Cart</span>
-						</div>
+					
 					</div>
 				</div>
 			</div>
@@ -300,7 +301,7 @@
 											class="item-checkbox" /> <input type="hidden"
 											value="${cart.cartid}" id="cartid_value" /></td>
 										<td class="shoping__cart__item"><img
-											src="${cart.goods.goods_fname_main}" alt="">
+											src="/resource/img/goods/${cart.goods.goods_fname_main}" alt="">
 											<h5>${cart.goods.goods_name}</h5></td>
 										<td class="shoping__cart__price">
 											${cart.goods.goods_price}</td>
@@ -313,10 +314,10 @@
 
 										</td>
 
-										<td class="shoping__cart__total"><a href="#"
-											class="heart-icon"><span class="icon_heart_alt"></span>
-												쇼핑찜</a> <br> <a href="#" onclick="deleteCart()"
-											class="icon_close"><span class="icon"></span> 삭제</a></td>
+										<td class="shoping__cart__total">
+											<a href="/detail/Detail.do?goodsid=${cart.goods.goodsid }" class="icon_cursor_alt"><span class="icon"></span>
+												상세</a> <br> 
+											<a href="#" onclick="deleteCart()" class="icon_close"><span class="icon"></span> 삭제</a></td>
 									</tr>
 								</c:forEach>
 
@@ -342,8 +343,8 @@
 							<li>총 개수 <span id="totalQty">${totalQty }</span></li>
 						</ul>
 						<div class="order_btn_area">
-							<a class="select-btn" onclick="selectPay()">선택주문 </a> <a href="#"
-								class="all-btn" onclick="allPay()">전체주문</a>
+							<a class="select-btn" onclick="selectPay()">선택주문 </a> &nbsp;&nbsp;&nbsp;
+							<a href="#"class="all-btn" onclick="allPay()">전체주문</a>
 						</div>
 					</div>
 				</div>

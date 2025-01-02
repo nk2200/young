@@ -1,9 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-<%
-	
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,8 +43,7 @@ body, html {
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3">
-					<div class="header__logo">
-						<!-- 로고 클릭 시 메인으로 이동 -->
+			</div>						<!-- 로고 클릭 시 메인으로 이동 -->
 						<a href="/main"><img src="../resource/img/logo1.png"
 							alt="Logo"></a>
 					</div>
@@ -84,12 +79,9 @@ body, html {
 								</c:choose>
 							</div>
 						</div>
-					</div>
-				</div>
 				<div class="humberger__open">
 					<i class="fa fa-bars"></i>
 				</div>
-			</div>
 	</header>
 	<!-- Header Section End -->
 
@@ -135,7 +127,7 @@ body, html {
 				<div class="col-lg-7">
 					<div class="hero__search">
 						<div class="hero__search__form">
-							<!-- 검색 폼으로 수정,yhl -->
+						<!-- 검색 폼으로 수정,yhl -->
 							<form action="/main" method="get">
 
 								<input type="text" name="searchName" placeholder="상품 검색"
@@ -148,8 +140,13 @@ body, html {
 
 					</div>
 				</div>
-
-				<div class="col-lg-2"></div>
+				<div class="col-lg-2">
+					<div class="header__cart">
+						<ul>						
+							<li><a href="/cart/Cart.do?action=select&customerid=${customerid }"><i class="fa fa-shopping-bag"></i> <span>수정해야함</span></a></li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>

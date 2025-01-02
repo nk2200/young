@@ -43,8 +43,44 @@
 		}
 			
 	}
-
+	
+	
 </script>
+<style>
+	.circle {
+	  text-align: center;
+	}
+	
+	.circle-img {
+	  width: 150px;
+	  height: 150px;
+	  border-radius: 50%;
+	  object-fit: cover;
+	}
+	
+	.circle-text {
+	  margin-top: 10px;	 
+	  font-size: 18px;
+	  color: #333;
+	  font-family: Arial, sans-serif;
+	}
+	
+	.headerrow {
+	  display: flex;
+	  gap: 20px; /* 사진들 간의 간격을 설정 */
+	  justify-content: center; /* 수평 중앙 정렬 */
+	  align-items: center; /* 수직 중앙 정렬 */
+	}
+	
+	#gotoBest{
+		text-align: center;
+	    font-size: 22px;
+	    line-height: 24px;
+	    color: #333;
+	    font-weight: 700;
+	}
+	
+</style>
 </head>
 
 <body>
@@ -54,15 +90,17 @@
 
 	<!-- Breadcrumb Section Begin -->
 	<section class="breadcrumb-section set-bg"
-		data-setbg="/resource/img/breadcrumb.jpg">
+		data-setbg="/resource/img/categories/category_main.jpg">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12 text-center">
+				<div class="col-lg-12">
 					<div class="breadcrumb__text">
-						<h2>${goodsCategory} 부분</h2>
-						<div class="breadcrumb__option">
-							<a href="/"><i class="bi bi-house-door"></i></a> <span>${goodsCategory}</span>
-						</div>
+						<h2 style="color:black;" style="color:black;">${goodsCategory} 부분</h2>
+						
+							<a href="/" style="color:black;"><i class="bi bi-house-door"></i></a> 
+							 <span>&nbsp;></span> 
+							<span style="color:black;">${goodsCategory}</span>
+						
 					</div>
 				</div>
 			</div>
@@ -73,6 +111,33 @@
 	<!-- Product Section Begin -->
 	<section class="product spad">
 		<div class="container">
+			<p id="gotoBest">Best 상품 보러가기</p>
+			<br>
+			<div class="headerrow">				
+					<div class="circle">
+					    <a href="/category/Category.do?action=selectRank&goodsCategory=skin"><img src="/resource/img/categories/category_skin.png" alt="Image" class="circle-img"></a>
+					    <p class="circle-text">스킨</p>
+					 </div>
+					 <div class="circle">
+					    <a href="/category/Category.do?action=selectRank&goodsCategory=makeup"><img src="/resource/img/categories/category_makeup.png" alt="Image" class="circle-img"></a>
+					    
+					    <p class="circle-text">메이크업</p>
+					 </div>
+					 <div class="circle">
+					    <a href="/category/Category.do?action=selectRank&goodsCategory=hair"><img src="/resource/img/categories/category_hair.png" alt="Image" class="circle-img"></a>
+					    <p class="circle-text">헤어케어</p>
+					 </div>
+					 <div class="circle">
+					    <a href="/category/Category.do?action=selectRank&goodsCategory=body"><img src="/resource/img/categories/category_body.png" alt="Image" class="circle-img"></a>
+					    <p class="circle-text">바디케어</p>
+					 </div>
+					 <div class="circle">
+					    <a href="/category/Category.do?action=selectRank&goodsCategory=perfume"><img src="/resource/img/categories/category_perfume.png" alt="Image" class="circle-img"></a>
+					    <p class="circle-text">향수/디퓨저</p>
+					 </div>
+				
+             </div>
+             <br><br><br> 
 			<div class="row">
 				<div class="col-lg-3 col-md-5">
 					<div class="sidebar">
@@ -89,6 +154,8 @@
 
 					</div>
 				</div>
+				
+				
 				<div class="col-lg-9 col-md-7">
 					<div class="product__discount">
 						<div class="section-title product__discount__title">
@@ -100,16 +167,16 @@
 									<div class="col-lg-4">
 										<div class="product__discount__item">
 											<div class="product__discount__item__pic set-bg"
-												data-setbg="${goods_like.goods_fname_main}">
+												data-setbg="/resource/img/goods/${goods_like.goods_fname_main}">
 												<ul class="product__item__pic__hover">
-													<li><a href="#"><i class="fa fa-heart"></i></a></li>
+													
 													<li><a href="#" onclick="addCart()"><i class="fa fa-shopping-cart"></i></a></li>
 												</ul>
 											</div>
 											<div class="product__discount__item__text">
 												<span>${goods_like.goods_category}</span>
 												<h5>
-													<a href="#">${goods_like.goods_name}</a>
+													<a href="/detail/Detail.do?goodsid=${goods_like.goodsid}">${goods_like.goods_name}</a>
 												</h5>
 												<span>${goods_like.goods_price}</span>
 											</div>
@@ -120,6 +187,7 @@
 								</c:forEach>
 							</div>
 						</div>
+						<br><br><br>
 						<div style="display: flex; justify-content: center; align-items: center;" class="row" >
 						    <a href="/category/Category.do?action=selectRank&goodsCategory=${goodsCategory}" class="goRankbtn">${goodsCategory} 베스트 상품 더보기 ></a>
 						</div>
@@ -145,7 +213,7 @@
 							<div class="col-lg-4 col-md-6 col-sm-6">
 								<div class="product__item">
 									<div class="product__item__pic set-bg"
-										data-setbg="${goods.goods_fname_main}">
+										data-setbg="/resource/img/goods/${goods.goods_fname_main}">
 										<ul class="product__item__pic__hover">
 											<li><a href="#"><i class="fa fa-heart"></i></a></li>
 											<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
@@ -153,19 +221,14 @@
 									</div>
 									<div class="product__item__text">
 										<h6>
-											<a href="#">${goods.goods_name}</a>
+											<a href="/detail/Detail.do?goodsid=${goods.goodsid}">${goods.goods_name}</a>
 										</h6>
 										<h5>${goods.goods_price}</h5>
 									</div>
 								</div>
 							</div>
 						</c:forEach>
-					</div>
-
-					<div class="product__pagination">
-						<a href="#">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#"><i
-							class="fa fa-long-arrow-right"></i></a>
-					</div>
+					</div>				
 				</div>
 			</div>
 		</div>

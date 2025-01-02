@@ -51,9 +51,6 @@ public class CategoryServlet extends HttpServlet {
 					List<GoodsDto> dto_like = dao.getRankCategory_20(goodsCategory);
 					request.setAttribute("goods_like", dto_like);
 				}
-				
-				
-				
 				request.setAttribute("goodsCategory", goodsCategory);
 				view = "category/select_rank.jsp";
 			}else {
