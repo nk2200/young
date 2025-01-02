@@ -57,9 +57,28 @@ public class DetailServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("action");
 		
-		if("cart".equals(action)) {
-			//장바구니 페이지 이동
-			
+		if("likesPlus".equals(action)) {
+			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
+			int updated_likes = dao.updateGoodsLikes(goodsid);
+			//응답내용
+			//json형식으로 데이터 전달
+	        response.setContentType("application/json");
+	        response.setCharacterEncoding("UTF-8");
+	        
+	        String json = "{\"message\": \"좋아요 업뎃 성공!\", \"updated_likes\": " + updated_likes + "}";
+	        response.getWriter().write(json);
+	        
+	        
+	        
+		}else if("likesMinus".equals(action)) {
+			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
+			int updated_likes = dao.minusGoodsLikes(goodsid);
+			// 응답 내용
+	        response.setContentType("application/json");
+	        response.setCharacterEncoding("UTF-8");
+	        
+	        String json = "{\"message\": \"좋아요 취소 성공!\", \"updated_likes\": " + updated_likes + "}";
+	        response.getWriter().write(json);
 		}
 	}
 
