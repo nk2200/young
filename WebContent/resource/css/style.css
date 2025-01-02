@@ -1934,7 +1934,7 @@ ol {
 .shoping__cart__table table thead th {
 	font-size: 20px;
 	font-weight: 700;
-	color: #1c1c1c;
+	color:#666;
 	padding-bottom: 20px;
 	border-top: 2px solid #d6d6d6;
     border-bottom: 1px solid #ccc;
@@ -1982,7 +1982,7 @@ ol {
 	width: 110px;
 }
 
-.shoping__cart__total .heart-icon,
+.shoping__cart__total .icon_cursor_alt,
 .shoping__cart__total .icon_close {
     display: inline-block;
     font-size: 16px;
@@ -2092,7 +2092,7 @@ ol {
 
 .shoping__checkout ul li {
 	font-size: 20px;
-	color: #1c1c1c;
+	color: #ff2828;
 	font-weight: 700;
 	list-style: none;
 	overflow: hidden;

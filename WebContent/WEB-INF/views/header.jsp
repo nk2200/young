@@ -114,9 +114,8 @@ body, html {
 				</div>
 				<div class="col-lg-2">
 					<div class="header__cart">
-						<ul>
-							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-							<li><a href="/cart/Cart.do?action=select&customerid=${customerid }"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+						<ul>						
+							<li><a href="/cart/Cart.do?action=select&customerid=${customerid }"><i class="fa fa-shopping-bag"></i> <span>수정해야함</span></a></li>
 						</ul>
 						<!-- 마이페이지 메뉴로 수정,yhl -->
 						<!-- <div class="header__cart__price">item: <span>$150.00</span></div> -->
