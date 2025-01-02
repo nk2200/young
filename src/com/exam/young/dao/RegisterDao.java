@@ -82,15 +82,23 @@ public class RegisterDao {
 		return goods;
 	}
 	
-	public List<GoodsDto> searchGoods(String searchName) {
+	public List<GoodsDto> searchGoods(String keyword, String type) {
 		List<GoodsDto> goodsList = new ArrayList<>();
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			String sql = "select * from goods where goods_name like ?"
-					+ "order by goodsid desc";
+			String sql = "select * from goods where ";
+
+	        // 조건 추가
+	        if ("name".equals(type)) {
+	            sql += "goods_name like ?";
+	        } else if ("category".equals(type)) {
+	        	sql += "goods_category like ?";
+			}
+	        sql += " order by goodsid desc";
+	        
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, "%" + searchName + "%");
+			stmt.setString(1, "%" + keyword + "%");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				GoodsDto goods = new GoodsDto();
@@ -135,7 +143,6 @@ public class RegisterDao {
 	            }
 	            sql += " goods_category = ?";
 	        }
-	        System.out.println(sql);
 	        
 			PreparedStatement stmt = con.prepareStatement(sql);
 			int parameterIndex = 1;

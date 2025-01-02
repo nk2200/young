@@ -11,6 +11,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>상품 목록</title>
+    <script type="text/javascript">
+	    window.addEventListener("load", () => {
+		    document.querySelectorAll(".sidebar__item a").forEach(link => {
+		        const id = link.id;
+		        if (id === 'all') {
+			        link.href = '/register/Register.do';
+				} else {
+		        	link.href = '/register/Register.do?category=' + id;
+				}
+		    });
+	    });
+    </script>
+    <style>
+		.noResult {
+		    display: flex; /* flexbox를 사용하여 자식 요소들을 배치 */
+		    flex-direction: column; /* 자식 요소들을 수직으로 배치 */
+		    align-items: center; /* 자식 요소들을 수평으로 중앙 배치 */
+		    width: 100%; /* 부모 div의 너비를 100%로 설정 */
+		    padding: 20px 20px 50px; /* 패딩을 추가하여 요소들이 너무 붙지 않게 설정 */
+		}
+		
+		.noResultImg {
+		    width: 100px; /* 이미지의 너비 */
+		    height: 100px; /* 이미지의 높이 */
+		    background-position: center; /* 배경 이미지 중앙 정렬 */
+		    background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+		    background-size: contain; /* 배경 이미지가 요소에 맞게 조정 */
+		}
+		
+		.test {
+		    font-size: 18px;
+		    font-weight: bold;
+		    margin-bottom: 10px;
+		    width: 100%;
+		    display: flex;
+		    justify-content: center;
+		}
+		
+		.subMsg {
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+			font-size: 14px;
+		}
+</style>
 </head>
 
 <body>
@@ -43,12 +88,12 @@
                         <div class="sidebar__item">
                             <h4>카테고리</h4>
                             <ul>
-                            	<li><a href="#">전체</a></li>
-                            	<li><a href="#">스킨케어</a></li>
-	                            <li><a href="#">메이크업</a></li>
-	                            <li><a href="#">헤어케어</a></li>
-	                            <li><a href="#">바디케어</a></li>
-	                            <li><a href="#">향수/디퓨저</a></li>
+                            	<li><a href="#" id="all">전체</a></li>
+                            	<li><a id="skin">스킨케어</a></li>
+	                            <li><a id="makeup">메이크업</a></li>
+	                            <li><a id="hair">헤어케어</a></li>
+	                            <li><a id="body">바디케어</a></li>
+	                            <li><a id="perfume">향수/디퓨저</a></li>
                             </ul>
                         </div>
                         <div>
@@ -77,6 +122,17 @@
                         </div>
                     </div>
                     <div class="row">
+                    	<c:if test="${not empty noResult}">
+					         <div class="noResult"> 
+								<div class="noResultImg" style="background-image: url('../resource/img/goods/noResult.png');">
+								</div>
+								<div class="test">검색 결과가 없어요</div>
+								<div class="subMsg">
+									<div class="test1">철자를 확인하거나</div>
+									<div class="test2">다른 키워드로 검색해보세요.</div>
+								</div>
+					         </div> 
+					    </c:if> 
 	                    <c:forEach var="item" items="${goods}">
 	                        <div class="col-lg-4 col-md-6 col-sm-6">
 	                            <div class="product__item">

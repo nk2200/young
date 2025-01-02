@@ -38,11 +38,17 @@ public class RegisterServlet extends HttpServlet {
 			String searchName = request.getParameter("searchName");
 			String category = request.getParameter("category");
 			List<GoodsDto> goods;
-			if (searchName == null) {
+			if (searchName == null && category == null) {
 				goods = dao.getGoodsList();
+			} else if (category == null) {
+				goods = dao.searchGoods(searchName, "name");
 			} else {
-				goods = dao.searchGoods(searchName);
+				goods = dao.searchGoods(category, "category");
 			}
+			
+			if (goods.isEmpty()) {
+                request.setAttribute("noResult", true);
+            }
 			request.setAttribute("goods", goods);
 			request.setAttribute("count", dao.getCount(searchName, category));
 		} else if ("register".equals(action)) {
