@@ -35,9 +35,16 @@ public class RegisterServlet extends HttpServlet {
 		String view = "register/goodsList.jsp";
 		
 		if (action == null) {
-			List<GoodsDto> goods = dao.getGoodsList();
+			String searchName = request.getParameter("searchName");
+			String category = request.getParameter("category");
+			List<GoodsDto> goods;
+			if (searchName == null) {
+				goods = dao.getGoodsList();
+			} else {
+				goods = dao.searchGoods(searchName);
+			}
 			request.setAttribute("goods", goods);
-			request.setAttribute("count", dao.getCount());
+			request.setAttribute("count", dao.getCount(searchName, category));
 		} else if ("register".equals(action)) {
 			view = "register/registerGoods.jsp";
 		} else if ("update".equals(action)) {

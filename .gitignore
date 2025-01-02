@@ -17,7 +17,7 @@ local.properties
 .project
 
 ###img files###
-#WebContent/resource/img
+WebContent/resource/img
 
 
 # External tool builders

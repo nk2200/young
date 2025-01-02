@@ -60,13 +60,19 @@
                     <div class="filter__item" style="padding-top:0px;border-top:none;">
                         <div class="row">
                             <div class="col-lg-4 col-md-5">
-                            </div>
-                            <div class="col-lg-4 col-md-4">
-                                <div class="filter__found">
+                            	<div class="filter__found" style="text-align:left;">
                                     <h6><span>${count}</span> Products found</h6>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-3">
+                            <div class="col-lg-8 col-md-7">
+                            	<div class="filter__option">
+                                    <div class="footer__widget" style="margin-bottom:0px";>
+			                            <form action="/register/Register.do">
+			                                <input type="text" placeholder="상품 검색" name="searchName" value="${param.searchName}">
+			                                <button type="submit" class="site-btn">SEARCH</button>
+			                            </form>
+			                        </div>
+                                </div>
                             </div>
                         </div>
                     </div>
