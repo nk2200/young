@@ -65,7 +65,7 @@
 			var customerid = $(this).data('customerid');
 			
 			if(goodsid && customerid){
-				var url = '/pay/Pay.do';
+				var url = '/pay/Pay.do?action=detail';
 				$.ajax({
 					url : url,
 					method : 'POST',
@@ -77,7 +77,7 @@
 					success : function(response){
 						console.log('Success: ',response);
 						//redirect
-						window.location.href = "/pay/Pay.do";
+						//window.location.href = "/pay/Pay.do";
 					},
 					error : function(xhr, status, error) {
 						console.error('Error:', error);
