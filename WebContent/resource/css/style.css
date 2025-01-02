@@ -139,9 +139,9 @@ ol {
 	background-size: cover;
 	background-position: top center;
 }
-
+/* 위치 이동, yhl */
 .spad {
-	padding-top: 100px;
+	/* padding-top: 100px; */
 	padding-bottom: 100px;
 }
 
@@ -495,7 +495,7 @@ ol {
 /* 위로 올림,yhl */
 .header__cart {
 	text-align: right;
-	margin-top: -40px;
+	margin-top: 20px; 
 	
 }
 
@@ -808,6 +808,22 @@ ol {
 .categories__slider.owl-carousel .owl-nav button.owl-next {
 	left: auto;
 	right: -35px;
+}
+
+.goRankbtn {
+    bottom: 20px;
+    height: 32px;
+    display: inline-block;
+    padding: 0 20px;
+    line-height: 30px;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #555;
+    text-align: center;
+    background-color: #fff;
+    /* transform: translate(-50%, 0);  <- 이 부분을 제거합니다 */
 }
 
 /*---------------------
@@ -1675,6 +1691,11 @@ ol {
 	min-width: 100%;
 }
 
+.detail_img img{
+	max-width: 25%;
+	cursor : pointer;
+}
+
 .product__details__pic__slider img {
 	cursor: pointer;
 }
@@ -1890,8 +1911,8 @@ ol {
   Shop Cart
 -----------------------*/
 
+/* 위치 이동, yhl */
 .shoping-cart {
-	padding-top: 80px;
 	padding-bottom: 80px;
 }
 
@@ -1913,7 +1934,7 @@ ol {
 .shoping__cart__table table thead th {
 	font-size: 20px;
 	font-weight: 700;
-	color: #1c1c1c;
+	color:#666;
 	padding-bottom: 20px;
 	border-top: 2px solid #d6d6d6;
     border-bottom: 1px solid #ccc;
@@ -1929,10 +1950,10 @@ ol {
 	padding-bottom: 30px;
 	border-bottom: 1px solid #ebebeb;
 }
-
+/* 위치수정, yhl */
 .shoping__cart__table table tbody tr td.shoping__cart__item {
 	width: 580px;
-	text-align: left;
+	text-align: center;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item img {
@@ -1961,7 +1982,7 @@ ol {
 	width: 110px;
 }
 
-.shoping__cart__total .heart-icon,
+.shoping__cart__total .icon_cursor_alt,
 .shoping__cart__total .icon_close {
     display: inline-block;
     font-size: 16px;
@@ -2071,7 +2092,7 @@ ol {
 
 .shoping__checkout ul li {
 	font-size: 20px;
-	color: #1c1c1c;
+	color: #ff2828;
 	font-weight: 700;
 	list-style: none;
 	overflow: hidden;
@@ -3533,5 +3554,7 @@ ol {
 	.blog__details__hero__text h2 {
 		font-size: 24px;
 	}
+	
+	
 	
 }

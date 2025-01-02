@@ -17,6 +17,8 @@ import javax.servlet.http.HttpSession;
 
 import com.exam.young.dao.BuyDao;
 import com.exam.young.dto.BuyDto;
+import com.exam.young.dao.CartDao;
+import com.exam.young.dto.CartDto;
 
 /**
  * Servlet implementation class PayServlet
@@ -26,7 +28,8 @@ public class PayServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	BuyDao dao = new BuyDao();
-
+	CartDao cartdao = new CartDao();
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String view = "checkout.jsp";
 		
@@ -95,7 +98,18 @@ public class PayServlet extends HttpServlet {
             session.setAttribute("tempData", insertInfo);
 			
 			dao.deleteCart(cartid);
-		}
+
+		}else if("selectCart".equals(action)) {
+			
+			String selectItems = request.getParameter("selectedItems");
+			System.out.println("selectItems" + selectItems);
+			
+		}else if("allCart".equals(action)) {
+			
+			String allIds = request.getParameter("allIds");
+			System.out.println("allIds" + allIds);
+    }
+
 		
 		//결제 버튼을 클릭했을 때(수정 필요)
 		else if("payment".equals(action)) {

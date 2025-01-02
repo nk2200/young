@@ -87,10 +87,61 @@
 				console.error('goodsid or customerid is missing');
 			}
 		});
+		
 		//좋아요 이벤트
 		$('.heart-icon').click(function(){
 			event.preventDefault();
-			//ajax post로 goodsid 넘겨주고 라이크 늘려주고 다시 여기로 리다이렉트
+			var goodsid = ${goods.goodsid};
+			// heart-icon
+	        var icon = $('.heart-icon');
+			
+	        // 현재 상태에 따라 색상을 변경
+	        if (icon.css('color') === 'rgb(255, 0, 0)') {  // 빨간색 확인
+	            // 빨간색일 경우, 좋아요 취소, 원래 색상으로 변경
+	            var url = '/detail/Detail.do?action=likesMinus';
+	            $.ajax({
+					url : url,
+					method : 'POST',
+					data : {
+						goodsid : goodsid
+					},
+					success : function(response){
+						console.log('Success: ',response);
+	            		icon.css('color', '#6f6f6f');
+	            		$('#likes-text').text(response.updated_likes);
+						alert(response.message);
+					},
+					error : function(xhr, status, error) {
+						console.error('Error:', error);
+					}
+				});	
+	        } else {
+	            // 좋아요 추가, 빨간색으로 변경
+				var url = '/detail/Detail.do?action=likesPlus';
+				$.ajax({
+					url : url,
+					method : 'POST',
+					data : {
+						goodsid : goodsid
+					},
+					success : function(response){
+						console.log('Success: ',response);
+	            		icon.css('color', 'rgb(255, 0, 0)');
+	            		$('#likes-text').text(response.updated_likes);
+						alert(response.message);
+					},
+					error : function(xhr, status, error) {
+						console.error('Error:', error);
+					}
+				});	
+	        }
+		});
+		//사진 바뀌기!
+		$('.detail_img img').click(function(){
+			var imgScr = $(this).attr('src');
+			console.log(imgScr);
+			
+			$('.product__details__pic__item--large').attr('src',imgScr);
 		});
 	});
 
@@ -113,6 +164,11 @@
 	});
 	
 </script>
+<style>
+.category-history a:hover{
+	color : red;
+}
+</style>
 </head>
 
 <body>
@@ -137,16 +193,18 @@
 	<!-- Breadcrumb Section End -->
 	<!--카테고리 만들기  -->
 	<nav class="container">
+	<div id="category-history" style="border-top:1px solid #ebebeb;border-bottom: 1px solid #ebebeb;padding-bottom: 20px;padding-top: 20px">
 		<ul style="list-style-type: none; display: flex; align-items: center;">
-			<li style="margin-right: 10px;"><a href="#" aria-label="홈">
+			<li style="margin-right: 10px;"><a href="/" aria-label="홈">
 					<img src="/resource/icons/home-icon.png" alt="홈 아이콘"
 					style="vertical-align: middle;" width="15px" height="15px">
-			</a> <span>></span></li>
-			<li style="margin-right: 10px;"><a href="#">${goods.goods_category }</a>
-				<span>></span></li>
-			<li style="margin-right: 10px;"><span>${goods.goods_name }</span>
+			</a> <span>&nbsp;></span></li>
+			<li style="margin-right: 10px;"><a href="/category/Category.do?goodsCategory=${goods.goods_category }">${goods.goods_category }</a>
+				<span>&nbsp;></span></li>
+			<li style="margin-right: 10px;font-weight: 700"><span>${goods.goods_name }</span>
 			</li>
 		</ul>
+	</div>
 	</nav>
 
 	<!-- Product Details Section Begin -->
@@ -159,10 +217,14 @@
 							<img class="product__details__pic__item--large"
 								src="/resource/img/goods/${goods.goods_fname_main }" alt="">
 						</div>
-						<div class="product__details__pic__slider owl-carousel">
+<%-- 						<div class="product__details__pic__slider owl-carousel">
 							<img
 								data-imgbigurl="/resource/img/goods/${goods.goods_fname_sub }"
 								src="/resource/img/goods/${goods.goods_fname_sub }" alt=""> 
+						</div> --%>
+						<div class="detail_img">
+							<span><img src="/resource/img/goods/${goods.goods_fname_main }" alt=""></span>
+							<span><img src="/resource/img/goods/${goods.goods_fname_sub }" alt=""></span>
 						</div>
 					</div>
 				</div>
@@ -188,7 +250,7 @@
 										class="fa fa-instagram"></i></a> <a href="#"><i
 										class="fa fa-pinterest"></i></a>
 								</div></li>
-							<%-- <li><b>좋아요 수</b> <span>${goods.goods_likes }</span></li> --%>
+							<li><b>좋아요 수</b> <span id="likes-text">${goods.goods_likes }</span></li>
 						</ul>
 
 						<div class="product__details__quantity">

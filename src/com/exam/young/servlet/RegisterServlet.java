@@ -13,21 +13,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.exam.young.dao.RegisterDao;
 import com.exam.young.dto.GoodsDto;
+import com.exam.young.dto.SearchDto;
 
 @WebServlet("/register/Register.do")
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+    fileSizeThreshold = 1024 * 1024 * 3, // 3MB
     maxFileSize = 1024 * 1024 * 10,      // 10MB
     maxRequestSize = 1024 * 1024 * 50    // 50MB
 )
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String GOODS_DIRECTORY = "resource/img/goods";
      
 	RegisterDao dao = new RegisterDao();
 	
@@ -36,9 +35,38 @@ public class RegisterServlet extends HttpServlet {
 		String view = "register/goodsList.jsp";
 		
 		if (action == null) {
-			List<GoodsDto> goods = dao.getGoodsList();
+			String searchName = request.getParameter("searchName");
+			String category = request.getParameter("category");
+			
+			int count = dao.getCount(searchName, category);
+			int pageSize = 9;
+			int totalPages = (int) Math.ceil((double) count / pageSize);
+			String page = request.getParameter("page");
+			int pageNumber = 0;
+			if (page == null) {
+				pageNumber = 1;
+			} else {
+				pageNumber = Integer.parseInt(page);
+			}
+			
+			List<GoodsDto> goods;
+			if (searchName == null && category == null) {
+				goods = dao.getGoodsList(pageNumber, pageSize);
+			} else if (category == null) {
+				SearchDto search = new SearchDto(searchName, "name", pageNumber, pageSize);
+				goods = dao.searchGoods(search);
+			} else {
+				SearchDto search = new SearchDto(category, "category", pageNumber, pageSize);
+				goods = dao.searchGoods(search);
+			}
+			
+			if (goods.isEmpty()) {
+                request.setAttribute("noResult", true);
+            }
 			request.setAttribute("goods", goods);
-			request.setAttribute("count", dao.getCount());
+			request.setAttribute("count", count);
+			request.setAttribute("page", pageNumber);
+			request.setAttribute("totalPages", totalPages);
 		} else if ("register".equals(action)) {
 			view = "register/registerGoods.jsp";
 		} else if ("update".equals(action)) {
@@ -59,7 +87,7 @@ public class RegisterServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("action");
 		
-		String imageUploadPath = getServletContext().getRealPath("");
+		String imageUploadPath = getServletContext().getRealPath("resource/img/goods");
 //		String imageUploadPath2 = "C:\\dev\\young\\WebContent";
 		new File(imageUploadPath).mkdirs();
 		
@@ -187,7 +215,7 @@ public class RegisterServlet extends HttpServlet {
     }
 	
 	private String getFileName(String category, Part part) {
-		String fileName = GOODS_DIRECTORY + "/" + category + "_" + System.currentTimeMillis();
+		String fileName = category + "_" + System.currentTimeMillis();
 		if ("goods_desc".equals(part.getName())) {
 			fileName += "_desc";
 		} else if("sub_image".equals(part.getName())) {

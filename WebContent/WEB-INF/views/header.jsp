@@ -1,7 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%
-	
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,16 +43,45 @@ body, html {
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3">
-					<div class="header__logo">
-						<a href="./index.jsp"><img src="../resource/img/logo1.png"
-							alt=""></a>
+			</div>						<!-- 로고 클릭 시 메인으로 이동 -->
+						<a href="/main"><img src="../resource/img/logo1.png"
+							alt="Logo"></a>
 					</div>
 				</div>
-			</div>
-			<div class="humberger__open">
-				<i class="fa fa-bars"></i>
-			</div>
-		</div>
+				<div class="col-lg-9">
+					<div class="header__cart">
+						<div class="header__cart__price">
+							<ul>
+								<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+								<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+							</ul>
+							<!-- admin일 때는 상품관리만 보이고, 그 외 사용자에게는 마이페이지만 보이게 처리 -->
+							<c:choose>
+								<c:when test="${not empty customerId and customerId != 'admin'}">
+									<!-- 고객이 admin이 아닐 경우 마이페이지 링크 표시 -->
+									<a href="MyPage.do">마이페이지</a>
+								</c:when>
+								<c:otherwise>
+									<!-- 고객이 admin일 경우 상품관리 링크 표시 -->
+									<a href="/register/Register.do">상품관리</a>
+								</c:otherwise>
+							</c:choose>
+
+							<div class="header__cart__price">
+								<!-- 로그인 메뉴 (로그인 여부에 따라 표시) -->
+								<c:choose>
+									<c:when test="${empty customerId}">
+										<a href="Login.do">로그인</a>
+									</c:when>
+									<c:otherwise>
+										<a href="Logout.do">로그아웃</a>
+									</c:otherwise>
+								</c:choose>
+							</div>
+						</div>
+				<div class="humberger__open">
+					<i class="fa fa-bars"></i>
+				</div>
 	</header>
 	<!-- Header Section End -->
 
@@ -68,11 +95,11 @@ body, html {
 							<i class="fa fa-bars"></i> <span>카테고리</span>
 						</div>
 						<ul>
-							<li><a href="#">스킨케어</a></li>
-							<li><a href="#">메이크업</a></li>
-							<li><a href="#">헤어케어</a></li>
-							<li><a href="#">바디케어</a></li>
-							<li><a href="#">향수/디퓨저</a></li>
+							<li><a href="/category/Category.do?action=selectMain&goodsCategory=skin">스킨케어</a></li>
+							<li><a href="/category/Category.do?action=selectMain&goodsCategory=makeup">메이크업</a></li>
+							<li><a href="/category/Category.do?action=selectMain&goodsCategory=hair">헤어케어</a></li>
+							<li><a href="/category/Category.do?action=selectMain&goodsCategory=body">바디케어</a></li>
+							<li><a href="/category/Category.do?action=selectMain&goodsCategory=perfume">향수/디퓨저</a></li>
 
 						</ul>
 					</div>
@@ -103,7 +130,8 @@ body, html {
 						<!-- 검색 폼으로 수정,yhl -->
 							<form action="/main" method="get">
 
-								<input type="text" name="searchName" placeholder="상품 검색" value="${param.searchName}">
+								<input type="text" name="searchName" placeholder="상품 검색"
+									value="${param.searchName}">
 								<button type="submit" class="site-btn">
 									<i class="bi bi-search text-dark"></i>
 								</button>
@@ -114,15 +142,9 @@ body, html {
 				</div>
 				<div class="col-lg-2">
 					<div class="header__cart">
-						<ul>
-							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-							<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+						<ul>						
+							<li><a href="/cart/Cart.do?action=select&customerid=${customerid }"><i class="fa fa-shopping-bag"></i> <span>수정해야함</span></a></li>
 						</ul>
-						<!-- 마이페이지 메뉴로 수정,yhl -->
-						<!-- <div class="header__cart__price">item: <span>$150.00</span></div> -->
-						<div class="header__cart__price">
-							<a href="MyPage.do">MyPage</a>
-						</div>
 					</div>
 				</div>
 			</div>

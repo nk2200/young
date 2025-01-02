@@ -123,7 +123,7 @@
 			
 			<!-- 상품 조회, yhl -->
 			
-			<div class="row featured__filter" style="min-height: 500px;">
+ 			<div class="row featured__filter" style="min-height: 500px;">
  			<c:if test="${not empty noResult}">
          <div class="noResult"> 
 <div class="noResultImg" style="background-image: url('../resource/img/goods/noResult.png');">
@@ -155,10 +155,93 @@
 						</div>
 					</div>
 				</c:forEach>
-			</div>
+			</div> 
+<%-- <div class="row featured__filter" style="min-height: 500px;">
+    <!-- 검색 결과가 없을 경우 메시지 -->
+    <c:if test="${not empty noResult}">
+        <div class="noResult"> 
+            <div class="noResultImg" style="background-image: url('../resource/img/goods/noResult.png');">
+            </div>
+            <div class="test" style="width: 200px; height: 200px;">검색 결과가 없어요</div>
+            <div class="subMsg">
+                <div class="test1" style="width: 200px; height: 200px;">철자를 확인하거나</div>
+                <div class="test2" style="width: 200px; height: 200px;">다른 키워드로 검색해보세요.</div>
+            </div>
+        </div> 
+    </c:if>
+    
+    <!-- action이 'rank'일 때는 랭킹 상품을 보여주고, 'search'일 때는 검색된 상품을 보여줍니다 -->
+    <c:choose>
+        <c:when test="${param.action == 'rank'}">
+            <h4>상품 랭킹</h4>
+            <c:forEach var="goods" items="${goodsList}">
+                <div class="col-lg-3 col-md-4 col-sm-6 mix">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg"
+                            data-setbg="../${goods.goods_fname_main}">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">${goods.goods_name}</a></h6>
+                            <h5>${goods.goods_price}</h5>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </c:when>
+        <c:when test="${param.action == 'search'}">
+            <h4>검색 결과</h4>
+            <c:forEach var="goods" items="${goodsList}">
+                <div class="col-lg-3 col-md-4 col-sm-6 mix">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg"
+                            data-setbg="../${goods.goods_fname_main}">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">${goods.goods_name}</a></h6>
+                            <h5>${goods.goods_price}</h5>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <!-- action 파라미터가 없거나 잘못된 값일 경우 기본적으로 상품 랭킹을 보여줍니다 -->
+            <h4>상품 랭킹</h4>
+            <c:forEach var="goods" items="${goodsList}">
+                <div class="col-lg-3 col-md-4 col-sm-6 mix">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg"
+                            data-setbg="../${goods.goods_fname_main}">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">${goods.goods_name}</a></h6>
+                            <h5>${goods.goods_price}</h5>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </c:otherwise>
+    </c:choose>
+</div> --%>
 
 		</div>
     </section>
+    
     <!-- Featured Section End -->
 
     <!-- Banner Begin -->
