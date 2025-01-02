@@ -13,6 +13,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.exam.young.dto.GoodsDto;
+import com.exam.young.dto.SearchDto;
 
 public class RegisterDao {
 	static DataSource dataSource;
@@ -26,13 +27,18 @@ public class RegisterDao {
 		}
 	}
 
-	public List<GoodsDto> getGoodsList() {
+	public List<GoodsDto> getGoodsList(int pageNumber, int pageSize) {
 		List<GoodsDto> goodsList = new ArrayList<>();
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			String sql = "select * from goods order by goodsid desc";
+			String sql = "SELECT goodsid, goods_name, goods_price, goods_desc, goods_category, goods_qty, goods_fname_main " + 
+					"FROM (SELECT g.*, ROW_NUMBER() OVER (ORDER BY g.goodsid desc) AS rn FROM goods g) " + 
+					"WHERE rn BETWEEN ? AND ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, getStartRow(pageNumber, pageSize));
+			stmt.setInt(2, getEndRow(pageNumber, pageSize));
+			
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				GoodsDto goods = new GoodsDto();
@@ -43,7 +49,6 @@ public class RegisterDao {
 				goods.setGoods_category(rs.getString("goods_category"));
 				goods.setGoods_qty(rs.getInt("goods_qty"));
 				goods.setGoods_fname_main(rs.getString("goods_fname_main"));
-				goods.setGoods_fname_sub(rs.getString("goods_fname_sub"));
 
 				goodsList.add(goods);
 			}
@@ -83,13 +88,81 @@ public class RegisterDao {
 		return goods;
 	}
 	
-	public int getCount() {
+	public List<GoodsDto> searchGoods(SearchDto search) {
+		List<GoodsDto> goodsList = new ArrayList<>();
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			String sql = "SELECT goodsid, goods_name, goods_price, goods_desc, goods_category, goods_qty, goods_fname_main " + 
+					"FROM (SELECT g.*, ROW_NUMBER() OVER (ORDER BY g.goodsid desc) AS rn FROM goods g where ";
+
+	        // 조건 추가
+	        if ("name".equals(search.getType())) {
+	            sql += "goods_name like ?)";
+	        } else if ("category".equals(search.getType())) {
+	        	sql += "goods_category like ?)";
+			}
+	        sql += " WHERE rn BETWEEN ? AND ?";
+	        
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, "%" + search.getKeyword() + "%");
+			stmt.setInt(2, getStartRow(search.getPageNumber(), search.getPageSize()));
+			stmt.setInt(3, getEndRow(search.getPageNumber(), search.getPageSize()));
+			
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				GoodsDto goods = new GoodsDto();
+				
+				goods.setGoodsid(rs.getInt("goodsid"));
+				goods.setGoods_name(rs.getString("goods_name"));
+				goods.setGoods_price(rs.getInt("goods_price"));
+				goods.setGoods_category(rs.getString("goods_category"));
+				goods.setGoods_qty(rs.getInt("goods_qty"));
+				goods.setGoods_fname_main(rs.getString("goods_fname_main"));
+
+				goodsList.add(goods);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(con);
+		}
+		return goodsList;
+	}
+	
+	public int getCount(String goodsName, String category) {
 		int count = 0;
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			String sql = "select count(*) from goods";
+			boolean hasCondition = false;
+
+	        // 조건 추가
+	        if (!isNameEmpty(goodsName) || !isCategoryEmpty(category)) {
+	            sql += " where";
+	        }
+	        if (!isNameEmpty(goodsName)) {
+	            sql += " goods_name like ?";
+	            hasCondition = true;
+	        }
+	        if (!isCategoryEmpty(category)) {
+	            if (hasCondition) {
+	                sql += " and";
+	            }
+	            sql += " goods_category = ?";
+	        }
+	        
 			PreparedStatement stmt = con.prepareStatement(sql);
+			int parameterIndex = 1;
+	        if (!isNameEmpty(goodsName)) {
+	            stmt.setString(parameterIndex++, "%" + goodsName + "%");
+	        }
+	        if (!isCategoryEmpty(category)) {
+	            stmt.setString(parameterIndex++, category);
+	        }
+	        
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				count = rs.getInt(1);
@@ -101,6 +174,22 @@ public class RegisterDao {
 			closeConnection(con);
 		}
 		return count;
+	}
+	
+	private boolean isNameEmpty(String goodsName) {
+	    return goodsName == null || goodsName.trim().isEmpty();
+	}
+	
+	private boolean isCategoryEmpty(String category) {
+		return category == null || category.isEmpty();
+	}
+	
+	private int getStartRow(int pageNumber, int pageSize) {
+		return (pageNumber - 1) * pageSize + 1;
+	}
+	
+	private int getEndRow(int pageNumber, int pageSize) {
+		return pageNumber * pageSize;
 	}
 	
 	public void insertGoods(GoodsDto goods) {
