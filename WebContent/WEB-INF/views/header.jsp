@@ -103,11 +103,11 @@ body, html {
 							<i class="fa fa-bars"></i> <span>카테고리</span>
 						</div>
 						<ul>
-							<li><a href="#">스킨케어</a></li>
-							<li><a href="#">메이크업</a></li>
-							<li><a href="#">헤어케어</a></li>
-							<li><a href="#">바디케어</a></li>
-							<li><a href="#">향수/디퓨저</a></li>
+							<li><a href="/category/Category.do?action=selectMain&goodsCategory=skin">스킨케어</a></li>
+							<li><a href="/category/Category.do?action=selectMain&goodsCategory=makeup">메이크업</a></li>
+							<li><a href="/category/Category.do?action=selectMain&goodsCategory=hair">헤어케어</a></li>
+							<li><a href="/category/Category.do?action=selectMain&goodsCategory=body">바디케어</a></li>
+							<li><a href="/category/Category.do?action=selectMain&goodsCategory=perfume">향수/디퓨저</a></li>
 
 						</ul>
 					</div>
@@ -148,6 +148,7 @@ body, html {
 
 					</div>
 				</div>
+
 				<div class="col-lg-2"></div>
 			</div>
 		</div>

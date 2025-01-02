@@ -810,6 +810,22 @@ ol {
 	right: -35px;
 }
 
+.goRankbtn {
+    bottom: 20px;
+    height: 32px;
+    display: inline-block;
+    padding: 0 20px;
+    line-height: 30px;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #555;
+    text-align: center;
+    background-color: #fff;
+    /* transform: translate(-50%, 0);  <- 이 부분을 제거합니다 */
+}
+
 /*---------------------
   Featured
 -----------------------*/
@@ -1673,6 +1689,11 @@ ol {
 
 .product__details__pic__item img {
 	min-width: 100%;
+}
+
+.detail_img img{
+	max-width: 25%;
+	cursor : pointer;
 }
 
 .product__details__pic__slider img {
@@ -3533,5 +3554,7 @@ ol {
 	.blog__details__hero__text h2 {
 		font-size: 24px;
 	}
+	
+	
 	
 }
