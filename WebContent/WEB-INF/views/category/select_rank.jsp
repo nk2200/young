@@ -11,6 +11,11 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>올리브영 온라인몰</title>
 <style>
+.table {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 테이블 전체 그림자 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    overflow: hidden; /* 테두리 둥글게 적용 */
+  }
 .active-category {
 	background-color: #f27370; /* 배경색 */
 	font-weight: bold; /* 텍스트 두께 */

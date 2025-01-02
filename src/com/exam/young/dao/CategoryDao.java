@@ -53,8 +53,10 @@ static DataSource dataSource;
 				
 				goodsDetails.add(goods);
 			}
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+		}finally {
+			closeConnection(conn);
 		}
 		return goodsDetails;
 	}
@@ -93,8 +95,10 @@ static DataSource dataSource;
 				goodsDetails.add(goods);
 			}
 			
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+		}finally {
+			closeConnection(conn);
 		}
 		return goodsDetails;
 	}
@@ -133,8 +137,10 @@ static DataSource dataSource;
 				goodsDetails.add(goods);
 			}
 			
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+		}finally {
+			closeConnection(conn);
 		}
 		return goodsDetails;
 	}
@@ -171,8 +177,10 @@ public List<GoodsDto> getRankAll_20(String goodsCategory) {
 				goodsDetails.add(goods);
 			}
 			
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+		}finally {
+			closeConnection(conn);
 		}
 		return goodsDetails;
 	}
@@ -192,10 +200,23 @@ public List<GoodsDto> getRankAll_20(String goodsCategory) {
 	            goodscount = rs.getInt(1); // 첫 번째 컬럼의 값을 가져옴
 	        }
 	    } catch (SQLException e) {
-	        System.out.println(e.getMessage());
-	    }
+			System.out.println(e.getMessage());
+		}finally {
+			closeConnection(conn);
+		}
 
 	    return goodscount;
 	}
+	
+	private void closeConnection(Connection con) {
+		if(con!=null) {
+			try {
+				con.close();
+			}catch(Exception e) {
+				//nothing
+			}
+		}
+ 	}
+	
 
 }

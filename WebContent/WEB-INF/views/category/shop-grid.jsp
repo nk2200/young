@@ -10,7 +10,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>올리브영 온라인몰</title>
+<script>
+	function addCart(){
+		const inputgoodsId = document.getElementById("goodsid_like");
+		const goodsid = inputgoodsId.value;
+		console.log('goodsid'+ goodsid);
+		if(confirm('장바구니에 추가하시겠습니까  ?')){
+			fetch('/cart/Cart.do',{
+				method : 'POST',
+				headers: {
+				    'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: new URLSearchParams({
+				    action: "addCart",
+				    goodsid: goodsid
+				})
 
+			}).then(response =>{
+				if(response.ok){
+					alert('장바구니에 추가되었습니다.');
+				}else{
+					alert('장바구니 추가에 실패했습니다.');		
+				}
+			})
+			.catch(error => {
+				console.error('Error :', error);
+				alert('오류가 발생했습니다.');
+			})
+			
+		}else {
+			alert('장바구니 추가를 취소하셨습니다.');
+		}
+			
+	}
+
+</script>
 </head>
 
 <body>
@@ -27,7 +61,7 @@
 					<div class="breadcrumb__text">
 						<h2>${goodsCategory} 부분</h2>
 						<div class="breadcrumb__option">
-							<a href="../index.jsp"><i class="bi bi-house-door"></i></a> <span>${goodsCategory}</span>
+							<a href="/"><i class="bi bi-house-door"></i></a> <span>${goodsCategory}</span>
 						</div>
 					</div>
 				</div>
@@ -69,7 +103,7 @@
 												data-setbg="${goods_like.goods_fname_main}">
 												<ul class="product__item__pic__hover">
 													<li><a href="#"><i class="fa fa-heart"></i></a></li>
-													<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+													<li><a href="#" onclick="addCart()"><i class="fa fa-shopping-cart"></i></a></li>
 												</ul>
 											</div>
 											<div class="product__discount__item__text">
@@ -79,15 +113,17 @@
 												</h5>
 												<span>${goods_like.goods_price}</span>
 											</div>
+											<input type="hidden" value="${goods_like.goodsid}" id="goodsid_like">
 										</div>
 									</div>
 
 								</c:forEach>
 							</div>
 						</div>
-						<div class="row">
-							<a href="/category/Category.do?action=selectRank&category=${goodsCategory}" class="goRankbtn">${goodsCategory} 베스트 상품 더보기 ></a>
+						<div style="display: flex; justify-content: center; align-items: center;" class="row" >
+						    <a href="/category/Category.do?action=selectRank&goodsCategory=${goodsCategory}" class="goRankbtn">${goodsCategory} 베스트 상품 더보기 ></a>
 						</div>
+
 					</div>
 					
 					<div class="filter__item">
@@ -96,7 +132,7 @@
 							<div class="col-lg-4 col-md-4">
 								<div class="filter__found">
 									<h6>
-										<span>${goods_count }</span> 개의 상품
+										<span>${goods_count}</span> 개의 상품
 									</h6>
 								</div>
 							</div>

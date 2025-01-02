@@ -46,7 +46,7 @@ body, html {
 			<div class="row">
 				<div class="col-lg-3">
 					<div class="header__logo">
-						<a href="./index.jsp"><img src="../resource/img/logo1.png"
+						<a href="/"><img src="../resource/img/logo1.png"
 							alt=""></a>
 					</div>
 				</div>
@@ -116,7 +116,7 @@ body, html {
 					<div class="header__cart">
 						<ul>
 							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-							<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+							<li><a href="/cart/Cart.do?action=select&customerid=${customerid }"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
 						</ul>
 						<!-- 마이페이지 메뉴로 수정,yhl -->
 						<!-- <div class="header__cart__price">item: <span>$150.00</span></div> -->

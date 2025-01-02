@@ -811,8 +811,6 @@ ol {
 }
 
 .goRankbtn {
- 
-    left: 50%;   
     bottom: 20px;
     height: 32px;
     display: inline-block;
@@ -825,10 +823,9 @@ ol {
     color: #555;
     text-align: center;
     background-color: #fff;
-    -webkit-transform: translate(-50%, 0);
-    -ms-transform: translate(-50%, 0);
-    transform: translate(-50%, 0)
+    /* transform: translate(-50%, 0);  <- 이 부분을 제거합니다 */
 }
+
 /*---------------------
   Featured
 -----------------------*/
