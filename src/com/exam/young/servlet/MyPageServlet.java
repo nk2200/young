@@ -48,9 +48,6 @@ public class MyPageServlet extends HttpServlet {
         request.setAttribute("orderList", orderList);
         
         
-        HttpSession session = request.getSession();
-        String customerId = (String) session.getAttribute("customerId");
-        
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/mypage/mypage.jsp");
         dispatcher.forward(request, response);
     }
