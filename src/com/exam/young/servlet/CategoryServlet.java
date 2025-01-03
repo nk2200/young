@@ -40,7 +40,7 @@ public class CategoryServlet extends HttpServlet {
 		String view ="";
 		
 		if("selectMain".equals(action)) {
-			System.out.println("customerid" + customerid);
+			
 			if(goodsCategory != null) {			
 				List <GoodsDto> dto = dao.getCategory(goodsCategory);
 				List<GoodsDto> dto_like = dao.getRankCategory(goodsCategory);
@@ -57,7 +57,7 @@ public class CategoryServlet extends HttpServlet {
 				System.out.println("request 넘어온 goodsCategory 없음");
 			}
 		}else if("selectRank".equals(action)) {
-			System.out.println("customerid" + customerid);
+			
 			if(goodsCategory != null) {			
 				if("all".equals(goodsCategory)) {
 					List<GoodsDto> dto_like = dao.getRankAll_20(goodsCategory);
