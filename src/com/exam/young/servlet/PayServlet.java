@@ -108,7 +108,7 @@ public class PayServlet extends HttpServlet {
 			
 			String allIds = request.getParameter("allIds");
 			System.out.println("allIds" + allIds);
-    }
+	}
 
 		
 		//결제 버튼을 클릭했을 때(수정 필요)

@@ -31,10 +31,17 @@ public class CartServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		String customerid = (String) session.getAttribute("customerid");
+
+		if(customerid == null) {
+			request.setAttribute("message", "로그인하지 않은 사용자입니다. 다시 로그인해주세요.");
+			String view ="/login.jsp";
+			
+			RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/views/" + view);
+			disp.forward(request, response);
+		}
 
 		String action = request.getParameter("action");
-		String customerid = request.getParameter("customerid");
-		// String customerid = session.getAttribute("customerid");
 		String cartidParam = request.getParameter("cartid");
 		int cartid = 0;
 
@@ -49,9 +56,9 @@ public class CartServlet extends HttpServlet {
 		if (action != null) {
 			if ("select".equals(action)) {
 				try {
-					System.out.println("select 실행");
+					System.out.println("customerid" + customerid);
 					List<CartDto> cartList = cartdao.getCartList(customerid);
-					System.out.println("cartList" + cartList);
+					
 
 					int totalPrice = gettotalPrice(cartList);
 					int totalQty = getQty(cartList);
@@ -59,7 +66,7 @@ public class CartServlet extends HttpServlet {
 					request.setAttribute("totalQty", totalQty);
 					request.setAttribute("totalPrice", totalPrice);
 					request.setAttribute("cartList", cartList);
-					// session.setAttribute("customerid", customerid);
+					session.setAttribute("customerid", customerid);
 					String view = "cart/shoping-cart.jsp";
 
 					RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/views/" + view);
@@ -79,23 +86,31 @@ public class CartServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		HttpSession session = request.getSession();
+		String customerid = (String) session.getAttribute("customerid");
 
-		String customerid = "cust001";
-		// request.getParameter("customerid");
-		// String customerid = session.getAttribute("customerid");
-		String cartidParam = request.getParameter("cartid");
-
+		if(customerid == null) {
+			request.setAttribute("message", "로그인하지 않은 사용자입니다. 다시 로그인해주세요.");
+			String view ="/login.jsp";
+			
+			RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/views/" + view);
+			disp.forward(request, response);
+		}
+		
+	
 		int cartid = 0;
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("action");
+		
 		if ("cart".equals(action)) {
+			System.out.println("customerid" + customerid);
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
 			int goods_qty = Integer.parseInt(request.getParameter("goods_qty"));
-			customerid = request.getParameter("customerid");
-			System.out.println(goodsid + ", " + goods_qty + ", " + customerid);
+			
 			// 원래 cart에 있는 goods면 추가, 아니면 새로 cart삽입
-			if (cartdao.existCart(goodsid) != 0) {
-				cartdao.plusQty(goodsid, goods_qty);
+			if (cartdao.existCart(goodsid, customerid) != 0) {
+				cartdao.plusQty(goodsid, goods_qty, customerid);
 			} else {
 				CartDto cart = new CartDto();
 				cart.setGoodsid(goodsid);
@@ -108,25 +123,17 @@ public class CartServlet extends HttpServlet {
 			response.setContentType("text/plain");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write("카트에 넣기 성공");
-
-		} else if ("pay".equals(action)) { // 이따 해야지
-			// cartdao.payByCartId(customerid);
-
-			request.setAttribute("customerid", customerid);
-			request.setAttribute("cartid", cartid);
-			// session.setAttribute("customerid", customerid);
-
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/pay/Pay.do");
-			dispatcher.forward(request, response);
-		} else if ("deleteCart".equals(action)) {
+			session.setAttribute("customerid", customerid);
+		}  else if ("deleteCart".equals(action)) {
+			System.out.println("customerid" + customerid);
 			cartid = Integer.parseInt(request.getParameter("cartid"));
-			customerid = "user1";
-
+			
 			cartdao.deleteCart(cartid);
-
-			String redirectUrl = "/cart/Cart.do?action=select&customerid=" + customerid;
+			session.setAttribute("customerid", customerid);
+			String redirectUrl = "/cart/Cart.do?action=select";
 			response.sendRedirect(redirectUrl);
 		} else if ("selectDelete".equals(action)) {
+			System.out.println("customerid" + customerid);
 			String selectItems = request.getParameter("selectedItems");
 
 			String[] items = selectItems.split(",");
@@ -136,17 +143,19 @@ public class CartServlet extends HttpServlet {
 				cartid = Integer.parseInt(number);
 				cartdao.deleteCart(cartid);
 			}
-			String redirectUrl = "/cart/Cart.do?action=select&customerid=" + customerid;
+			
+			session.setAttribute("customerid", customerid);
+			String redirectUrl = "/cart/Cart.do?action=select";
 			response.sendRedirect(redirectUrl);
 		} else if ("updateQty".equals(action)) {
+			System.out.println("customerid" + customerid);
 			cartid = Integer.parseInt(request.getParameter("cartid"));
 			int cart_qty = Integer.parseInt(request.getParameter("cart_qty"));
 
 			boolean isUpdated = false;
 			try {
 				// 수량 업데이트
-				isUpdated = cartdao.updateQty(cartid, cart_qty);
-
+				isUpdated = cartdao.updateQty(cartid, cart_qty);				
 				if (isUpdated) {
 					try {
 
@@ -154,9 +163,10 @@ public class CartServlet extends HttpServlet {
 						int totalPrice = gettotalPrice(cartList);
 						int totalQty = getQty(cartList);
 
+
 						response.setContentType("application/json");
 						response.setCharacterEncoding("UTF-8");
-
+						session.setAttribute("customerid", customerid);
 						String json = "{\"status\": \"success\", \"totalPrice\": " + totalPrice + ", \"totalQty\": \""
 								+ totalQty + "\"}";
 
@@ -175,14 +185,16 @@ public class CartServlet extends HttpServlet {
 			}
 			return;
 		} else if ("addCart".equals(action)) {
-			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
-			customerid = "cust001";
+			System.out.println("customerid" + customerid);
+			int goodsid = Integer.parseInt(request.getParameter("goodsid"));			
 
-			if (cartdao.existCart(goodsid) != 0) {
-				cartdao.plusQty(goodsid);
+			if (cartdao.existCart(goodsid, customerid) != 0) {
+				cartdao.plusQty(goodsid, 1 ,customerid);
 			} else {
 				cartdao.addCart(customerid, goodsid, 1);
 			}
+			
+			session.setAttribute("customerid", customerid);
 		}
 
 	}
@@ -191,11 +203,11 @@ public class CartServlet extends HttpServlet {
 		int totalPrice = 0;
 
 		for (CartDto cart : cartList) {
-			GoodsDto goods = cart.getGoods(); // CartDto에서 GoodsDto 가져오기
-			int price = goods.getGoods_price(); // 상품 가격 가져오기
-			int quantity = cart.getCart_qty(); // 장바구니 수량 가져오기
+			GoodsDto goods = cart.getGoods(); 
+			int price = goods.getGoods_price(); 
+			int quantity = cart.getCart_qty();
 
-			totalPrice += price * quantity; // 가격 * 수량 계산하여 총합에 더하기
+			totalPrice += price * quantity;
 		}
 
 		return totalPrice;
