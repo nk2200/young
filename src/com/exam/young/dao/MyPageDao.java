@@ -63,7 +63,7 @@ public class MyPageDao {
         try {
             con = dataSource.getConnection();
             
-            String sql = "SELECT goods_fname_main, buy_date, buy_qty, total_price, goods_name "
+            String sql = "SELECT b.goodsid, goods_fname_main, buy_date, buy_qty, total_price, goods_name "
                        + "FROM buy a "
                        + "JOIN goods b ON a.goodsid = b.goodsid "
                        + "WHERE a.customerid = ? AND a.buy_status = 1 "
@@ -77,6 +77,7 @@ public class MyPageDao {
             while (rs.next()) {
             	OrderDto order = new OrderDto();
 
+            	order.setGoodsid(rs.getInt("goodsid"));
                 order.setGoods_fname_main(rs.getString("goods_fname_main"));
                 order.setGoods_name(rs.getString("goods_name"));
                 order.setBuy_date(rs.getDate("buy_date"));
