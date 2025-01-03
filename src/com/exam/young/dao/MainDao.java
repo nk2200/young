@@ -75,7 +75,7 @@ static DataSource dataSource;
 		try {
 			con = dataSource.getConnection();
 			
-			String sql = "SELECT GOODS_NAME,GOODS_PRICE,goods_fname_main FROM goods WHERE goods_name LIKE ?";
+			String sql = "SELECT goodsid, GOODS_NAME,GOODS_PRICE,goods_fname_main FROM goods WHERE goods_name LIKE ?";
 			
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, "%" + searchName + "%");
@@ -86,6 +86,7 @@ static DataSource dataSource;
 				
                 GoodsDto goods = new GoodsDto();
                 
+                goods.setGoodsid(rs.getInt("goodsid"));
                 goods.setGoods_name(rs.getString("GOODS_NAME"));
                 goods.setGoods_price(rs.getInt("GOODS_PRICE"));
                 goods.setGoods_fname_main(rs.getString("goods_fname_main"));

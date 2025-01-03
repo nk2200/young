@@ -59,7 +59,7 @@
                     <div class="breadcrumb__text">
                         <h2>상품 수정</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.jsp">Home</a>
+                            <a href="/main">Home</a>
                             <span>Goods</span>
                         </div>
                     </div>
