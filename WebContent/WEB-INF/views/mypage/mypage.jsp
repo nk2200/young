@@ -16,7 +16,6 @@
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 
-
 	<!-- Breadcrumb Section Begin -->
 	<!-- 고객정보 추가,yhl -->
 	<!-- 	<section class="breadcrumb-section set-bg"
@@ -71,7 +70,7 @@
 											<!-- BuyDto에서 buy_date를 가져오기 -->
 										</td>
 										<td class="shoping__cart__item"><img
-											src="../${order.goods_fname_main}" alt="">
+											src="../resource/img/goods/${goods.goods_fname_main}" alt="">
 											<h5>${order.goods_name}</h5> <!-- GoodsDto에서 goods_name 가져오기 -->
 										</td>
 										<td class="shoping__cart__quantity">
