@@ -33,6 +33,42 @@
 	color: black; /* 텍스트 색상 */
 }
 </style>
+<script>
+	function addCart(){
+		const inputgoodsId = document.getElementById("goodsid_like");
+		const goodsid = inputgoodsId.value;
+		console.log('goodsid'+ goodsid);
+		if(confirm('장바구니에 추가하시겠습니까  ?')){
+			fetch('/cart/Cart.do',{
+				method : 'POST',
+				headers: {
+				    'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: new URLSearchParams({
+				    action: "addCart",
+				    goodsid: goodsid
+				})
+	
+			}).then(response =>{
+				if(response.ok){
+					alert('장바구니에 추가되었습니다.');
+				}else{
+					alert('장바구니 추가에 실패했습니다.');		
+				}
+			})
+			.catch(error => {
+				console.error('Error :', error);
+				alert('오류가 발생했습니다.');
+			})
+			
+		}else {
+			alert('장바구니 추가를 취소하셨습니다.');
+		}
+			
+	}
+
+
+</script>
 </head>
 
 <body>
@@ -112,7 +148,7 @@
 										data-setbg="/resource/img/goods/${goods.goods_fname_main}">
 										<ul class="product__item__pic__hover">
 											
-											<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+											<li><a href="#" onclick="addCart()"><i class="fa fa-shopping-cart"></i></a></li>
 										</ul>
 									</div>
 									<div class="product__item__text">
@@ -122,6 +158,7 @@
 										<h5>${goods.goods_price}</h5>
 									</div>
 								</div>
+								<input type="hidden" value="${goods.goodsid}" id="goodsid_like">
 							</div>
 						</c:forEach>
 					</div>

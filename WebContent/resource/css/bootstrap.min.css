@@ -207,9 +207,10 @@ caption {
 	text-align: left;
 	caption-side: bottom
 }
-
+/* css추가,yhl */
 th {
-	text-align: inherit
+	text-align: inherit;
+	padding: 5px;
 }
 
 label {

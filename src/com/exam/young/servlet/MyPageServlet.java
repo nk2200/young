@@ -31,6 +31,7 @@ public class MyPageServlet extends HttpServlet {
     	
     	CustomerDto customer = dao.getCustomer("yhl9701");
     	List<OrderDto> orderList = dao.getBuyAll("yhl9701");
+    	
     	//if(userId != null) {
 //	        HttpSession session = request.getSession();
 //	        session.setAttribute("userId", "유혜린");
@@ -42,6 +43,7 @@ public class MyPageServlet extends HttpServlet {
         
         request.setAttribute("customer", customer);
         request.setAttribute("orderList", orderList);
+        
         
         HttpSession session = request.getSession();
         String customerId = (String) session.getAttribute("customerId");

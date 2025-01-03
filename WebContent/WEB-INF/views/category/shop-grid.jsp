@@ -215,13 +215,14 @@
 									<div class="product__item__pic set-bg"
 										data-setbg="/resource/img/goods/${goods.goods_fname_main}">
 										<ul class="product__item__pic__hover">
-											<li><a href="#"><i class="fa fa-heart"></i></a></li>
-											<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+											
+											<li><a href="#" onclick="addCart()"><i class="fa fa-shopping-cart"></i></a></li>
 										</ul>
 									</div>
 									<div class="product__item__text">
 										<h6>
 											<a href="/detail/Detail.do?goodsid=${goods.goodsid}">${goods.goods_name}</a>
+											<input type="hidden" value="${goods.goodsid}" id="goodsid_like">
 										</h6>
 										<h5>${goods.goods_price}</h5>
 									</div>

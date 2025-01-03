@@ -49,7 +49,6 @@ public class BuyDao {
 			stmt.setInt(7, buyinfo.getBuy_qty());				// 총 수량	
 			
 			int rowCount = stmt.executeUpdate();
-			System.out.println(rowCount + "개 상품이 결제되었습니다.");
 			if(rowCount <=0) {
 				throw new SQLException("결제 된 내역이 없습니다.");
 			}
@@ -91,14 +90,14 @@ public class BuyDao {
 	
 	//Cart 테이블에서 카트 id를 전달받아 상품의 이름과 가격을 리턴
 	public Map<String, Object> getCartItems(int cartid){
-		Connection con = null;
 		Map<String, Object> gInfo = new HashMap<>();
+		Connection con = null;
 		
 		try {
 			con = dataSource.getConnection();
 			String sql = "SELECT g.goodsid, g.goods_name, g.goods_price, c.customerid, c.cart_qty FROM cart c "
 						+ "JOIN goods g ON c.goodsid = g.goodsid "
-						+ "WHERE c.cartid = ?";
+						+ "WHERE c.cartid=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1,cartid);
 			ResultSet rs = stmt.executeQuery();
@@ -112,7 +111,7 @@ public class BuyDao {
 				gInfo.put("cart_qty", rs.getInt("cart_qty"));
 				
 			}
-			if(gInfo.size() == 0) {
+			if(gInfo.size()==0) {
 				throw new RuntimeException("상품을 찾을 수 없습니다.");
 			}
 		
@@ -152,10 +151,11 @@ public class BuyDao {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			String sql = "update goods set goods_qty = (goods_qty - ?) where goodsid= ?";
+			String sql = "update goods set goods_qty = (goods_qty - ?) where goodsid= ? and goods_qty >= ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1, buyQty);
 			stmt.setInt(2, goodsid);
+			stmt.setInt(3, buyQty);
 			int rowCount = stmt.executeUpdate();
 			
 			//남은 수량이 변경되지 않았다면
@@ -180,5 +180,4 @@ public class BuyDao {
 			}
 		}
  	}
-	
 }

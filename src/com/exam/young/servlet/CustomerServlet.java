@@ -29,6 +29,8 @@ public class CustomerServlet extends HttpServlet {
 		if(action!=null) {
 			if("logout".equals(action)) {
 				request.getSession().invalidate();
+				response.sendRedirect("/main");
+				return;
 			}else if("signup".equals(action)) {
 				view = "signup.jsp";
 			}
@@ -57,6 +59,8 @@ public class CustomerServlet extends HttpServlet {
 						response.sendRedirect(url);
 					}else {
 						System.out.println("dbpw: "+dbpw);
+//						String url = "/customer/Login.do?";
+//						request.setAttribute("message", "비밀번호가 다릅니다.");
 						String url = "/customer/Login.do?message=" + URLEncoder.encode("비밀번호가 다릅니다.", "UTF-8");
 						response.sendRedirect(url);
 						System.out.println("비밀번호 틀림");
