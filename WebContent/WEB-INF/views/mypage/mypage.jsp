@@ -44,9 +44,9 @@
 			<div
 				style="text-align: center; font-weight: bold; font-size: 36px; margin-bottom: 20px;">
 				마이페이지</div>
-			<div
+<%-- 			<div
 				style="background-color: #EB6D9A; color: white; padding: 10px; margin-bottom: 20px;">
-				${customer.customer_name}님 반갑습니다.</div>
+				${customer.customer_name}님 반갑습니다.</div> --%>
 			<div class="row">
 
 				<div class="col-lg-12">
