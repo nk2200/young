@@ -12,9 +12,14 @@
 <title>올리브영 온라인몰</title>
 <script>
 	function addCart(goodsid){
-	    console.log('goodsid' + goodsid);
 	
-	    if(confirm('장바구니에 추가하시겠습니까  ?')) {
+		// 모달에 확인 메시지 설정
+	    document.getElementById('modal-body-confirm').textContent = '상품을 장바구니에 추가하시겠습니까?';
+	    $('#simpleConfirmModal').modal('show');
+	
+	    // "확인" 버튼 클릭 시 실행할 로직
+	    document.getElementById('simpleConfirmYes').onclick = function () {	   
+	    	 $('#simpleConfirmModal').modal('hide'); // 확인 모달 닫기
 	        fetch('/cart/Cart.do', {
 	            method : 'POST',
 	            headers: {
@@ -26,24 +31,46 @@
 	            })
 	        }).then(response => {
 	            if(response.ok){
-	                alert('장바구니에 추가되었습니다.');
+	            	document.getElementById('modal-body').textContent = '장바구니에 추가하였습니다.';
+			        $('#myModal').modal('show');
+
+			        // 모달이 닫힌 후 페이지를 새로고침
+			        $('#myModal').on('hidden.bs.modal', function () {
+			            location.reload();
+			        });
 	            } else {
-	                alert('장바구니 추가에 실패했습니다.');
+	            	document.getElementById('modal-body').textContent = '장바구니 추가에 실패했습니다.';
+			        $('#myModal').modal('show');
+
+			        // 모달이 닫힌 후 페이지를 새로고침
+			        $('#myModal').on('hidden.bs.modal', function () {
+			            location.reload();
+			        });
+	                
 	            }
 	        })
 	        .catch(error => {
 	            console.error('Error:', error);
-	            alert('오류가 발생했습니다.');
-	        });
-	    } else {
-	        alert('장바구니 추가를 취소하셨습니다.');
-	    }
+	            document.getElementById('modal-body').textContent = '오류가 발생했습니다.';
+		        $('#myModal').modal('show');
+
+		        // 모달이 닫힌 후 페이지를 새로고침
+		        $('#myModal').on('hidden.bs.modal', function () {
+		            location.reload();
+		        });
+			});
+	    };
 	}
 	
 	function addCartNomal(goodsid){
-		
-		console.log('goodsid' + goodsid);
-		if(confirm('장바구니에 추가하시겠습니까  ?')){
+				
+		// 모달에 확인 메시지 설정
+	    document.getElementById('modal-body-confirm').textContent = '상품을 장바구니에 추가하시겠습니까?';
+	    $('#simpleConfirmModal').modal('show');
+	
+	    // "확인" 버튼 클릭 시 실행할 로직
+	    document.getElementById('simpleConfirmYes').onclick = function () {	   
+	    	 $('#simpleConfirmModal').modal('hide'); // 확인 모달 닫기
 			fetch('/cart/Cart.do',{
 				method : 'POST',
 				headers: {
@@ -56,20 +83,36 @@
 
 			}).then(response =>{
 				if(response.ok){
-					alert('장바구니에 추가되었습니다.');
+					document.getElementById('modal-body').textContent = '장바구니에 추가되었습니다.';
+			        $('#myModal').modal('show');
+
+			        // 모달이 닫힌 후 페이지를 새로고침
+			        $('#myModal').on('hidden.bs.modal', function () {
+			            location.reload();
+			        });
+					
 				}else{
-					alert('장바구니 추가에 실패했습니다.');		
+					document.getElementById('modal-body').textContent = '장바구니 추가에 실패했습니다.';
+			        $('#myModal').modal('show');
+
+			        // 모달이 닫힌 후 페이지를 새로고침
+			        $('#myModal').on('hidden.bs.modal', function () {
+			            location.reload();
+			        });
+						
 				}
 			})
 			.catch(error => {
 				console.error('Error :', error);
-				alert('오류가 발생했습니다.');
-			})
-			
-		}else {
-			alert('장바구니 추가를 취소하셨습니다.');
-		}
-			
+				document.getElementById('modal-body').textContent = '오류가 발생했습니다.';
+		        $('#myModal').modal('show');
+
+		        // 모달이 닫힌 후 페이지를 새로고침
+		        $('#myModal').on('hidden.bs.modal', function () {
+		            location.reload();
+		        });
+			});
+	    };
 	}
 	
 	
@@ -261,6 +304,48 @@
 			</div>
 		</div>
 	</section>
+	
+	<div id="myModal" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title"><i class="bi bi-exclamation-triangle"></i>&nbsp;&nbsp;올리브영 알림</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="modal-body">
+					<!-- 메시지가 동적으로 추가됩니다 -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Confirm Modal -->
+	<div id="simpleConfirmModal" class="modal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title"><i class="bi bi-check-square"></i>&nbsp;&nbsp;올리브영 확인메시지</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body-confirm" id="modal-body-confirm" >
+	        
+	      </div>
+	      <div class="modal-footer">
+	        <button id="simpleConfirmYes" type="button" class="btn btn-primary">확인</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	<!-- Product Section End -->
 	<jsp:include page="../footer.jsp"></jsp:include>
 

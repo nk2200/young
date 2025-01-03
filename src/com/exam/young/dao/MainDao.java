@@ -106,53 +106,82 @@ static DataSource dataSource;
     }
 	
 	public List<GoodsDto> getRecommendedProducts(String customerid) {
-		
-		List<GoodsDto> recommendedList = new ArrayList<>();
-        Connection con = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+	    List<GoodsDto> recommendedList = new ArrayList<>();
+	    Connection con = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
 
-        try {
-            con = dataSource.getConnection();
-            
-            String sql = "SELECT g.goods_name, goods_fname_main, goods_price, COUNT(*) AS purchase_count " +
-                    "FROM buy b " +
-                    "JOIN goods g ON b.goodsid = g.goodsid " +
-                    "WHERE b.customerid != ? " +
-                    "AND b.goodsid IN ( " +
-                    "    SELECT buy.goodsid " +
-                    "    FROM buy " +
-                    "    WHERE buy.customerid = ? " +
-                    ") " +
-                    "GROUP BY g.goods_name,goods_fname_main, goods_price " +
-                    "ORDER BY purchase_count DESC " +
-                    "FETCH FIRST 5 ROWS ONLY";
-            
-            stmt = con.prepareStatement(sql);
-            stmt.setString(1, customerid);
-            stmt.setString(2, customerid);
-            
-            rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-            	
-            	GoodsDto recommendedGoods = new GoodsDto();
+	    try {
+	        con = dataSource.getConnection();
 
-            	recommendedGoods.setGoods_fname_main(rs.getString("goods_fname_main"));
-            	recommendedGoods.setGoods_name(rs.getString("goods_name"));
-            	recommendedGoods.setGoods_price(rs.getInt("goods_price"));
-            	recommendedList.add(recommendedGoods);
-            }
+	        String recommendedSql = "SELECT g.goods_name, g.goods_fname_main, g.goods_price, COUNT(*) AS purchase_count " +
+	                                "FROM buy b " +
+	                                "JOIN goods g ON b.goodsid = g.goodsid " +
+	                                "WHERE b.customerid != ? " +
+	                                "AND b.goodsid IN ( " +
+	                                "    SELECT buy.goodsid " +
+	                                "    FROM buy " +
+	                                "    WHERE buy.customerid = ? " +
+	                                ") " +
+	                                "GROUP BY g.goods_name, g.goods_fname_main, g.goods_price " +
+	                                "ORDER BY purchase_count DESC " +
+	                                "FETCH FIRST 5 ROWS ONLY";
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Database error occurred while fetching buy data", e);
-        } finally {
-        	if (con != null) try { con.close(); } catch (Exception e) {}
-        }
+	        stmt = con.prepareStatement(recommendedSql);
+	        stmt.setString(1, customerid);
+	        stmt.setString(2, customerid);
 
-        return recommendedList;
+	        rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	            GoodsDto recommendedGoods = new GoodsDto();
+	            recommendedGoods.setGoods_fname_main(rs.getString("goods_fname_main"));
+	            recommendedGoods.setGoods_name(rs.getString("goods_name"));
+	            recommendedGoods.setGoods_price(rs.getInt("goods_price"));
+	            recommendedList.add(recommendedGoods);
+	        }
+
+	        if (recommendedList.isEmpty()) {
+	            String categorySql = "SELECT bb.goods_name, bb.goods_fname_main, bb.goods_price " +
+	                                 "FROM buy aa " +
+	                                 "JOIN goods bb ON aa.goodsid = bb.goodsid " +
+	                                 "WHERE bb.goods_category IN ( " +
+	                                 "    SELECT b.goods_category " +
+	                                 "    FROM buy a " +
+	                                 "    JOIN goods b ON a.goodsid = b.goodsid " +
+	                                 "    WHERE a.customerid = ? " +  
+	                                 "    GROUP BY b.goods_category " +
+	                                 "    ORDER BY COUNT(*) DESC " +  
+	                                 "    FETCH FIRST 3 ROWS ONLY " +  
+	                                 ") " +
+	                                 "GROUP BY bb.goods_name, bb.goods_fname_main, bb.goods_price " +
+	                                 "ORDER BY SUM(aa.buy_qty) DESC";  
+
+	            stmt = con.prepareStatement(categorySql);
+	            stmt.setString(1, customerid);
+
+	            rs = stmt.executeQuery();
+
+	            while (rs.next()) {
+	                GoodsDto categoryGoods = new GoodsDto();
+	                categoryGoods.setGoods_fname_main(rs.getString("goods_fname_main"));
+	                categoryGoods.setGoods_name(rs.getString("goods_name"));
+	                categoryGoods.setGoods_price(rs.getInt("goods_price"));
+	                recommendedList.add(categoryGoods);
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("Database error occurred while fetching product data", e);
+	    } finally {
+	        if (con != null) try { con.close(); } catch (Exception e) {}
+	    }
+
+	    return recommendedList;
 	}
+
+
 	
 	public CustomerDto getCustomer(String customerid) {
 		CustomerDto customer = new CustomerDto();

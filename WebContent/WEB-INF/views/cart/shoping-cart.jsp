@@ -11,83 +11,124 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>올리브영 온라인몰</title>
 <script type='text/javascript'>
-	function deleteCart(){
-		const deleteId = document.getElementById("cartid_value");
-		const cartid = deleteId.value;
-		
-		if(confirm('삭제하시겠습니까 ?')){
-			fetch('/cart/Cart.do',{
-				method : 'POST',
-				headers :{
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
-				body : new URLSearchParams({
-					action : "deleteCart",
-					cartid : cartid
-				})
-			}).then(response =>{
-				if(response.ok){
-					alert('상품을 삭제했습니다.');
-					location.reload();
-				}else{
-					alert('상품 삭제에 실패했습니다.');
-					location.reload();
-				}
-			})
-			.catch(error => {
-				console.error('Error :', error);
-				alert('오류가 발생했습니다.');
-			})
-			
-		}else {
-			alert('삭제를 취소하였습니다.');
-		}
-		
-	}
+
+
+	function deleteCart() {
+	    const deleteId = document.getElementById("cartid_value");
+	    const cartid = deleteId.value;
 	
+	    // 모달에 확인 메시지 설정
+	    document.getElementById('modal-body-confirm').textContent = '상품을 삭제하시겠습니까?';
+	    $('#simpleConfirmModal').modal('show');
+	
+	    // "확인" 버튼 클릭 시 실행할 로직
+	    document.getElementById('simpleConfirmYes').onclick = function () {	        
+	    	 $('#simpleConfirmModal').modal('hide'); // 확인 모달 닫기
+	        // 삭제 요청 실행
+	        fetch('/cart/Cart.do', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/x-www-form-urlencoded',
+	            },
+	            body: new URLSearchParams({
+	                action: "deleteCart",
+	                cartid: cartid,
+	            }),
+	        })
+	            .then(response => {
+	                if (response.ok) {
+	                    // 성공 메시지를 표시하는 모달
+	                    document.getElementById('modal-body').textContent = '상품을 삭제했습니다.';
+	                    $('#myModal').modal('show');
+	
+	                    // 모달이 닫힌 후 페이지 새로고침
+	                    $('#myModal').on('hidden.bs.modal', function () {
+	                        location.reload();
+	                    });
+	                } else {
+	                    // 실패 메시지를 표시하는 모달
+	                    document.getElementById('modal-body').textContent = '상품 삭제에 실패했습니다.';
+	                    $('#myModal').modal('show');
+	
+	                    // 모달이 닫힌 후 페이지 새로고침
+	                    $('#myModal').on('hidden.bs.modal', function () {
+	                        location.reload();
+	                    });
+	                }
+	            })
+	            .catch(error => {
+	                console.error('Error:', error);
+	
+	                // 오류 메시지를 표시하는 모달
+	                document.getElementById('modal-body').textContent = '오류가 발생했습니다.';
+	                $('#myModal').modal('show');
+	
+	                // 모달이 닫힌 후 페이지 새로고침
+	                $('#myModal').on('hidden.bs.modal', function () {
+	                    location.reload();
+	                });
+	            });
+	    };
+	
+	    // "취소" 버튼 동작은 기본적으로 아무 작업도 하지 않음
+	    document.getElementById('simpleConfirmCancel').onclick = function () {
+	        $('#simpleConfirmModal').modal('hide'); // 확인 모달 닫기
+	    };
+	}
+
 	
 	function deleteSelect() {
-	    const checkboxes = document.querySelectorAll('.item-checkbox');
+	    // 확인 모달 띄우기
+	    document.getElementById('modal-body-confirm').textContent = '상품을 삭제하시겠습니까?';
+	    $('#simpleConfirmModal').modal('show');
 
-	    // 선택된 체크박스의 value 값만 모은 배열 생성
-	    const selectedItems = Array.from(checkboxes)
-	        .filter(checkbox => checkbox.checked) 
-	        .map(checkbox => checkbox.value);   
+	    // "확인" 버튼 클릭 시 실행할 로직
+	    document.getElementById('simpleConfirmYes').onclick = function () {
+	        $('#simpleConfirmModal').modal('hide'); // 확인 모달 닫기
 
-	    // 선택된 항목이 없으면 경고
-	    if (selectedItems.length === 0) {
-	        alert('선택된 상품이 없습니다.');
-	        return;
-	    }
+	        const checkboxes = document.querySelectorAll('.item-checkbox');
 
-	    // 서버로 보낼 데이터 생성
-	    const params = new URLSearchParams();
-	    params.append("selectedItems", selectedItems.join(','));  // 배열을 ','로 구분된 문자열로 변환
+	        // 선택된 체크박스의 value 값만 모은 배열 생성
+	        const selectedItems = Array.from(checkboxes)
+	            .filter(checkbox => checkbox.checked)
+	            .map(checkbox => checkbox.value);
 
-	    console.log('선택된 항목', selectedItems);
-	    
-	    // fetch로 데이터 전송
-	    fetch('/cart/Cart.do', {
-	        method: 'POST',
-	        headers: {
-	            'Content-Type': 'application/x-www-form-urlencoded',
-	        },
-	        body: new URLSearchParams({
-	            action: "selectDelete",
-	            selectedItems: selectedItems.join(',') // selectedItems 배열을 바로 ','로 구분된 문자열로 전송
-	        })
-	    })
-	    .then(response => {
-	        if (response.ok) {
-	            alert('상품을 삭제했습니다.');
-	            location.reload(); // 페이지 새로 고침
-	        } else {
-	            alert('상품 삭제에 실패했습니다.');
+	        // 선택된 항목이 없으면 경고
+	        if (selectedItems.length === 0) {
+	            document.getElementById('modal-body').textContent = '선택된 상품이 없습니다.';
+	            $('#myModal').modal('show');
+	            return; // 이후 로직 실행 중단
 	        }
-	    })
-	    .catch(error => {
-	        console.error('Error :', error);
-	        alert('오류가 발생했습니다.');
+
+	        // fetch로 데이터 전송
+	        fetch('/cart/Cart.do', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/x-www-form-urlencoded',
+	            },
+	            body: new URLSearchParams({
+	                action: "selectDelete",
+	                selectedItems: selectedItems.join(',') // 배열을 ','로 구분된 문자열로 전송
+	            })
+	        })
+	        .then(response => {
+	            if (response.ok) {
+	                document.getElementById('modal-body').textContent = '상품을 삭제했습니다.';
+	                $('#myModal').modal('show');
+	            } else {
+	                document.getElementById('modal-body').textContent = '상품 삭제에 실패했습니다.';
+	                $('#myModal').modal('show');
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Error:', error);
+	            document.getElementById('modal-body').textContent = '오류가 발생했습니다.';
+	            $('#myModal').modal('show');
+	        });
+	    };
+	    
+	    $('#myModal').on('hidden.bs.modal', function () {
+	        location.reload();
 	    });
 	}
 
@@ -140,13 +181,25 @@
 
 		        console.log("수량 업데이트 성공:", data);
 		    } else {
-		        console.error("수량 업데이트 실패");
-		        alert("수량 업데이트 실패");
+		    	document.getElementById('modal-body').textContent = '수량업데이트 실패';
+		        $('#myModal').modal('show');
+		
+		        // 모달이 닫힌 후 페이지를 새로고침
+		        $('#myModal').on('hidden.bs.modal', function () {
+		            location.reload();
+		        });
+		        
 		    }
 		})
 		.catch(error => {
 		    console.error("에러 발생:", error);
-		    alert("수량 업데이트 중 문제가 발생했습니다.");
+		    document.getElementById('modal-body').textContent = '수량 업데이트 중 오류가 발생했습니다.';
+	        $('#myModal').modal('show');
+	
+	        // 모달이 닫힌 후 페이지를 새로고침
+	        $('#myModal').on('hidden.bs.modal', function () {
+	            location.reload();
+	        });
 		});
 
 	}
@@ -158,7 +211,13 @@
 	        .map(checkbox => checkbox.value);   
 
 	    if (selectedItems.length === 0) {
-	        alert('선택된 상품이 없습니다.');
+	    	document.getElementById('modal-body').textContent = '선택된 상품이 없습니다.';
+	        $('#myModal').modal('show');
+	
+	        // 모달이 닫힌 후 페이지를 새로고침
+	        $('#myModal').on('hidden.bs.modal', function () {
+	            location.reload();
+	        }); 
 	        return;
 	    }
 	    
@@ -178,12 +237,24 @@
 	        if (data.redirectUrl) {
 	            window.location.href = data.redirectUrl; // 리다이렉트 URL로 이동
 	        } else {
-	            alert('선택주문에 실패했습니다.');
+	        	document.getElementById('modal-body').textContent ='선택주문에 실패했습니다.';
+		        $('#myModal').modal('show');
+		
+		        // 모달이 닫힌 후 페이지를 새로고침
+		        $('#myModal').on('hidden.bs.modal', function () {
+		            location.reload();
+		        });  
 	        }
 	    })
 	    .catch(error => {
 	        console.error('Error:', error);
-	        alert('오류가 발생했습니다.');
+	        document.getElementById('modal-body').textContent ='오류가 발생했습니다.';
+	        $('#myModal').modal('show');
+	
+	        // 모달이 닫힌 후 페이지를 새로고침
+	        $('#myModal').on('hidden.bs.modal', function () {
+	            location.reload();
+	        });  
 	    });
 	}
 
@@ -203,7 +274,14 @@
 		console.log('allCartIds' + allCartIds);
 	    // 배열이 비어있는지 확인
 	    if (allCartIds.length === 0) {
-	        alert('장바구니에 상품이 없습니다.'); // 알림 창 표시
+	    	document.getElementById('modal-body').textContent ='장바구니에 상품이 없습니다.';
+	        $('#myModal').modal('show');
+	
+	        // 모달이 닫힌 후 페이지를 새로고침
+	        $('#myModal').on('hidden.bs.modal', function () {
+	            location.reload();
+	        });
+	    	
 	        return;
 	    }
 
@@ -223,12 +301,27 @@
 	        if (data.redirectUrl) {
 	            window.location.href = data.redirectUrl; // 리다이렉트 URL로 이동
 	        } else {
-	            alert('선택주문에 실패했습니다.');
+	            
+	        	document.getElementById('modal-body').textContent ='선택주문에 실패했습니다.';
+		        $('#myModal').modal('show');
+		
+		        // 모달이 닫힌 후 페이지를 새로고침
+		        $('#myModal').on('hidden.bs.modal', function () {
+		            location.reload();
+		        });
+		    	
+	        	
 	        }
 	    })
 	    .catch(error => {
 	        console.error('Error :', error);
-	        alert('오류가 발생했습니다.');
+	        document.getElementById('modal-body').textContent ='오류가 발생했습니다.';
+	        $('#myModal').modal('show');
+	
+	        // 모달이 닫힌 후 페이지를 새로고침
+	        $('#myModal').on('hidden.bs.modal', function () {
+	            location.reload();
+	        }); 
 	    });
 	}
 
@@ -261,58 +354,57 @@
 }
 
 .shoping__cart__table {
-    width: 100%;
-    margin-top: 20px;
+	width: 100%;
+	margin-top: 20px;
 }
 
 .shoping__cart__table table {
-    width: 100%;
-    border-collapse: collapse; /* 셀 간 경계가 겹치지 않도록 설정 */
+	width: 100%;
+	border-collapse: collapse; /* 셀 간 경계가 겹치지 않도록 설정 */
 }
 
 th, td {
-    border: 1px solid #ebebeb; /* 셀에 경계 추가 */
-    padding: 10px; /* 셀 안의 여백 설정 */
-    text-align: left; /* 텍스트 왼쪽 정렬 */
+	border: 1px solid #ebebeb; /* 셀에 경계 추가 */
+	padding: 10px; /* 셀 안의 여백 설정 */
+	text-align: left; /* 텍스트 왼쪽 정렬 */
 }
 
 th {
-    background-color: #f9f9f9; /* 헤더 배경 색상 설정 */
-    font-weight: bold; /* 헤더 글자 두껍게 설정 */
+	background-color: #f9f9f9; /* 헤더 배경 색상 설정 */
+	font-weight: bold; /* 헤더 글자 두껍게 설정 */
 }
 
 .shoping__cart__item__check {
-    border: none; /* 선을 제거 */
+	border: none; /* 선을 제거 */
 }
 
 .shoping__cart__item__check input[type="checkbox"] {
-    margin-right: 10px; /* 체크박스와 텍스트 간격 추가 */
+	margin-right: 10px; /* 체크박스와 텍스트 간격 추가 */
 }
 
 .shoping__cart__quantity button {
-    background-color: #f27370; /* 버튼 배경색 */
-    color: white; /* 버튼 텍스트 색상 */
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
+	background-color: #f27370; /* 버튼 배경색 */
+	color: white; /* 버튼 텍스트 색상 */
+	border: none;
+	padding: 5px 10px;
+	cursor: pointer;
 }
 
 .shoping__cart__quantity input[type="text"] {
-    width: 40px;
-    text-align: center;
-    padding: 5px;
-    border: 1px solid #ccc;
+	width: 40px;
+	text-align: center;
+	padding: 5px;
+	border: 1px solid #ccc;
 }
 
 .shoping__cart__total a {
-    text-decoration: none;
-    color: #f27370; /* 텍스트 색상 */
+	text-decoration: none;
+	color: #f27370; /* 텍스트 색상 */
 }
 
 .shoping__cart__total a:hover {
-    color: #d25a5a; /* hover 시 텍스트 색상 변경 */
+	color: #d25a5a; /* hover 시 텍스트 색상 변경 */
 }
-
 </style>
 </head>
 
@@ -363,10 +455,9 @@ th {
 									<tr>
 										<td class="shoping__cart__item__check"><input
 											type="checkbox" value="${cart.cartid}" checked
-											class="item-checkbox" /> 
-											<input type="hidden" value="${cart.cartid}" id="cartid_value" />
-											<input type="hidden" value="${cart.cartid}" class="cartId" />
-											</td>
+											class="item-checkbox" /> <input type="hidden"
+											value="${cart.cartid}" id="cartid_value" /> <input
+											type="hidden" value="${cart.cartid}" class="cartId" /></td>
 										<td class="shoping__cart__item"><img
 											src="/resource/img/goods/${cart.goods.goods_fname_main}"
 											alt="">
@@ -421,6 +512,49 @@ th {
 			</div>
 		</div>
 	</section>
+
+	<div id="myModal" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Oliveyoung Alert</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="modal-body">
+					<!-- 메시지가 동적으로 추가됩니다 -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Confirm Modal -->
+	<div id="simpleConfirmModal" class="modal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Oliveyoung Confirm</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body-confirm" id="modal-body-confirm" >
+	        
+	      </div>
+	      <div class="modal-footer">
+	        <button id="simpleConfirmYes" type="button" class="btn btn-primary">확인</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+		
 	<!-- Shoping Cart Section End -->
 	<jsp:include page="../footer.jsp"></jsp:include>
 

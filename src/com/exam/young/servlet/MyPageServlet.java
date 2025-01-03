@@ -26,7 +26,6 @@ public class MyPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
            
-    	//String userId = request.getParameter("userId");
     	MyPageDao dao = new MyPageDao();
     	
         HttpSession session = request.getSession();
@@ -35,14 +34,6 @@ public class MyPageServlet extends HttpServlet {
     	CustomerDto customer = dao.getCustomer(customerid);
     	List<OrderDto> orderList = dao.getBuyAll(customerid);
     	
-    	//if(userId != null) {
-//	        HttpSession session = request.getSession();
-//	        session.setAttribute("userId", "유혜린");
-	
-	        // 유저 아이디로 데이터베이스에서 유저 정보를 조회
-//	        CustomerDao userDAO = new CustomerDao();
-	        //CustomerDao user = userDAO.getUserInfo(userId);
-    	//}
         
         request.setAttribute("customer", customer);
         request.setAttribute("orderList", orderList);
