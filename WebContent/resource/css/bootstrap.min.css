@@ -2532,15 +2532,15 @@ a.btn.disabled, fieldset:disabled a.btn {
 }
 
 .btn-primary {
-	color: #fff;
-	background-color: #007bff;
-	border-color: #007bff
+	color: white;
+	background-color: #82dc28;
+	border-color:#82dc28;
 }
 
 .btn-primary:hover {
-	color: #fff;
-	background-color: #0069d9;
-	border-color: #0062cc
+	color: #82dc28;
+	background-color: #82dc28;
+	border-color: #82dc28;
 }
 
 .btn-primary.focus, .btn-primary:focus {
@@ -2570,8 +2570,8 @@ a.btn.disabled, fieldset:disabled a.btn {
 
 .btn-secondary {
 	color: #fff;
-	background-color: #6c757d;
-	border-color: #6c757d
+	background-color: #ff7878;
+	border-color: #ff7878;
 }
 
 .btn-secondary:hover {
@@ -6053,7 +6053,8 @@ a.close.disabled {
 	padding: 1rem 1rem;
 	border-bottom: 1px solid #dee2e6;
 	border-top-left-radius: calc(.3rem - 1px);
-	border-top-right-radius: calc(.3rem - 1px)
+	border-top-right-radius: calc(.3rem - 1px);
+	background-color: #82dc28;
 }
 
 .modal-header .close {
@@ -6067,6 +6068,13 @@ a.close.disabled {
 }
 
 .modal-body {
+	position: relative;
+	-ms-flex: 1 1 auto;
+	flex: 1 1 auto;
+	padding: 1rem
+}
+
+.modal-body-confirm {
 	position: relative;
 	-ms-flex: 1 1 auto;
 	flex: 1 1 auto;
