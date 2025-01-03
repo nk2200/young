@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -15,24 +16,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import com.exam.young.dao.RegisterDao;
+import com.exam.young.dao.ManageDao;
 import com.exam.young.dto.GoodsDto;
 import com.exam.young.dto.SearchDto;
 
-@WebServlet("/register/Register.do")
+@WebServlet("/manage/Manage.do")
 @MultipartConfig(
     fileSizeThreshold = 1024 * 1024 * 3, // 3MB
     maxFileSize = 1024 * 1024 * 10,      // 10MB
     maxRequestSize = 1024 * 1024 * 50    // 50MB
 )
-public class RegisterServlet extends HttpServlet {
+public class ManageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
-	RegisterDao dao = new RegisterDao();
+	ManageDao dao = new ManageDao();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
-		String view = "register/goodsList.jsp";
+		String view = "manage/goodsList.jsp";
 		
 		if (action == null) {
 			String searchName = request.getParameter("searchName");
@@ -68,15 +69,15 @@ public class RegisterServlet extends HttpServlet {
 			request.setAttribute("page", pageNumber);
 			request.setAttribute("totalPages", totalPages);
 		} else if ("register".equals(action)) {
-			view = "register/registerGoods.jsp";
+			view = "manage/registerGoods.jsp";
 		} else if ("update".equals(action)) {
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
 			request.setAttribute("goods", dao.getOneGoods(goodsid));
-			view = "register/updateGoods.jsp";
+			view = "manage/updateGoods.jsp";
 		} else if ("delete".equals(action)) {
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
 			request.setAttribute("goods", dao.getOneGoods(goodsid));
-			view = "register/deleteGoods.jsp";
+			view = "manage/deleteGoods.jsp";
 		}
 		
 		RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/views/" + view);
@@ -87,7 +88,7 @@ public class RegisterServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("action");
 		
-		String view = "/register/Register.do";
+		String view = "/manage/Manage.do";
 		String searchName = request.getParameter("searchName");
 		String searchCate = request.getParameter("searchCate");
 		String page = request.getParameter("page");
@@ -105,7 +106,8 @@ public class RegisterServlet extends HttpServlet {
 				url.append("?");
 				hasCondition = true;
 			}
-			url.append("searchName=" + searchName);
+			String encodedSearchName = URLEncoder.encode(searchName, "UTF-8");
+			url.append("searchName=" + encodedSearchName);
 		}
 		if (!"".equals(searchCate) && searchCate != null) {
 			if (hasCondition) {

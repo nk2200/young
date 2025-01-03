@@ -74,7 +74,7 @@
     <section class="checkout spad">
         <div class="container">
             <div class="checkout__form">
-                <form action="/register/Register.do" method="post" enctype="multipart/form-data" name="form" onsubmit="return checkForm();">
+                <form action="/manage/Manage.do" method="post" enctype="multipart/form-data" name="form" onsubmit="return checkForm();">
 	                <div class="checkout__input">
 	                    <p>상품명<span>*</span></p>
 	                    <input type="text" name="goods_name">

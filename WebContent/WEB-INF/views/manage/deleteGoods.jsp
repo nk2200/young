@@ -82,7 +82,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                	<form action="/register/Register.do" method="post" onsubmit="return confirmDelete(event);">
+                	<form action="/manage/Manage.do" method="post" onsubmit="return confirmDelete(event);">
                 		<input type="hidden" name="current_desc_path" value="${goods.goods_desc}">
                 		<input type="hidden" name="current_main_path" value="${goods.goods_fname_main}">
                 		<input type="hidden" name="current_sub_path" value="${goods.goods_fname_sub}">
