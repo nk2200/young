@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../resource/js/price-format.js" type="text/javascript"></script>
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -82,7 +84,7 @@
 											<h5>${order.buy_qty}</h5>
 										</td>
 
-										<td class="shoping__cart__total"><h5>${order.total_price}원</h5>
+										<td class="shoping__cart__total"><h5 class="order-total-price">${order.total_price}원</h5>
 											<!-- 예시로 가격 * 수량을 계산 --></td>
 
 <!-- 										<td class="shoping__cart__item__close"><span
