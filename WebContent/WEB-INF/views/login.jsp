@@ -29,7 +29,7 @@
       <div id="form-inner-container">
         <!-- Sign up form -->
         <div id="sign-up-container">
-          <h3>Get Started</h3>
+          <h3 style="text-align: center;">로그인</h3>
           <form method="post" action="/customer/Login.do?action=login">
 <!--             <label for="name">Name</label>
             <input type="text" name="name" id="name" placeholder="Name">

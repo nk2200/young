@@ -40,6 +40,7 @@ public class CustomerServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		//로그인
 		HttpSession session = request.getSession();
 		
@@ -52,7 +53,7 @@ public class CustomerServlet extends HttpServlet {
 				if(dbpw!=null) {
 					if(dbpw.equals(password)) {
 						session.setAttribute("customerid", customerid);
-						String url = "/main/Main.do?action=search";
+						String url = "/main";
 						response.sendRedirect(url);
 					}else {
 						System.out.println("dbpw: "+dbpw);

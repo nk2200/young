@@ -65,7 +65,7 @@ public class DetailServlet extends HttpServlet {
 	        response.setContentType("application/json");
 	        response.setCharacterEncoding("UTF-8");
 	        
-	        String json = "{\"message\": \"좋아요 업뎃 성공!\", \"updated_likes\": " + updated_likes + "}";
+	        String json = "{\"message\": \"좋아요를 추가하셨습니다.\", \"updated_likes\": " + updated_likes + "}";
 	        response.getWriter().write(json);
 	        
 	        
@@ -77,7 +77,7 @@ public class DetailServlet extends HttpServlet {
 	        response.setContentType("application/json");
 	        response.setCharacterEncoding("UTF-8");
 	        
-	        String json = "{\"message\": \"좋아요 취소 성공!\", \"updated_likes\": " + updated_likes + "}";
+	        String json = "{\"message\": \"좋아요를 취소하셨습니다.\", \"updated_likes\": " + updated_likes + "}";
 	        response.getWriter().write(json);
 		}
 	}
