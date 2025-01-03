@@ -15,7 +15,6 @@
 		const deleteId = document.getElementById("cartid_value");
 		const cartid = deleteId.value;
 		
-		console.log('cartid' + cartid);
 		if(confirm('삭제하시겠습니까 ?')){
 			fetch('/cart/Cart.do',{
 				method : 'POST',
@@ -109,7 +108,7 @@
 	
 	// 수량 업데이트 함수
 	function updateCartQty(cartId, newQty) {
-		// JavaScript (fetch 요청 후 업데이트)
+	
 		fetch('/cart/Cart.do', {
 		    method: 'POST',
 		    headers: {
@@ -164,7 +163,7 @@
 	    params.append("selectedItems", selectedItems.join(','));  // 배열을 ','로 구분된 문자열로 변환
 
         
-	    console.log('선택된 항목', selectedItems);
+	    
 	    
 		fetch('/pay/Pay.do',{
 			method: 'POST',
@@ -191,13 +190,19 @@
 
 	
 	function allPay() {
+		console.log('allPay 실행');
 	    let allCartIds = []; // cartid 값을 담을 배열
 
 	    // .cartid_value 클래스를 가진 모든 hidden input에서 cartid 값 가져오기
 	     document.querySelectorAll('#cartid_value').forEach(hiddenInput => {
 	        allCartIds.push(hiddenInput.value); // cartid 값을 배열에 추가
 	    });
-	
+		
+	     if (allCartIds.length === 0) { // 배열이 비어있는지 확인
+    	    alert('장바구니에 상품이 없습니다.'); // 알림 창 표시
+    	    return;
+    	}
+	     
 	    // fetch로 데이터 전송
 	    fetch('/pay/Pay.do', {
 	        method: 'POST',
@@ -225,27 +230,82 @@
 	
 </script>
 <style>
+.shoping__cart__quantity {
+	text-align: center; /* 테이블 셀 내에서 중앙 정렬 */
+}
 
-   .shoping__cart__quantity {
-    text-align: center; /* 테이블 셀 내에서 중앙 정렬 */
-  }
+.quantity-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
-  .quantity-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.quantity-container button, .quantity-container input {
+	margin: 0 5px; /* 버튼 간의 간격을 설정 */
+}
 
-  .quantity-container button,
-  .quantity-container input {
-    margin: 0 5px; /* 버튼 간의 간격을 설정 */
-  }
+.quantity-container input {
+	width: 40px; /* 원하는 입력 크기 설정 */
+	text-align: center; /* 입력값 가운데 정렬 */
+}
 
-  .quantity-container input {
-    width: 40px; /* 원하는 입력 크기 설정 */
-    text-align: center; /* 입력값 가운데 정렬 */
-  }
+.shoping__cart__table {
+	width: 100%;
+	margin-top: 20px; /* 테이블 위쪽 마진 */
+}
 
+.shoping__cart__table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.shoping__cart__table table {
+    width: 100%;
+    border-collapse: collapse; /* 셀 간 경계가 겹치지 않도록 설정 */
+}
+
+th, td {
+    border: 1px solid #ebebeb; /* 셀에 경계 추가 */
+    padding: 10px; /* 셀 안의 여백 설정 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+th {
+    background-color: #f9f9f9; /* 헤더 배경 색상 설정 */
+    font-weight: bold; /* 헤더 글자 두껍게 설정 */
+}
+
+.shoping__cart__item__check {
+    border: none; /* 선을 제거 */
+}
+
+.shoping__cart__item__check input[type="checkbox"] {
+    margin-right: 10px; /* 체크박스와 텍스트 간격 추가 */
+}
+
+.shoping__cart__quantity button {
+    background-color: #f27370; /* 버튼 배경색 */
+    color: white; /* 버튼 텍스트 색상 */
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.shoping__cart__quantity input[type="text"] {
+    width: 40px;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+.shoping__cart__total a {
+    text-decoration: none;
+    color: #f27370; /* 텍스트 색상 */
+}
+
+.shoping__cart__total a:hover {
+    color: #d25a5a; /* hover 시 텍스트 색상 변경 */
+}
 
 </style>
 </head>
@@ -260,20 +320,21 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<div style="color:black;"class="breadcrumb__text" >
-						<h2 style="color:black;">장바구니</h2>
-							<a href="/" style="color:black;"><i class="bi bi-house-door"></i></a>
-							 <span>&nbsp;></span> 
-							<span style="color:black;">Shopping
-								Cart</span>
-					
+					<div style="color: black;" class="breadcrumb__text">
+						<h2 style="color: black;">장바구니</h2>
+						<a href="/" style="color: black;"><i class="bi bi-house-door"></i></a>
+						<span>&nbsp;></span> <span style="color: black;">Shopping
+							Cart</span>
+
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-	<!-- Breadcrumb Section End -->
 
+
+	<br>
+	<br>
 	<!-- Shoping Cart Section Begin -->
 	<section class="shoping-cart spad">
 		<div class="container">
@@ -289,8 +350,6 @@
 									<th>판매가</th>
 									<th>수량</th>
 									<th>선택</th>
-
-									<th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -301,23 +360,26 @@
 											class="item-checkbox" /> <input type="hidden"
 											value="${cart.cartid}" id="cartid_value" /></td>
 										<td class="shoping__cart__item"><img
-											src="/resource/img/goods/${cart.goods.goods_fname_main}" alt="">
+											src="/resource/img/goods/${cart.goods.goods_fname_main}"
+											alt="">
 											<h5>${cart.goods.goods_name}</h5></td>
 										<td class="shoping__cart__price">
 											${cart.goods.goods_price}</td>
 										<td class="shoping__cart__quantity">
 											<div class="quantity-container">
-											    <button type="button" onclick="decrease('${cart.cartid}')">-</button>
-											    <input type="text" id="quantity_${cart.cartid}" value="${cart.cart_qty}">
-											    <button type="button" onclick="increase('${cart.cartid}')">+</button>
+												<button type="button" onclick="decrease('${cart.cartid}')">-</button>
+												<input type="text" id="quantity_${cart.cartid}"
+													value="${cart.cart_qty}">
+												<button type="button" onclick="increase('${cart.cartid}')">+</button>
 											</div>
 
 										</td>
 
-										<td class="shoping__cart__total">
-											<a href="/detail/Detail.do?goodsid=${cart.goods.goodsid }" class="icon_cursor_alt"><span class="icon"></span>
-												상세</a> <br> 
-											<a href="#" onclick="deleteCart()" class="icon_close"><span class="icon"></span> 삭제</a></td>
+										<td class="shoping__cart__total"><a
+											href="/detail/Detail.do?goodsid=${cart.goods.goodsid }"
+											class="icon_cursor_alt"><span class="icon"></span> 상세</a> <br>
+											<a href="#" onclick="deleteCart()" class="icon_close"><span
+												class="icon"></span> 삭제</a></td>
 									</tr>
 								</c:forEach>
 
@@ -343,8 +405,8 @@
 							<li>총 개수 <span id="totalQty">${totalQty }</span></li>
 						</ul>
 						<div class="order_btn_area">
-							<a class="select-btn" onclick="selectPay()">선택주문 </a> &nbsp;&nbsp;&nbsp;
-							<a href="#"class="all-btn" onclick="allPay()">전체주문</a>
+							<a class="select-btn" onclick="selectPay()">선택주문 </a>
+							&nbsp;&nbsp;&nbsp; <a class="all-btn" onclick="allPay()">전체주문</a>
 						</div>
 					</div>
 				</div>

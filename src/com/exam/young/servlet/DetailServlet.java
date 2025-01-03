@@ -28,14 +28,20 @@ public class DetailServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//임시로 customer 생성
-		CustomerDto customer = new CustomerDto("pororo", "뽀로로", "12345", "Antarctica");
-		String customerid = customer.getCustomerid();
-		
 		String goodsid = request.getParameter("goodsid");
 		System.out.println("getparameter goodsid: "+goodsid);
+		//세션 가져오기
 		HttpSession session = request.getSession();
-//		String customerid = (String) session.getAttribute("customerid");
+		String customerid = (String) session.getAttribute("customerid");
+		if (customerid == null) {
+			request.setAttribute("message", "로그인하지 않은 사용자입니다. 다시 로그인해주세요.");
+			String view = "/login.jsp";
+
+			RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/views/" + view);
+			disp.forward(request, response);
+			return;
+		}
+		
 		String view = "shop-details.jsp";
 		
 		if(goodsid != null) {			
@@ -56,6 +62,17 @@ public class DetailServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("action");
+		HttpSession session = request.getSession();
+		String customerid= (String) session.getAttribute("customerid");
+		
+		if (customerid == null) {
+			request.setAttribute("message", "로그인하지 않은 사용자입니다. 다시 로그인해주세요.");
+			String view = "/login.jsp";
+
+			RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/views/" + view);
+			disp.forward(request, response);
+			return;
+		}
 		
 		if("likesPlus".equals(action)) {
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
@@ -65,7 +82,9 @@ public class DetailServlet extends HttpServlet {
 	        response.setContentType("application/json");
 	        response.setCharacterEncoding("UTF-8");
 	        
-	        String json = "{\"message\": \"좋아요 업뎃 성공!\", \"updated_likes\": " + updated_likes + "}";
+	        session.setAttribute("customerid", customerid);
+	        
+	        String json = "{\"message\": \"좋아요를 추가하셨습니다.\", \"updated_likes\": " + updated_likes + "}";
 	        response.getWriter().write(json);
 	        
 	        
@@ -77,7 +96,9 @@ public class DetailServlet extends HttpServlet {
 	        response.setContentType("application/json");
 	        response.setCharacterEncoding("UTF-8");
 	        
-	        String json = "{\"message\": \"좋아요 취소 성공!\", \"updated_likes\": " + updated_likes + "}";
+	        session.setAttribute("customerid", customerid);
+	        
+	        String json = "{\"message\": \"좋아요를 취소하셨습니다.\", \"updated_likes\": " + updated_likes + "}";
 	        response.getWriter().write(json);
 		}
 	}

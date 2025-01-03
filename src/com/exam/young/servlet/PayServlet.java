@@ -124,6 +124,7 @@ public class PayServlet extends HttpServlet {
 			
 		}else if("allCart".equals(action)) {
 			
+<<<<<<< HEAD
 			String allIds = request.getParameter("allIds"); // String [cartid, cartid, cartid ...]
 			
 			String[] selectIds = allIds.split(",");
@@ -164,6 +165,11 @@ public class PayServlet extends HttpServlet {
 			
 			response.sendRedirect("/pay/Pay.do");
 		}
+=======
+			String allIds = request.getParameter("allIds");
+			System.out.println("allIds" + allIds);
+	}
+>>>>>>> branch 'dev' of https://github.com/nk2200/young.git
 
 		
 		//결제 버튼을 클릭했을 때
