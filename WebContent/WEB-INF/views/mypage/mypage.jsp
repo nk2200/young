@@ -16,7 +16,6 @@
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 
-
 	<!-- Breadcrumb Section Begin -->
 	<!-- 고객정보 추가,yhl -->
 	<!-- 	<section class="breadcrumb-section set-bg"
@@ -44,9 +43,9 @@
 			<div
 				style="text-align: center; font-weight: bold; font-size: 36px; margin-bottom: 20px;">
 				마이페이지</div>
-			<div
+<%-- 			<div
 				style="background-color: #EB6D9A; color: white; padding: 10px; margin-bottom: 20px;">
-				${customer.customer_name}님 반갑습니다.</div>
+				${customer.customer_name}님 반갑습니다.</div> --%>
 			<div class="row">
 
 				<div class="col-lg-12">
@@ -71,7 +70,7 @@
 											<!-- BuyDto에서 buy_date를 가져오기 -->
 										</td>
 										<td class="shoping__cart__item"><img
-											src="../${order.goods_fname_main}" alt="">
+											src="../../resource/img/goods/${order.goods_fname_main}" alt="">
 											<h5>${order.goods_name}</h5> <!-- GoodsDto에서 goods_name 가져오기 -->
 										</td>
 										<td class="shoping__cart__quantity">

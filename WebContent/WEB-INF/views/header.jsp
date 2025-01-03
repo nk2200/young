@@ -61,17 +61,19 @@ body, html {
                      <c:choose>
                         <c:when test="${not empty customerid and customerid != 'admin'}">
                            <!-- 고객이 admin이 아닐 경우 마이페이지 링크 표시 -->
-                  		<span style="font-weight=200">young회원 <i style="font-weight: 700;text-decoration : underline;">${customerid}</i></span>님&nbsp;&nbsp;
+                  		<span style="font-weight=200">young회원 <i style="font-weight: 700;">${customerid}님</i></span>&nbsp;&nbsp;
                      <ul>
                         <!-- <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li> -->
                           <li><a href="/cart/Cart.do?action=select"><i class="fa fa-shopping-bag"></i><span>3</span></a></li>
                      </ul>
                            <a href="MyPage.do">마이페이지</a>&nbsp;
                         </c:when>
+                        <c:when test="${customerid == 'admin' }">
+                           <a href="/manage/Manage.do">상품관리</a>&nbsp;                        
+                        </c:when>
                         <c:otherwise>
                            <!-- 고객이 admin일 경우 상품관리 링크 표시 -->
 	                        <span>로그인 해주세요!</span>&nbsp;
-                           <a href="/register/Register.do">상품관리</a>&nbsp;
                         </c:otherwise>
                      </c:choose>
 
