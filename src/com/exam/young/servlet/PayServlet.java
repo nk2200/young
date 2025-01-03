@@ -53,7 +53,7 @@ public class PayServlet extends HttpServlet {
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
 			int goods_qty = Integer.parseInt(request.getParameter("goods_qty"));
 			customerid = request.getParameter("customerid");
-			
+			System.out.println(goodsid+", "+goods_qty+", "+customerid);
 			//1. 상품명, 가격 가져오기
 			List<Map<String, Object>> tempDataList = new ArrayList<>();
 			Map<String, Object> goods = dao.getPrice(goodsid);
@@ -73,10 +73,13 @@ public class PayServlet extends HttpServlet {
 			tempDataList.add(insertInfo);
 			
             session.setAttribute("tempDataList", tempDataList);
-            
+            response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write("buy에 넣기 성공");
+			session.setAttribute("customerid", customerid);
 			
 			//정보를  jsp에 redirect 하기
-            response.sendRedirect("/pay/Pay.do");
+//            response.sendRedirect("/pay/Pay.do");
 			
 		
 		//장바구니에서 구매하기 버튼 클릭
@@ -117,6 +120,7 @@ public class PayServlet extends HttpServlet {
 
 	            // 세션에 저장
 	            session.setAttribute("tempDataList", tempDataList);
+	            session.setAttribute("customerid", customerid);
 			    
 			}
 	
@@ -162,7 +166,7 @@ public class PayServlet extends HttpServlet {
 
 	            // 세션에 저장
 	            session.setAttribute("tempDataList", tempDataList);
-			    
+	            session.setAttribute("customerid", customerid);
 			}
 			
 			response.setContentType("application/json");

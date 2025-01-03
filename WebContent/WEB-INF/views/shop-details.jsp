@@ -92,7 +92,7 @@
 					success : function(response){
 						console.log('Success: ',response);
 						//redirect
-						//window.location.href = "/pay/Pay.do";
+						window.location.href = "/pay/Pay.do";
 					},
 					error : function(xhr, status, error) {
 						console.error('Error:', error);
@@ -278,7 +278,7 @@
 						</div>
 						<a href="#" class="primary-btn" id="add-btn"
 							data-customerid="${customerid}">ADD TO CART</a> 
-							<a href="/pay/Pay.do?goodsid=${goods.goodsid }" class="primary-btn" id="buy-btn"
+							<a href="#" class="primary-btn" id="buy-btn"
 							data-customerid="${customerid }">BUY</a>
 							<a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
 					</div>

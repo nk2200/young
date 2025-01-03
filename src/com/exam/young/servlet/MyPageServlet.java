@@ -21,7 +21,7 @@ import com.exam.young.dto.GoodsDto;
 import com.exam.young.dto.OrderDto;
 
 // 마이페이지 서블릿,yhl
-@WebServlet("/MyPage.do")
+@WebServlet("/mypage/MyPage.do")
 public class MyPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,8 +29,11 @@ public class MyPageServlet extends HttpServlet {
     	//String userId = request.getParameter("userId");
     	MyPageDao dao = new MyPageDao();
     	
-    	CustomerDto customer = dao.getCustomer("yhl9701");
-    	List<OrderDto> orderList = dao.getBuyAll("yhl9701");
+        HttpSession session = request.getSession();
+        String customerid = (String) session.getAttribute("customerid");
+        
+    	CustomerDto customer = dao.getCustomer(customerid);
+    	List<OrderDto> orderList = dao.getBuyAll(customerid);
     	
     	//if(userId != null) {
 //	        HttpSession session = request.getSession();
@@ -44,9 +47,6 @@ public class MyPageServlet extends HttpServlet {
         request.setAttribute("customer", customer);
         request.setAttribute("orderList", orderList);
         
-        
-        HttpSession session = request.getSession();
-        String customerId = (String) session.getAttribute("customerId");
         
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/mypage/mypage.jsp");
         dispatcher.forward(request, response);
