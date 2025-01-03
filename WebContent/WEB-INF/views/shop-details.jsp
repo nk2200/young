@@ -11,6 +11,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>올리브영 온라인몰</title>
+<link rel="stylesheet"
+   href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	
+<script src="/resource/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="/resource/css/bootstrap.min.css"
+   type="text/css">
 <style>
 #category-btn {
 	background-color: transparent; /* 버튼 배경을 투명하게 설정 */
@@ -59,8 +69,21 @@
 					},
 					success : function(response) {
 						console.log('Success:', response);
-						alert("장바구니에 정상적으로 추가되었습니다.");
-						window.location.href = '/cart/Cart.do?action=select&customerid='+customerid;				
+						var message = "장바구니에 정상적으로 추가되었습니다.";
+						//모달
+						// 모달에 메시지 설정
+                        $('#modal-body').text(message);
+						$('#login-modal-btn').text("장바구니로 이동");
+                        $('#myModal').modal('show');
+                        
+                        $('#login-modal-btn').click(function(){
+							window.location.href = '/cart/Cart.do?action=select&customerid='+customerid;		                        	
+                        });
+                        // 모달이 닫힌 후 페이지를 새로고침
+                        $('#myModal').on('hidden.bs.modal', function () {
+							window.location.reload();
+                        });
+
 					},
 					error : function(xhr, status, error) {
 						console.error('Error:', error);
@@ -122,9 +145,15 @@
 					},
 					success : function(response){
 						console.log('Success: ',response);
-	            		icon.css('color', '#6f6f6f');
 	            		$('#likes-text').text(response.updated_likes);
-						alert(response.message);
+	            		var message = response.message;
+						//모달
+						// 모달에 메시지 설정
+                        $('#modal-body').text(message);
+
+                        $('#myModal').modal('show');
+
+	            		icon.css('color', '#6f6f6f');
 					},
 					error : function(xhr, status, error) {
 						console.error('Error:', error);
@@ -141,9 +170,14 @@
 					},
 					success : function(response){
 						console.log('Success: ',response);
-	            		icon.css('color', 'rgb(255, 0, 0)');
 	            		$('#likes-text').text(response.updated_likes);
-						alert(response.message);
+	            		var message = response.message;
+						//모달
+						// 모달에 메시지 설정
+                        $('#modal-body').text(message);
+
+                        $('#myModal').modal('show');
+	            		icon.css('color', 'rgb(255, 0, 0)');
 					},
 					error : function(xhr, status, error) {
 						console.error('Error:', error);
@@ -399,7 +433,25 @@
 		</div>
 	</section> -->
 	<!-- Related Product Section End -->
-
+<!-- Modal -->
+   <div id="myModal" class="modal" tabindex="-1" role="dialog">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title">Oliveyoung Alert</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+           </button>
+         </div>
+         <div class="modal-body" id="modal-body">
+           <!-- 메시지가 동적으로 추가됩니다 -->
+         </div>
+         <div class="modal-footer">
+           <button type="button" id="login-modal-btn" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </div>
+       </div>
+     </div>
+   </div>
 	<jsp:include page="footer.jsp"></jsp:include>
 
 </body>
