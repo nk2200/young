@@ -22,7 +22,7 @@ body {
 
 #sign-up-container, #sign-in-container {
     padding: 60px 80px;
-    width: 320px;
+    width: 360px;
     display: inline-block;
 }
 
@@ -34,7 +34,7 @@ form input:not(:last-of-type) {
     padding: 20px;
     margin-top: 10px;
     border-radius: 10px;
-    width: 100%;
+    width: 320px;
 }
 
 #form-controls {
@@ -84,6 +84,9 @@ button[type="button"] {
     color: #82dc28;
 }
 
+#toggleSignIn button:hober {
+	color: #ff7878;
+}
 #terms {
     width: 30px;
     height: 30px;
