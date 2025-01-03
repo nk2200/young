@@ -206,7 +206,7 @@
 	<!-- Blog Section Begin -->
 	<section class="from-blog spad">
 		<div class="container">
-			<c:if test="${isLoggedIn}">
+			<c:if test="${isLoggedIn && customerid != 'admin'}">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="section-title from-blog__title">
