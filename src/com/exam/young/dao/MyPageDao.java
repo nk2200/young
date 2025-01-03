@@ -13,6 +13,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.exam.young.dto.CustomerDto;
+import com.exam.young.dto.GoodsDto;
 import com.exam.young.dto.OrderDto;
 
 public class MyPageDao {

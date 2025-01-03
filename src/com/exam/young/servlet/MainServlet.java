@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.exam.young.dao.MainDao;
+import com.exam.young.dto.CustomerDto;
 import com.exam.young.dto.GoodsDto;
 
 @WebServlet("/main")
@@ -37,6 +38,21 @@ public class MainServlet extends HttpServlet {
             goodsList = maindao.getRankedGoods(); 
         }
 
+        HttpSession session = request.getSession();
+        String customerid = (String) session.getAttribute("customerid");
+      
+        if (customerid != null) {
+            CustomerDto customer = maindao.getCustomer(customerid);
+            List<GoodsDto> recommendedList = maindao.getRecommendedProducts(customerid);
+            
+            request.setAttribute("customer", customer);
+            request.setAttribute("recommendedList", recommendedList);
+            request.setAttribute("isLoggedIn", true); 
+        } else {
+        	request.setAttribute("isLoggedIn", false);
+        }
+        
+
 //        if ("search".equals(action) && searchName != null && !searchName.isEmpty()) {
 //            goodsList = maindao.searchGoodsByName(searchName);
 //            
@@ -56,8 +72,6 @@ public class MainServlet extends HttpServlet {
         
         request.setAttribute("goodsList", goodsList);
         
-        HttpSession session = request.getSession();
-        session.setAttribute("customerId", "yhl9701");
 
         request.getRequestDispatcher("WEB-INF/views/index.jsp").forward(request, response);
 	}

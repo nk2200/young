@@ -111,9 +111,13 @@ ol {
   Helper CSS
 -----------------------*/
 
+/* 위치 수정,yhl */
 .section-title {
 	margin-bottom: 50px;
-	text-align: center;
+/* 	text-align: center; */
+    display: flex;               /* flexbox 사용 */
+    align-items: baseline;         /* 수직 중앙 정렬 */
+
 }
 
 .section-title h2 {
@@ -121,8 +125,8 @@ ol {
 	font-weight: 700;
 	position: relative;
 }
-
-.section-title h2:after {
+/* 삭제,yhl */
+/* .section-title h2:after {
 	position: absolute;
 	left: 0;
 	bottom: -15px;
@@ -132,7 +136,7 @@ ol {
 	background: #7fad39;
 	content: "";
 	margin: 0 auto;
-}
+} */
 
 .set-bg {
 	background-repeat: no-repeat;
@@ -1930,12 +1934,12 @@ ol {
 	/* border-bottom: 1px solid #ebebeb; */
 	border-color: inherit;
 }
-
+/* css수정,yhl */
 .shoping__cart__table table thead th {
 	font-size: 20px;
 	font-weight: 700;
 	color:#666;
-	padding-bottom: 20px;
+/* 	padding-bottom: 20px; */
 	border-top: 2px solid #d6d6d6;
     border-bottom: 1px solid #ccc;
     background: #fafafa;
@@ -1951,16 +1955,17 @@ ol {
 	padding-bottom: 30px;
 	border-bottom: 1px solid #ebebeb;
 }
-/* 위치수정, yhl */
+/* 위치수정, 정렬수정 yhl */
 .shoping__cart__table table tbody tr td.shoping__cart__item {
 	width: 580px;
-	text-align: center;
+	text-align: left;
+	padding-left:120px;
 }
-
+/* 크기 수정,yhl */
 .shoping__cart__table table tbody tr td.shoping__cart__item img {
 	display: inline-block;
 	 margin-right: 10px;
-    width: 150px; /* 원하는 너비로 설정 */
+    width: 100px; /* 원하는 너비로 설정 */
     height: auto;
 }
 
@@ -1968,12 +1973,12 @@ ol {
 	color: #1c1c1c;
 	display: inline-block;
 }
-
+/* 크기 수정,yhl */
 .shoping__cart__table table tbody tr td.shoping__cart__price {
 	font-size: 18px;
 	color: #1c1c1c;
 	font-weight: 700;
-	width: 120px;
+	width: 150px;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__total {
@@ -2004,9 +2009,9 @@ ol {
 	color: #b2b2b2;
 	cursor: pointer;
 }
-
+/* 크기수정,yhl */
 .shoping__cart__table table tbody tr td.shoping__cart__quantity {
-	width: 225px;
+	width: 200px;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty {
