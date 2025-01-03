@@ -93,52 +93,43 @@ public class RegisterServlet extends HttpServlet {
 		String page = request.getParameter("page");
 		boolean hasCondition = false;
 		
+		StringBuffer url = new StringBuffer(view);
 		if (!"".equals(page) && page != null) {
-			view += "?page=" + page;
+			url.append("?page=" + page);
 			hasCondition = true;
 		}
 		if (!"".equals(searchName) && searchName != null) {
 			if (hasCondition) {
-				view += "&";
+				url.append("&");
 			} else {
-				view += "?";
+				url.append("?");
 				hasCondition = true;
 			}
-			view += "searchName=" + searchName;
+			url.append("searchName=" + searchName);
 		}
 		if (!"".equals(searchCate) && searchCate != null) {
 			if (hasCondition) {
-				view += "&";
+				url.append("&");
 			} else {
-				view += "?";
+				url.append("?");
 			}
-			view += "category=" + searchCate;
+			url.append("category=" + searchCate);
 		}
+		view = url.toString();
 		
 		String imageUploadPath = getServletContext().getRealPath("resource/img/goods");
-//		String imageUploadPath2 = "C:\\dev\\young\\WebContent";
 		new File(imageUploadPath).mkdirs();
 		
 		if ("insert".equals(action)) {
-			GoodsDto goods = new GoodsDto();
-			
-			int price = Integer.parseInt(request.getParameter("goods_price"));
-			int qty = Integer.parseInt(request.getParameter("goods_qty"));
-			String category = request.getParameter("goods_category");
-			
-			goods.setGoods_name(request.getParameter("goods_name"));
-			goods.setGoods_price(price);
-			goods.setGoods_category(category);
-			goods.setGoods_qty(qty);
+			GoodsDto goods = setGoodsDto(request);
 			
 		    for (Part part : request.getParts()) {
 		    	if (part.getSubmittedFileName() != null && part.getSize() > 0) {
-		    		String fileName = getFileName(category, part);
+		    		String fileName = getFileName(goods.getGoods_category(), part);
 		    		
 		    		if (fileName != null) {
 		    			String filePath = imageUploadPath + File.separator + fileName;
 		    			saveFile(part.getInputStream(), filePath);
-//		    			saveFile(part.getInputStream(), imageUploadPath2 + File.separator + fileName);
 		    		}
 		    		
 		    		if ("goods_desc".equals(part.getName())) {
@@ -163,45 +154,32 @@ public class RegisterServlet extends HttpServlet {
 			if (goodsid == 0) {
 				throw new RuntimeException("상품이 존재하지 않습니다.");
 			} else {
-				GoodsDto goods = new GoodsDto();
-				
-				int price = Integer.parseInt(request.getParameter("goods_price"));
-				int qty = Integer.parseInt(request.getParameter("goods_qty"));
-				String category = request.getParameter("goods_category");
-				
+				GoodsDto goods = setGoodsDto(request);
 				goods.setGoodsid(goodsid);
-				goods.setGoods_name(request.getParameter("goods_name"));
-				goods.setGoods_price(price);
-				goods.setGoods_category(category);
-				goods.setGoods_qty(qty);
 				
 				//이전 이미지 경로
-				String desc = request.getParameter("oldDescPath");
-				String mainImage = request.getParameter("oldMainPath");
-				String subImage = request.getParameter("oldSubPath");
+				String desc = request.getParameter("current_desc_path");
+				String mainImage = request.getParameter("current_main_path");
+				String subImage = request.getParameter("current_sub_path");
 				
 				for (Part part : request.getParts()) {
 					String partName = part.getName();
 			    	if (part.getSubmittedFileName() != null && part.getSize() > 0) {
-			    		String newFileName = getFileName(category, part);
+			    		String newFileName = getFileName(goods.getGoods_category(), part);
 			    		
 			    		if ("goods_desc".equals(partName)) {
 			    			deleteFile(imageUploadPath, desc);
-//			    			deleteFile(imageUploadPath2, desc);
 				    		desc = newFileName;
 				    	} else if("main_image".equals(partName)) {
 				    		deleteFile(imageUploadPath, mainImage);
-//				    		deleteFile(imageUploadPath2, mainImage);
 				    		mainImage = newFileName;
 				    	} else {
 				    		deleteFile(imageUploadPath, subImage);
-//				    		deleteFile(imageUploadPath2, subImage);
 				    		subImage = newFileName;
 				    	}
 			    		
 		    			String filePath = imageUploadPath + File.separator + newFileName;
 		    			saveFile(part.getInputStream(), filePath);
-//		    			saveFile(part.getInputStream(), imageUploadPath2 + File.separator + newFileName);
 			    	}
 			    	
 			    	if ("goods_desc".equals(part.getName())) {
@@ -225,11 +203,37 @@ public class RegisterServlet extends HttpServlet {
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
 			if (goodsid != 0) {
 				dao.deleteGoods(goodsid);
+				
+				String desc = request.getParameter("current_desc_path");
+				String mainImage = request.getParameter("current_main_path");
+				String subImage = request.getParameter("current_sub_path");
+    			deleteFile(imageUploadPath, desc);
+	    		deleteFile(imageUploadPath, mainImage);
+	    		deleteFile(imageUploadPath, subImage);
+				
 				response.sendRedirect(view);
 			} else {
 				throw new RuntimeException("상품이 존재하지 않습니다.");
 			}
 		}
+	}
+	
+	private GoodsDto setGoodsDto(HttpServletRequest request) {
+		int price = 0;
+		int qty = 0;
+		try {
+			price = Integer.parseInt(request.getParameter("goods_price"));
+			qty = Integer.parseInt(request.getParameter("goods_qty"));
+		} catch (NumberFormatException e) {
+			System.out.println(e.getMessage());
+		}
+		GoodsDto goods = new GoodsDto();
+		
+		goods.setGoods_name(request.getParameter("goods_name"));
+		goods.setGoods_price(price);
+		goods.setGoods_category(request.getParameter("goods_category"));
+		goods.setGoods_qty(qty);
+		return goods;
 	}
 	
 	private void saveFile(InputStream inputStream, String path) throws IOException {

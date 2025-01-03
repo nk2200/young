@@ -100,7 +100,7 @@
 	                    <p>상품 설명<span>*</span></p>
 	                    <input type="file" name="goods_desc" style="padding-left:0px;border:none;">
 	                    <img src="../resource/img/goods/${goods.goods_desc}" style="width:150px;max-height:300px;">
-	                    <input type="hidden" name="oldDescPath" value="${goods.goods_desc}">
+	                    <input type="hidden" name="current_desc_path" value="${goods.goods_desc}">
 	                </div>
 	                <div class="row">
 	                    <div class="col-lg-6">
@@ -108,7 +108,7 @@
 			                    <p>메인 이미지<span>*</span></p>
 			                    <input type="file" name="main_image" style="padding-left:0px;border:none;">
 			                    <img src="../resource/img/goods/${goods.goods_fname_main}" style="width:150px;">
-			                    <input type="hidden" name="oldMainPath" value="${goods.goods_fname_main}">
+			                    <input type="hidden" name="current_main_path" value="${goods.goods_fname_main}">
 	                        </div>
 	                    </div>
 	                    <div class="col-lg-6">
@@ -116,7 +116,7 @@
 	                            <p>서브 이미지</p>
 			                    <input type="file" name="sub_image" style="padding-left:0px;border:none;">
 			                    <img src="../resource/img/goods/${goods.goods_fname_sub}" style="width:150px;">
-			                    <input type="hidden" name="oldSubPath" value="${goods.goods_fname_sub}">
+			                    <input type="hidden" name="current_sub_path" value="${goods.goods_fname_sub}">
 	                        </div>
 	                    </div>
 	                </div>
