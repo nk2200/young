@@ -251,6 +251,26 @@
 	        }).embed(document.getElementById('postcodeDiv'));
 	    }
 	</script>
+	<script>
+	//동의 체크 확인
+    document.addEventListener('DOMContentLoaded', () => {
+	    const checkbox = document.getElementById('acc-or');
+	    const submitButton = document.getElementById('payment_btn');
+	
+	    checkbox.addEventListener('change', () => {
+	        submitButton.disabled = !checkbox.checked;
+	        
+	     	// 버튼 색상 변경
+	        if (checkbox.checked) {
+	          submitButton.style.backgroundColor = '#7FAD39'; // 활성화 색상
+	          submitButton.style.color = '#fff'; // 활성화 텍스트 색상
+	        } else {
+	          submitButton.style.backgroundColor = '#ccc'; // 비활성화 색상
+	          submitButton.style.color = '#666'; // 비활성화 텍스트 색상
+	        }
+	    });
+    });
+  </script>
 </body>
 
 </html>
