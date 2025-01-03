@@ -29,8 +29,11 @@ public class MyPageServlet extends HttpServlet {
     	//String userId = request.getParameter("userId");
     	MyPageDao dao = new MyPageDao();
     	
-    	CustomerDto customer = dao.getCustomer("yhl9701");
-    	List<OrderDto> orderList = dao.getBuyAll("yhl9701");
+        HttpSession session = request.getSession();
+        String customerid = (String) session.getAttribute("customerid");
+        
+    	CustomerDto customer = dao.getCustomer(customerid);
+    	List<OrderDto> orderList = dao.getBuyAll(customerid);
     	
     	//if(userId != null) {
 //	        HttpSession session = request.getSession();
