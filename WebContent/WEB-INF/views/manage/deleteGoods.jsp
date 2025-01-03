@@ -16,6 +16,15 @@
     		padding: 10px 5px;
     	}
     </style>
+    <script>
+        function confirmDelete(event) {
+            if (!confirm("상품을 삭제하시겠습니까?")) {
+                event.preventDefault();
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 
 <body>
@@ -44,7 +53,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="shoping__cart__table">
+                    <div class="shoping__cart__table" style="margin-top:40px;">
                         <table>
                         	<thead>
 								<tr>
@@ -73,8 +82,14 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                	<form action="/register/Register.do" method="post">
+                	<form action="/manage/Manage.do" method="post" onsubmit="return confirmDelete(event);">
+                		<input type="hidden" name="current_desc_path" value="${goods.goods_desc}">
+                		<input type="hidden" name="current_main_path" value="${goods.goods_fname_main}">
+                		<input type="hidden" name="current_sub_path" value="${goods.goods_fname_sub}">
                 		<input type="hidden" name="goodsid" value="${param.goodsid}">
+                		<input type="hidden" name="searchName" value="${param.searchName}">
+	                	<input type="hidden" name="searchCate" value="${param.category}">
+	                	<input type="hidden" name="page" value="${param.page}">
 	                	<input type="hidden" name="action" value="delete">
 	                    <div class="shoping__cart__btns" style="text-align:center;">
 	                        <button type="submit" class="site-btn" style="padding:14px 30px 12px;margin-right:10px;">삭제</button>

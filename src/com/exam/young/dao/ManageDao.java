@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import com.exam.young.dto.GoodsDto;
 import com.exam.young.dto.SearchDto;
 
-public class RegisterDao {
+public class ManageDao {
 	static DataSource dataSource;
 
 	static {
