@@ -55,15 +55,24 @@ public class CustomerServlet extends HttpServlet {
 				if(dbpw!=null) {
 					if(dbpw.equals(password)) {
 						session.setAttribute("customerid", customerid);
-						String url = "/main";
-						response.sendRedirect(url);
+						response.setContentType("application/json");
+				        response.setCharacterEncoding("UTF-8");
+				        String json = "{\"result\": \"success\"}";
+				        System.out.println("success");
+				        response.getWriter().write(json);
+//						String url = "/main";
+//						response.sendRedirect(url);
+				        return;
 					}else {
 						System.out.println("dbpw: "+dbpw);
-//						String url = "/customer/Login.do?";
-//						request.setAttribute("message", "비밀번호가 다릅니다.");
-						String url = "/customer/Login.do?message=" + URLEncoder.encode("비밀번호가 다릅니다.", "UTF-8");
-						response.sendRedirect(url);
+						response.setContentType("application/json");
+				        response.setCharacterEncoding("UTF-8");
+				        String json = "{\"message\": \"비밀번호가 다릅니다.\", \"result\": \"fail\"}";
+				        response.getWriter().write(json);
+//						String url = "/customer/Login.do?message=" + URLEncoder.encode("비밀번호가 다릅니다.", "UTF-8");
+//						response.sendRedirect(url);
 						System.out.println("비밀번호 틀림");
+						return;
 					}
 				}else {
 					System.out.println("아이디 없음!!");
@@ -82,9 +91,18 @@ public class CustomerServlet extends HttpServlet {
 				String password = request.getParameter("password");
 				String customer_address = request.getParameter("customer_address");
 				CustomerDto customer = new CustomerDto(customerid, customer_name, password, customer_address);
+				System.out.println(customer.toString());
 				dao.insertCustomer(customer);
-				String url = "/customer/Login.do";
-				response.sendRedirect(url);
+				
+				response.setContentType("application/json");
+		        response.setCharacterEncoding("UTF-8");
+		        String json = "{\"message\": \"회원가입에 성공하였습니다.\", \"result\": \"success\"}";
+		        System.out.println("success");
+		        response.getWriter().write(json);
+		        
+				/*
+				 * String url = "/customer/Login.do"; response.sendRedirect(url);
+				 */
 			}catch(Exception e) {
 				System.out.println("customerservlet 예외:"+e.getMessage());
 			}

@@ -66,7 +66,7 @@ body, html {
                   		<span style="font-weight=200">young회원 <i style="font-weight: 700;">${customerid}님</i></span>&nbsp;&nbsp;
                      <ul>
                         <!-- <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li> -->
-                          <li><a href="/cart/Cart.do?action=select"><i class="fa fa-shopping-bag"></i><span>3</span></a></li>
+                          <li><a href="/cart/Cart.do?action=select"><i class="fa fa-shopping-bag"></i></a></li>
                      </ul>
                            <a href="/mypage/MyPage.do">마이페이지</a>&nbsp;
                         </c:when>
