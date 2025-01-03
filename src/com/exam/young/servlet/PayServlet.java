@@ -233,7 +233,7 @@ public class PayServlet extends HttpServlet {
 
 		        //customerid를 main에 넘겨주기
 		        session.setAttribute("customerid", customerid);
-		        response.sendRedirect("/mypage/Mypage.do");
+		        response.sendRedirect("/mypage/MyPage.do");
 
 		        return;
 		    } catch (Exception e) {
