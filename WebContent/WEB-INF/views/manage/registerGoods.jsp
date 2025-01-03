@@ -12,36 +12,45 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>상품 등록</title>
     <script type="text/javascript">
+    	window.addEventListener("load", () => {
+    		document.getElementById('confirm').addEventListener('click', function () {
+		        $('#inputModal').modal('hide');
+		    });
+		});
+    	
 	    function checkForm() {
 	        if(form.goods_name.value.trim() === '') {
-	            alert("상품명을 입력해주세요.");
-	            form.goods_name.focus();
+	        	$('#modal-body').text('상품명을 입력해주세요.');
+	        	$('#inputModal').modal('show');
 	            return false;
 	        }
 	        
 	        const price = form.goods_price.value.trim();
 	        const qty = form.goods_qty.value.trim();
 	        if(price === '' || isNaN(price)) {
-	            alert("가격을 숫자로 입력해주세요.");
-	            form.goods_price.focus();
+	        	$('#modal-body').text('가격을 숫자로 입력해주세요.');
+	        	$('#inputModal').modal('show');
 	            return false;
 	        }
 	        if(qty === '' || isNaN(qty)) {
-	            alert("수량을 숫자로 입력해주세요.");
-	            form.goods_qty.focus();
+	        	$('#modal-body').text('수량을 숫자로 입력해주세요.');
+	        	$('#inputModal').modal('show');
 	            return false;
 	        }
 	        
 	        if(form.goods_category.value === 'none') {
-	            alert("카테고리를 선택해주세요.");
+	        	$('#modal-body').text('카테고리를 선택해주세요.');
+	        	$('#inputModal').modal('show');
 	            return false;
 	        }
 	        if(form.goods_desc.value === '') {
-	            alert("상품 설명 이미지를 업로드 해주세요.");
+	        	$('#modal-body').text('상품 설명 이미지를 업로드 해주세요.');
+	        	$('#inputModal').modal('show');
 	            return false;
 	        }
 	        if(form.main_image.value === '') {
-	            alert("상품 메인 이미지를 업로드 해주세요.");
+	        	$('#modal-body').text('상품 메인 이미지를 업로드 해주세요.');
+	        	$('#inputModal').modal('show');
 	            return false;
 	        }
 	        return true;
@@ -130,6 +139,24 @@
             </div>
         </div>
     </section>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="inputModalLabel">상품 등록</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="modal-body"></div>
+				<div class="modal-footer">
+				    <button type="button" class="btn btn-primary" id="confirm">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>
     <!-- Product Section End -->
     <jsp:include page="../footer.jsp"></jsp:include>
 
