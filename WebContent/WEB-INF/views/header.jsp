@@ -66,7 +66,7 @@ body, html {
                         <!-- <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li> -->
                           <li><a href="/cart/Cart.do?action=select"><i class="fa fa-shopping-bag"></i><span>3</span></a></li>
                      </ul>
-                           <a href="MyPage.do">마이페이지</a>&nbsp;
+                           <a href="/mypage/MyPage.do">마이페이지</a>&nbsp;
                         </c:when>
                         <c:when test="${customerid == 'admin' }">
                            <a href="/manage/Manage.do">상품관리</a>&nbsp;                        

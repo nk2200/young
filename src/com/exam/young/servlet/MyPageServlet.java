@@ -21,7 +21,7 @@ import com.exam.young.dto.GoodsDto;
 import com.exam.young.dto.OrderDto;
 
 // 마이페이지 서블릿,yhl
-@WebServlet("/MyPage.do")
+@WebServlet("/mypage/MyPage.do")
 public class MyPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
