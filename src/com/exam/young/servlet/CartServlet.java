@@ -108,16 +108,7 @@ public class CartServlet extends HttpServlet {
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write("카트에 넣기 성공");
 
-		} else if ("pay".equals(action)) { // 이따 해야지
-			// cartdao.payByCartId(customerid);
-
-			request.setAttribute("customerid", customerid);
-			request.setAttribute("cartid", cartid);
-			// session.setAttribute("customerid", customerid);
-
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/pay/Pay.do");
-			dispatcher.forward(request, response);
-		} else if ("deleteCart".equals(action)) {
+		}  else if ("deleteCart".equals(action)) {
 			cartid = Integer.parseInt(request.getParameter("cartid"));
 			customerid = "user1";
 
