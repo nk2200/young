@@ -46,47 +46,51 @@
 	}
 	
 	
-	function deleteSelect(){
-		const checkboxes = document.querySelectorAll('.item-checkbox');
-		
-		const selectedItems = Array.from(checkboxes)
+	function deleteSelect() {
+	    const checkboxes = document.querySelectorAll('.item-checkbox');
+
+	    // 선택된 체크박스의 value 값만 모은 배열 생성
+	    const selectedItems = Array.from(checkboxes)
 	        .filter(checkbox => checkbox.checked) 
 	        .map(checkbox => checkbox.value);   
 
+	    // 선택된 항목이 없으면 경고
 	    if (selectedItems.length === 0) {
 	        alert('선택된 상품이 없습니다.');
 	        return;
 	    }
-	    
+
+	    // 서버로 보낼 데이터 생성
 	    const params = new URLSearchParams();
 	    params.append("selectedItems", selectedItems.join(','));  // 배열을 ','로 구분된 문자열로 변환
 
-        
 	    console.log('선택된 항목', selectedItems);
 	    
-		fetch('/cart/Cart.do',{
-			method: 'POST',
-			headers :{
-				'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			body :  new URLSearchParams({
-				action : "selectDelete",
-				selectedItems : params
-			})
-		})
-		.then(response =>{
-			if(response.ok){
-				alert('상품을 삭제했습니다.');
-				location.reload();
-			}else{
-				alert('상품 삭제에 실패했습니다.');
-			}
-		})
-		.catch(error => {
-			console.error('Error :', error);
-			alert('오류가 발생했습니다.');
-		})
+	    // fetch로 데이터 전송
+	    fetch('/cart/Cart.do', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/x-www-form-urlencoded',
+	        },
+	        body: new URLSearchParams({
+	            action: "selectDelete",
+	            selectedItems: selectedItems.join(',') // selectedItems 배열을 바로 ','로 구분된 문자열로 전송
+	        })
+	    })
+	    .then(response => {
+	        if (response.ok) {
+	            alert('상품을 삭제했습니다.');
+	            location.reload(); // 페이지 새로 고침
+	        } else {
+	            alert('상품 삭제에 실패했습니다.');
+	        }
+	    })
+	    .catch(error => {
+	        console.error('Error :', error);
+	        alert('오류가 발생했습니다.');
+	    });
 	}
+
 	
 	function increase(cartid) {
 		var quantity = document.getElementById("quantity_" + cartid); // 동적으로 찾기
@@ -162,8 +166,7 @@
 	    const params = new URLSearchParams();
 	    params.append("selectedItems", selectedItems.join(','));  // 배열을 ','로 구분된 문자열로 변환
 
-        
-	    
+
 	    
 		fetch('/pay/Pay.do',{
 			method: 'POST',

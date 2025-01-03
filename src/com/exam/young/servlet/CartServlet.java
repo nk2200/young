@@ -185,12 +185,16 @@ public class CartServlet extends HttpServlet {
 			}
 			return;
 		} else if ("addCart".equals(action)) {
+			System.out.println("addCart 실행");
 			System.out.println("customerid" + customerid);
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));			
 
 			if (cartdao.existCart(goodsid, customerid) != 0) {
+				System.out.println("cartdao.existCart(goodsid, customerid)" + cartdao.existCart(goodsid, customerid));
+				System.out.println("이전에 제품이 있음");
 				cartdao.plusQty(goodsid, 1 ,customerid);
-			} else {
+			}else {
+				System.out.println("이전에 제품이 없");
 				cartdao.addCart(customerid, goodsid, 1);
 			}
 			

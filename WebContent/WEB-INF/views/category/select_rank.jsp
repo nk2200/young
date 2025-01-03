@@ -34,9 +34,8 @@
 }
 </style>
 <script>
-	function addCart(){
-		const inputgoodsId = document.getElementById("goodsid_like");
-		const goodsid = inputgoodsId.value;
+	function addCart(goodsid){
+		
 		console.log('goodsid'+ goodsid);
 		if(confirm('장바구니에 추가하시겠습니까  ?')){
 			fetch('/cart/Cart.do',{
@@ -148,7 +147,7 @@
 										data-setbg="/resource/img/goods/${goods.goods_fname_main}">
 										<ul class="product__item__pic__hover">
 											
-											<li><a href="#" onclick="addCart()"><i class="fa fa-shopping-cart"></i></a></li>
+											<li><a href="#" onclick="addCart(${goods.goodsid})"><i class="fa fa-shopping-cart"></i></a></li>
 										</ul>
 									</div>
 									<div class="product__item__text">
@@ -158,7 +157,7 @@
 										<h5>${goods.goods_price}</h5>
 									</div>
 								</div>
-								<input type="hidden" value="${goods.goodsid}" id="goodsid_like">
+								
 							</div>
 						</c:forEach>
 					</div>
