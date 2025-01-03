@@ -170,6 +170,7 @@ public class BuyDao {
 		}
 	}
 	
+	
 	//DB 커넥션 닫기
 	private void closeConnection(Connection con) {
 		if(con!=null) {
