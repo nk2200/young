@@ -70,7 +70,7 @@
 											<!-- BuyDto에서 buy_date를 가져오기 -->
 										</td>
 										<td class="shoping__cart__item"><img
-											src="../resource/img/goods/${goods.goods_fname_main}" alt="">
+											src="../../resource/img/goods/${order.goods_fname_main}" alt="">
 											<h5>${order.goods_name}</h5> <!-- GoodsDto에서 goods_name 가져오기 -->
 										</td>
 										<td class="shoping__cart__quantity">
