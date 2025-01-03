@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -56,7 +58,7 @@
                                 	<!-- 이름 입력 -->
                                     <div class="checkout__input">
                                         <p>이름<span>*</span></p>
-                                        <input type="text" id="checkout_name">
+                                        <input type="text" id="checkout_name" required>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +68,7 @@
                                 <!-- 휴대전화 번호 입력 -->
                                     <div class="checkout__input">
                                         <p>휴대폰 번호<span>*</span></p>
-                                        <input type="text" id="checkout_phone">
+                                        <input type="text" id="checkout_phone" required>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +77,7 @@
                             <div class="checkout__input">
                                 <p>배송지 입력<span>*</span></p>
                                 <div class="d-flex">
-							        <input type="text" placeholder="주소 입력" class="form-control" id="checkout_address1">
+							        <input type="text" placeholder="주소 입력" class="form-control" id="checkout_address1" required>
 							        <input type="button" class="btn btn-success text-white ml-3" onclick="openPostcodeSearch()" value="주소 검색">
 							    </div>
 							    <input type="text" placeholder="상세 주소 입력" class="form-control mt-3" id="checkout_address2">
@@ -164,11 +166,28 @@
                             <div class="checkout__order">
                                 <h4>주문 상품</h4>
                                 <div class="checkout__order__products">상품<span>가격</span></div>
+                                <!--
                                 <ul>
                                     <li> ${param.goodsName} (${param.goods_qty}개)<span>${param.price}</span></li>
                                     
                                 </ul>
-                                <div class="checkout__order__total">Total <span>${param.totalPrice}</span></div>
+                                <div class="checkout__order__total">Total <span>${param.totalPrice}</span></div>	-->
+                                
+                                <ul>
+							        <c:forEach var="item" items="${sessionScope.tempDataList}">
+							            <li>${item.goodsName} (${item.goods_qty}개) <span>${item.goodsPrice}</span></li>
+							        </c:forEach>
+							    </ul>
+							    <div class="checkout__order__total">
+							        Total: 
+							        <span>
+							            <c:forEach var="item" items="${sessionScope.tempDataList}" varStatus="status">
+							               <!-- ${status.index == 0 ? 0: ''}  --> 
+							                <c:set var="totalPrice" value="${totalPrice + item.totalPrice}" scope="page" />
+							            </c:forEach>
+							            ${totalPrice}
+							        </span>
+							    </div>
                                 
                                 <!-- 결제 확인 체크 박스 -->
                                 <div class="checkout__input__checkbox">
