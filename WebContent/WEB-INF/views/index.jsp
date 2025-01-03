@@ -239,7 +239,6 @@
 		</div>
 	</section>
 	<!-- Blog Section End -->
-
 	<jsp:include page="footer.jsp"></jsp:include>
 
 </body>
