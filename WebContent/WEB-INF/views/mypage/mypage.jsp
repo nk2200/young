@@ -73,7 +73,7 @@
 										</td>
 										<td class="shoping__cart__item"><img
 											src="../../resource/img/goods/${order.goods_fname_main}" alt="">
-											<h5>${order.goods_name}</h5> <!-- GoodsDto에서 goods_name 가져오기 -->
+											<h5><a href="/detail/Detail.do?goodsid=${order.goodsid}">${order.goods_name}</a></h5> <!-- GoodsDto에서 goods_name 가져오기 -->
 										</td>
 										<td class="shoping__cart__quantity">
 											<!-- 											<div class="quantity">
