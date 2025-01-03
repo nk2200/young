@@ -11,6 +11,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>올리브영 온라인몰</title>
+<style>
+#category-btn {
+	background-color: transparent; /* 버튼 배경을 투명하게 설정 */
+	color: blue; /* 글씨 색을 파란색으로 설정 */
+	border: none;
+	padding: 5px 10px; /* 버튼 내부 여백 */
+	font-size: 16px; /* 글씨 크기 */
+	cursor: pointer; /* 마우스를 올렸을 때 손 모양 커서 */
+	text-align: center; /* 텍스트 가운데 정렬 */
+	outline: none; /* 버튼 클릭 시 생기는 외곽선 제거 */
+}
+/* #category-btn:hover{
+	background-color: rgba(0, 0, 255, 0.1);
+} */
+</style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -199,7 +214,8 @@
 					<img src="/resource/icons/home-icon.png" alt="홈 아이콘"
 					style="vertical-align: middle;" width="15px" height="15px">
 			</a> <span>&nbsp;></span></li>
-			<li style="margin-right: 10px;"><a href="/category/Category.do?goodsCategory=${goods.goods_category }">${goods.goods_category }</a>
+			<li style="margin-right: 10px;">
+			<button type="button" id="category-btn" onclick="window.location.href='/category/Category.do?action=selectMain&goodsCategory=${goods.goods_category }';">${goods.goods_category }</button>
 				<span>&nbsp;></span></li>
 			<li style="margin-right: 10px;font-weight: 700"><span>${goods.goods_name }</span>
 			</li>

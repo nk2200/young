@@ -57,30 +57,33 @@ body, html {
             <div class="col-lg-9">
                <div class="header__cart">
                   <div class="header__cart__price">
-                     <ul>
-                        <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                          <li><a href="/cart/Cart.do?action=select&customerid=${customerid }"><i class="fa fa-shopping-bag"></i><span>3</span></a></li>
-                     </ul>
                      <!-- admin일 때는 상품관리만 보이고, 그 외 사용자에게는 마이페이지만 보이게 처리 -->
                      <c:choose>
-                        <c:when test="${not empty customerId and customerId != 'admin'}">
+                        <c:when test="${not empty customerid and customerid != 'admin'}">
                            <!-- 고객이 admin이 아닐 경우 마이페이지 링크 표시 -->
-                           <a href="MyPage.do">마이페이지</a>
+                  		<span style="font-weight=200">young회원 <i style="font-weight: 700;text-decoration : underline;">${customerid}</i></span>님&nbsp;&nbsp;
+                     <ul>
+                        <!-- <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li> -->
+                          <li><a href="/cart/Cart.do?action=select&customerid=${customerid }"><i class="fa fa-shopping-bag"></i><span>3</span></a></li>
+                     </ul>
+                           <a href="MyPage.do">마이페이지</a>&nbsp;
                         </c:when>
                         <c:otherwise>
                            <!-- 고객이 admin일 경우 상품관리 링크 표시 -->
-                           <a href="/register/Register.do">상품관리</a>
+	                        <span>로그인 해주세요!</span>&nbsp;
+                           <a href="/register/Register.do">상품관리</a>&nbsp;
                         </c:otherwise>
                      </c:choose>
 
                      <div class="header__cart__price">
                         <!-- 로그인 메뉴 (로그인 여부에 따라 표시) -->
                         <c:choose>
-                           <c:when test="${empty customerId}">
-                              <a href="Login.do">로그인</a>
+                           <c:when test="${empty customerid}">
+                              <a href="/customer/Login.do">로그인</a>
                            </c:when>
                            <c:otherwise>
-                              <a href="Logout.do">로그아웃</a>
+                              <a href="/customer/Login.do?action=logout">로그아웃</a>
+                              
                            </c:otherwise>
                         </c:choose>
                      </div>
