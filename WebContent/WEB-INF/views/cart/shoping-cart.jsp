@@ -46,47 +46,51 @@
 	}
 	
 	
-	function deleteSelect(){
-		const checkboxes = document.querySelectorAll('.item-checkbox');
-		
-		const selectedItems = Array.from(checkboxes)
+	function deleteSelect() {
+	    const checkboxes = document.querySelectorAll('.item-checkbox');
+
+	    // 선택된 체크박스의 value 값만 모은 배열 생성
+	    const selectedItems = Array.from(checkboxes)
 	        .filter(checkbox => checkbox.checked) 
 	        .map(checkbox => checkbox.value);   
 
+	    // 선택된 항목이 없으면 경고
 	    if (selectedItems.length === 0) {
 	        alert('선택된 상품이 없습니다.');
 	        return;
 	    }
-	    
+
+	    // 서버로 보낼 데이터 생성
 	    const params = new URLSearchParams();
 	    params.append("selectedItems", selectedItems.join(','));  // 배열을 ','로 구분된 문자열로 변환
 
-        
 	    console.log('선택된 항목', selectedItems);
 	    
-		fetch('/cart/Cart.do',{
-			method: 'POST',
-			headers :{
-				'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			body :  new URLSearchParams({
-				action : "selectDelete",
-				selectedItems : params
-			})
-		})
-		.then(response =>{
-			if(response.ok){
-				alert('상품을 삭제했습니다.');
-				location.reload();
-			}else{
-				alert('상품 삭제에 실패했습니다.');
-			}
-		})
-		.catch(error => {
-			console.error('Error :', error);
-			alert('오류가 발생했습니다.');
-		})
+	    // fetch로 데이터 전송
+	    fetch('/cart/Cart.do', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/x-www-form-urlencoded',
+	        },
+	        body: new URLSearchParams({
+	            action: "selectDelete",
+	            selectedItems: selectedItems.join(',') // selectedItems 배열을 바로 ','로 구분된 문자열로 전송
+	        })
+	    })
+	    .then(response => {
+	        if (response.ok) {
+	            alert('상품을 삭제했습니다.');
+	            location.reload(); // 페이지 새로 고침
+	        } else {
+	            alert('상품 삭제에 실패했습니다.');
+	        }
+	    })
+	    .catch(error => {
+	        console.error('Error :', error);
+	        alert('오류가 발생했습니다.');
+	    });
 	}
+
 	
 	function increase(cartid) {
 		var quantity = document.getElementById("quantity_" + cartid); // 동적으로 찾기
@@ -147,10 +151,9 @@
 
 	}
 	
-	function selectPay(){
-
-		const checkboxes = document.querySelectorAll('.item-checkbox');
-		const selectedItems = Array.from(checkboxes)
+	function selectPay() {
+	    const checkboxes = document.querySelectorAll('.item-checkbox');
+	    const selectedItems = Array.from(checkboxes)
 	        .filter(checkbox => checkbox.checked) 
 	        .map(checkbox => checkbox.value);   
 
@@ -160,49 +163,50 @@
 	    }
 	    
 	    const params = new URLSearchParams();
-	    params.append("selectedItems", selectedItems.join(','));  // 배열을 ','로 구분된 문자열로 변환
+	    params.append("action", "selectCart");
+	    params.append("selectedItems", selectedItems.join(',')); // 배열을 ','로 구분된 문자열로 변환
 
-        
-	    
-	    
-		fetch('/pay/Pay.do',{
-			method: 'POST',
-			headers :{
-				'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			body :  new URLSearchParams({
-				action : "selectCart",
-				selectedItems :  selectedItems.join(',') 
-			})
-		})
-		.then(response =>{
-			if(response.ok){
-				alert('구매 페이지로 이동합니다.');
-			}else{
-				alert('선택주문에 실패했습니다.');
-			}
-		})
-		.catch(error => {
-			console.error('Error :', error);
-			alert('오류가 발생했습니다.');
-		})
+	    fetch('/pay/Pay.do', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/x-www-form-urlencoded',
+	        },
+	        body: params
+	    })
+	    .then(response => response.json()) // 응답을 JSON으로 처리
+	    .then(data => {
+	        if (data.redirectUrl) {
+	            window.location.href = data.redirectUrl; // 리다이렉트 URL로 이동
+	        } else {
+	            alert('선택주문에 실패했습니다.');
+	        }
+	    })
+	    .catch(error => {
+	        console.error('Error:', error);
+	        alert('오류가 발생했습니다.');
+	    });
 	}
+
 
 	
 	function allPay() {
-		console.log('allPay 실행');
-	    let allCartIds = []; // cartid 값을 담을 배열
+	 
+		let allCartIds = []; // cartid 값을 담을 배열
 
-	    // .cartid_value 클래스를 가진 모든 hidden input에서 cartid 값 가져오기
-	     document.querySelectorAll('#cartid_value').forEach(hiddenInput => {
-	        allCartIds.push(hiddenInput.value); // cartid 값을 배열에 추가
-	    });
-		
-	     if (allCartIds.length === 0) { // 배열이 비어있는지 확인
-    	    alert('장바구니에 상품이 없습니다.'); // 알림 창 표시
-    	    return;
-    	}
-	     
+		// .cartid_value 클래스를 가진 모든 hidden input에서 cartid 값 가져오기
+		document.querySelectorAll('.cartId').forEach(hiddenInput => {
+		    allCartIds.push(hiddenInput.value); // cartid 값을 배열에 추가  
+		});
+
+		console.log(allCartIds); // 확인용 출력
+
+		console.log('allCartIds' + allCartIds);
+	    // 배열이 비어있는지 확인
+	    if (allCartIds.length === 0) {
+	        alert('장바구니에 상품이 없습니다.'); // 알림 창 표시
+	        return;
+	    }
+
 	    // fetch로 데이터 전송
 	    fetch('/pay/Pay.do', {
 	        method: 'POST',
@@ -213,19 +217,21 @@
 	            action: 'allCart',  // 예시 액션
 	            allIds: allCartIds.join(',')  // ','로 구분된 cartid 목록을 전송
 	        })
-	    })	 
-	    .then(response =>{
-			if(response.ok){
-				alert('구매 페이지로 이동합니다.');
-			}else{
-				alert('전체 주문에 실패했습니다.');
-			}
-		})
-		.catch(error => {
-			console.error('Error :', error);
-			alert('오류가 발생했습니다.');
-		})
+	    })
+	    .then(response => response.json()) // 응답을 JSON으로 처리
+	    .then(data => {
+	        if (data.redirectUrl) {
+	            window.location.href = data.redirectUrl; // 리다이렉트 URL로 이동
+	        } else {
+	            alert('선택주문에 실패했습니다.');
+	        }
+	    })
+	    .catch(error => {
+	        console.error('Error :', error);
+	        alert('오류가 발생했습니다.');
+	    });
 	}
+
 
 	
 </script>
@@ -357,8 +363,10 @@ th {
 									<tr>
 										<td class="shoping__cart__item__check"><input
 											type="checkbox" value="${cart.cartid}" checked
-											class="item-checkbox" /> <input type="hidden"
-											value="${cart.cartid}" id="cartid_value" /></td>
+											class="item-checkbox" /> 
+											<input type="hidden" value="${cart.cartid}" id="cartid_value" />
+											<input type="hidden" value="${cart.cartid}" class="cartId" />
+											</td>
 										<td class="shoping__cart__item"><img
 											src="/resource/img/goods/${cart.goods.goods_fname_main}"
 											alt="">

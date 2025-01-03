@@ -56,7 +56,7 @@ public class CartServlet extends HttpServlet {
 		if (action != null) {
 			if ("select".equals(action)) {
 				try {
-					System.out.println("customerid" + customerid);
+					
 					List<CartDto> cartList = cartdao.getCartList(customerid);
 					
 
@@ -104,7 +104,7 @@ public class CartServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		
 		if ("cart".equals(action)) {
-			System.out.println("customerid" + customerid);
+			
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
 			int goods_qty = Integer.parseInt(request.getParameter("goods_qty"));
 			
@@ -117,7 +117,7 @@ public class CartServlet extends HttpServlet {
 				cart.setCart_qty(goods_qty);
 				cart.setCustomerid(customerid);
 				cartdao.addCart(cart);
-				System.out.println("cart삽입");
+				
 			}
 
 			response.setContentType("text/plain");
@@ -125,7 +125,7 @@ public class CartServlet extends HttpServlet {
 			response.getWriter().write("카트에 넣기 성공");
 			session.setAttribute("customerid", customerid);
 		}  else if ("deleteCart".equals(action)) {
-			System.out.println("customerid" + customerid);
+			
 			cartid = Integer.parseInt(request.getParameter("cartid"));
 			
 			cartdao.deleteCart(cartid);
@@ -133,7 +133,7 @@ public class CartServlet extends HttpServlet {
 			String redirectUrl = "/cart/Cart.do?action=select";
 			response.sendRedirect(redirectUrl);
 		} else if ("selectDelete".equals(action)) {
-			System.out.println("customerid" + customerid);
+			
 			String selectItems = request.getParameter("selectedItems");
 
 			String[] items = selectItems.split(",");
@@ -148,7 +148,7 @@ public class CartServlet extends HttpServlet {
 			String redirectUrl = "/cart/Cart.do?action=select";
 			response.sendRedirect(redirectUrl);
 		} else if ("updateQty".equals(action)) {
-			System.out.println("customerid" + customerid);
+			
 			cartid = Integer.parseInt(request.getParameter("cartid"));
 			int cart_qty = Integer.parseInt(request.getParameter("cart_qty"));
 
@@ -185,12 +185,13 @@ public class CartServlet extends HttpServlet {
 			}
 			return;
 		} else if ("addCart".equals(action)) {
-			System.out.println("customerid" + customerid);
+			
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));			
 
 			if (cartdao.existCart(goodsid, customerid) != 0) {
 				cartdao.plusQty(goodsid, 1 ,customerid);
-			} else {
+			}else {
+			
 				cartdao.addCart(customerid, goodsid, 1);
 			}
 			

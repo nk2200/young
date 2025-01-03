@@ -84,9 +84,9 @@ public class PayServlet extends HttpServlet {
 		
 		//장바구니에서 구매하기 버튼 클릭
 		}else if("selectCart".equals(action)) {
-			
+			System.out.println("selectCart 실행");
 			String selectItems = request.getParameter("selectedItems");	//String [cartid, cartid, cartid ...]
-			
+			System.out.println("selectItems" + selectItems);
 			String[] selectIds = selectItems.split(",");
 			for (String id: selectIds) {
 			    int cartid = Integer.parseInt(id.trim());
@@ -124,12 +124,15 @@ public class PayServlet extends HttpServlet {
 			    
 			}
 	
-			response.sendRedirect("/pay/Pay.do");
+			response.setContentType("application/json");
+		    PrintWriter out = response.getWriter();
+		    out.print("{\"redirectUrl\": \"/pay/Pay.do\"}");
+		    out.flush();
 			
 		}else if("allCart".equals(action)) {
-			
+			System.out.println("allCart 실행");
 			String allIds = request.getParameter("allIds"); // String [cartid, cartid, cartid ...]
-			
+			System.out.println("allIds" + allIds);
 			String[] selectIds = allIds.split(",");
 			for (String id: selectIds) {
 			    int cartid = Integer.parseInt(id.trim());
@@ -166,7 +169,10 @@ public class PayServlet extends HttpServlet {
 	            session.setAttribute("customerid", customerid);
 			}
 			
-			response.sendRedirect("/pay/Pay.do");
+			response.setContentType("application/json");
+		    PrintWriter out = response.getWriter();
+		    out.print("{\"redirectUrl\": \"/pay/Pay.do\"}");
+		    out.flush();
 		}
 
 		

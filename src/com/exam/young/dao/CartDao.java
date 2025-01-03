@@ -185,7 +185,7 @@ public class CartDao {
 	public int existCart(int goodsid, String customerid) {
 		int cartcount = 0;
 		 Connection conn = null;
-
+		 System.out.println("customerid" + customerid);
 		    try {
 		        conn = dataSource.getConnection(); // DataSource로부터 연결 가져오기
 		        String sql = "SELECT count(*) FROM cart WHERE goodsid = ? AND customerid = ?";
