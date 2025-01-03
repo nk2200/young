@@ -76,8 +76,13 @@ public class CustomerServlet extends HttpServlet {
 					}
 				}else {
 					System.out.println("아이디 없음!!");
-					String url = "/customer/Login.do?action=signup";
-					response.sendRedirect(url);
+					response.setContentType("application/json");
+			        response.setCharacterEncoding("UTF-8");
+			        String json = "{\"message\": \"아이디가 존재하지 않습니다.\", \"result\": \"fail_noID\"}";
+			        response.getWriter().write(json);
+			        
+//					String url = "/customer/Login.do?action=signup";
+//					response.sendRedirect(url);
 					
 				}
 			}catch(Exception e) {
