@@ -69,7 +69,7 @@ body, html {
                            <a href="MyPage.do">마이페이지</a>&nbsp;
                         </c:when>
                         <c:when test="${customerid == 'admin' }">
-                           <a href="/register/Register.do">상품관리</a>&nbsp;                        
+                           <a href="/manage/Manage.do">상품관리</a>&nbsp;                        
                         </c:when>
                         <c:otherwise>
                            <!-- 고객이 admin일 경우 상품관리 링크 표시 -->
