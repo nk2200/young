@@ -49,9 +49,9 @@ public class CartServlet extends HttpServlet {
 		if (action != null) {
 			if ("select".equals(action)) {
 				try {
-					System.out.println("select 실행");
+					
 					List<CartDto> cartList = cartdao.getCartList(customerid);
-					System.out.println("cartList" + cartList);
+					
 
 					int totalPrice = gettotalPrice(cartList);
 					int totalQty = getQty(cartList);
@@ -92,7 +92,7 @@ public class CartServlet extends HttpServlet {
 			int goodsid = Integer.parseInt(request.getParameter("goodsid"));
 			int goods_qty = Integer.parseInt(request.getParameter("goods_qty"));
 			customerid = request.getParameter("customerid");
-			System.out.println(goodsid + ", " + goods_qty + ", " + customerid);
+			
 			// 원래 cart에 있는 goods면 추가, 아니면 새로 cart삽입
 			if (cartdao.existCart(goodsid) != 0) {
 				cartdao.plusQty(goodsid, goods_qty);
@@ -135,14 +135,14 @@ public class CartServlet extends HttpServlet {
 			boolean isUpdated = false;
 			try {
 				// 수량 업데이트
-				isUpdated = cartdao.updateQty(cartid, cart_qty);
-
+				isUpdated = cartdao.updateQty(cartid, cart_qty);				
 				if (isUpdated) {
 					try {
 
 						List<CartDto> cartList = cartdao.getCartList(customerid); // customerid는 세션에서 가져와야 함
 						int totalPrice = gettotalPrice(cartList);
 						int totalQty = getQty(cartList);
+
 
 						response.setContentType("application/json");
 						response.setCharacterEncoding("UTF-8");
@@ -181,11 +181,11 @@ public class CartServlet extends HttpServlet {
 		int totalPrice = 0;
 
 		for (CartDto cart : cartList) {
-			GoodsDto goods = cart.getGoods(); // CartDto에서 GoodsDto 가져오기
-			int price = goods.getGoods_price(); // 상품 가격 가져오기
-			int quantity = cart.getCart_qty(); // 장바구니 수량 가져오기
+			GoodsDto goods = cart.getGoods(); 
+			int price = goods.getGoods_price(); 
+			int quantity = cart.getCart_qty();
 
-			totalPrice += price * quantity; // 가격 * 수량 계산하여 총합에 더하기
+			totalPrice += price * quantity;
 		}
 
 		return totalPrice;
