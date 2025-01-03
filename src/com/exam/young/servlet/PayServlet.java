@@ -54,6 +54,7 @@ public class PayServlet extends HttpServlet {
 			int goods_qty = Integer.parseInt(request.getParameter("goods_qty"));
 			customerid = request.getParameter("customerid");
 			System.out.println(goodsid+", "+goods_qty+", "+customerid);
+			
 			//1. 상품명, 가격 가져오기
 			List<Map<String, Object>> tempDataList = new ArrayList<>();
 			Map<String, Object> goods = dao.getPrice(goodsid);
@@ -208,6 +209,9 @@ public class PayServlet extends HttpServlet {
 		            // 데이터베이스에 저장
 		            dao.insertBuy(buy);
 		            
+		            // 상품 테이블의 상품 수량 변경
+		            dao.updateGoodsQty(buy_qty, itemid);
+		            
 		            //장바구니 요청이면 장바구니 항목 삭제
 		            if(init == 2) {
 		            	int cartid = (int) insInfo.get("cartid");
@@ -229,7 +233,7 @@ public class PayServlet extends HttpServlet {
 
 		        //customerid를 main에 넘겨주기
 		        session.setAttribute("customerid", customerid);
-		        response.sendRedirect("/");
+		        response.sendRedirect("/mypage/Mypage.do");
 
 		        return;
 		    } catch (Exception e) {
