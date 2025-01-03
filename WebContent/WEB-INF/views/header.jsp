@@ -64,7 +64,7 @@ body, html {
                   		<span style="font-weight=200">young회원 <i style="font-weight: 700;text-decoration : underline;">${customerid}</i></span>님&nbsp;&nbsp;
                      <ul>
                         <!-- <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li> -->
-                          <li><a href="/cart/Cart.do?action=select&customerid=${customerid }"><i class="fa fa-shopping-bag"></i><span>3</span></a></li>
+                          <li><a href="/cart/Cart.do?action=select"><i class="fa fa-shopping-bag"></i><span>3</span></a></li>
                      </ul>
                            <a href="MyPage.do">마이페이지</a>&nbsp;
                         </c:when>
@@ -107,7 +107,7 @@ body, html {
                      <i class="fa fa-bars"></i> <span>카테고리</span>
                   </div>
                   <ul>
-<li><a href="/category/Category.do?action=selectMain&goodsCategory=skin">스킨케어</a></li>
+					<li><a href="/category/Category.do?action=selectMain&goodsCategory=skin">스킨케어</a></li>
                      <li><a href="/category/Category.do?action=selectMain&goodsCategory=makeup">메이크업</a></li>
                      <li><a href="/category/Category.do?action=selectMain&goodsCategory=hair">헤어케어</a></li>
                      <li><a href="/category/Category.do?action=selectMain&goodsCategory=body">바디케어</a></li>
