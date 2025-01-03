@@ -15,15 +15,18 @@
     	th {
     		padding: 10px 5px;
     	}
+    	.site-btn {
+    		padding:14px 30px 12px;
+    		margin-right:10px;
+    	}
     </style>
     <script>
-        function confirmDelete(event) {
-            if (!confirm("상품을 삭제하시겠습니까?")) {
-                event.preventDefault();
-                return false;
-            }
-            return true;
-        }
+    	window.addEventListener("load", () => {
+		    document.getElementById('confirmDelete').addEventListener('click', function () {
+		        document.getElementById('deleteForm').submit(); 
+		        $('#deleteModal').modal('hide');
+		    });
+	    });
     </script>
 </head>
 
@@ -82,7 +85,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                	<form action="/manage/Manage.do" method="post" onsubmit="return confirmDelete(event);">
+                	<form action="/manage/Manage.do" method="post" id="deleteForm">
                 		<input type="hidden" name="current_desc_path" value="${goods.goods_desc}">
                 		<input type="hidden" name="current_main_path" value="${goods.goods_fname_main}">
                 		<input type="hidden" name="current_sub_path" value="${goods.goods_fname_sub}">
@@ -92,7 +95,7 @@
 	                	<input type="hidden" name="page" value="${param.page}">
 	                	<input type="hidden" name="action" value="delete">
 	                    <div class="shoping__cart__btns" style="text-align:center;">
-	                        <button type="submit" class="site-btn" style="padding:14px 30px 12px;margin-right:10px;">삭제</button>
+	                        <button type="button" class="site-btn" data-toggle="modal" data-target="#deleteModal">삭제</button>
 	                        <a href="#" onclick="window.history.go(-1); return false;" class="primary-btn cart-btn cart-btn-right" style="float:none;">취소</a>
 	                    </div>
                     </form>
@@ -100,6 +103,25 @@
             </div>
         </div>
     </section>
+
+	<!-- Modal -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteModalLabel">상품 삭제</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">상품을 삭제하시겠습니까?</div>
+				<div class="modal-footer">
+				    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+				    <button type="button" class="btn btn-primary" id="confirmDelete">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>
     <!-- Product Section End -->
 	<jsp:include page="../footer.jsp"></jsp:include>
 
