@@ -75,13 +75,10 @@
                         $('#modal-body').text(message);
 						$('#login-modal-btn').text("장바구니로 이동");
                         $('#myModal').modal('show');
-                        
-                        $('#login-modal-btn').click(function(){
-							window.location.href = '/cart/Cart.do?action=select&customerid='+customerid;		                        	
-                        });
+		
                         // 모달이 닫힌 후 페이지를 새로고침
                         $('#myModal').on('hidden.bs.modal', function () {
-							window.location.reload();
+							window.location.href = '/cart/Cart.do?action=select&customerid='+customerid;		                        	                        	
                         });
 
 					},
@@ -244,7 +241,7 @@
 	<nav class="container">
 	<div id="category-history" style="border-top:1px solid #ebebeb;border-bottom: 1px solid #ebebeb;padding-bottom: 20px;padding-top: 20px">
 		<ul style="list-style-type: none; display: flex; align-items: center;">
-			<li style="margin-right: 10px;"><a href="/" aria-label="홈">
+			<li style="margin-right: 10px;"><a href="/main" aria-label="홈">
 					<img src="/resource/icons/home-icon.png" alt="홈 아이콘"
 					style="vertical-align: middle;" width="15px" height="15px">
 			</a> <span>&nbsp;></span></li>
@@ -438,7 +435,7 @@
      <div class="modal-dialog" role="document">
        <div class="modal-content">
          <div class="modal-header">
-           <h5 class="modal-title">Oliveyoung Alert</h5>
+           <h5 class="modal-title"><i class="bi bi-exclamation-triangle"></i>&nbsp;&nbsp;올리브영 알림</h5>
            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
              <span aria-hidden="true">&times;</span>
            </button>

@@ -39,7 +39,7 @@ $(document).ready(function() {
 					console.log('success:',response);
 				 if(response.result=="success"){
 						window.location.href = "/main";
-					}else{
+					}else if(response.result=="fail"){
 						var message = response.message;
 						//모달
 						// 모달에 메시지 설정
@@ -51,7 +51,19 @@ $(document).ready(function() {
                         $('#myModal').on('hidden.bs.modal', function () {
                         	location.reload();
                         });
-					} 
+					}else{
+						var message = response.message;
+						//모달
+						// 모달에 메시지 설정
+                        $('#modal-body').text(message);
+
+                        $('#myModal').modal('show');
+                        $('#login-modal-btn').text("회원가입 하기");
+                        // 모달이 닫힌 후 페이지를 새로고침
+                        $('#myModal').on('hidden.bs.modal', function () {
+                        	window.location.href = "/customer/Login.do?action=signup";
+                        });
+					}
 				},
 				error : function(xhr, status, error) {
 					console.error('Error:', error);
@@ -106,7 +118,7 @@ $(document).ready(function() {
      <div class="modal-dialog" role="document">
        <div class="modal-content">
          <div class="modal-header">
-           <h5 class="modal-title">Oliveyoung Alert</h5>
+           <h5 class="modal-title"><i class="bi bi-exclamation-triangle"></i>&nbsp;&nbsp;올리브영 알림</h5>
            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
              <span aria-hidden="true">&times;</span>
            </button>
