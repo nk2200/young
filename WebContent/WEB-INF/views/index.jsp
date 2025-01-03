@@ -94,7 +94,7 @@
             <!-- 이미지 영역을 <a> 태그로 감싸서 클릭 시 상세 페이지로 이동 -->
             <a href="/detail/Detail.do?goodsid=${goods.goodsid}">
                 <div class="featured__item__pic set-bg"
-                     data-setbg="../${goods.goods_fname_main}">
+                     data-setbg="../resource/img/goods/${goods.goods_fname_main}">
                 </div>
             </a>
             
