@@ -117,6 +117,7 @@ public class CartServlet extends HttpServlet {
 				cart.setCart_qty(goods_qty);
 				cart.setCustomerid(customerid);
 				cartdao.addCart(cart);
+				System.out.println("cart삽입");
 			}
 
 			response.setContentType("text/plain");
