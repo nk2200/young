@@ -13,10 +13,8 @@
 <script type='text/javascript'>
 
 
-	function deleteCart() {
-	    const deleteId = document.getElementById("cartid_value");
-	    const cartid = deleteId.value;
-	
+	function deleteCart(cartid) {
+	   
 	    // 모달에 확인 메시지 설정
 	    document.getElementById('modal-body-confirm').textContent = '상품을 삭제하시겠습니까?';
 	    $('#simpleConfirmModal').modal('show');
@@ -477,7 +475,7 @@ th {
 										<td class="shoping__cart__total"><a
 											href="/detail/Detail.do?goodsid=${cart.goods.goodsid }"
 											class="icon_cursor_alt"><span class="icon"></span> 상세</a> <br>
-											<a href="#" onclick="deleteCart()" class="icon_close"><span
+											<a href="#" onclick="deleteCart(${cart.cartid})" class="icon_close"><span
 												class="icon"></span> 삭제</a></td>
 									</tr>
 								</c:forEach>
