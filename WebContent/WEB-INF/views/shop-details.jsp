@@ -1,547 +1,455 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="zxx">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Ogani Template">
-    <meta name="keywords" content="Ogani, unica, creative, html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ogani | Template</title>
+<meta charset="UTF-8">
+<meta name="description" content="Ogani Template">
+<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>올리브영 온라인몰</title>
+<link rel="stylesheet"
+   href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	
+<script src="/resource/js/bootstrap.min.js"></script>
 
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="resource/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="resource/css/style.css" type="text/css">
+<link rel="stylesheet" href="/resource/css/bootstrap.min.css"
+   type="text/css">
+<style>
+#category-btn {
+	background-color: transparent; /* 버튼 배경을 투명하게 설정 */
+	color: blue; /* 글씨 색을 파란색으로 설정 */
+	border: none;
+	padding: 5px 10px; /* 버튼 내부 여백 */
+	font-size: 16px; /* 글씨 크기 */
+	cursor: pointer; /* 마우스를 올렸을 때 손 모양 커서 */
+	text-align: center; /* 텍스트 가운데 정렬 */
+	outline: none; /* 버튼 클릭 시 생기는 외곽선 제거 */
+}
+/* #category-btn:hover{
+	background-color: rgba(0, 0, 255, 0.1);
+} */
+</style>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		//카트 담기!
+		$('#add-btn').click(function(event) {
+			event.preventDefault(); // 기본 동작 방지 (페이지 새로 고침 방지)
+
+			// 'pro-qty' 클래스에서 input 요소의 값 가져오기
+			var quantity = $('.pro-qty input').val();
+
+			// URL에서 goodsid 값을 추출
+			var goodsid = getQueryParam('goodsid');
+
+			// 'primary-btn'의 data-customerid 속성에서 customerid 값 가져오기
+			var customerid = $(this).data('customerid');
+
+			if (goodsid && customerid) {
+				// 데이터를 URL 파라미터로 전달
+				var url = '/cart/Cart.do?action=cart';
+
+				// AJAX 요청으로 데이터를 전달
+				$.ajax({
+					url : url,
+					method : 'POST',
+					data : {
+						goods_qty : quantity, // 수량
+						goodsid : goodsid, // 상품 ID
+						customerid : customerid
+					// 고객 ID
+					},
+					success : function(response) {
+						console.log('Success:', response);
+						var message = "장바구니에 정상적으로 추가되었습니다.";
+						//모달
+						// 모달에 메시지 설정
+                        $('#modal-body').text(message);
+						$('#login-modal-btn').text("장바구니로 이동");
+                        $('#myModal').modal('show');
+		
+                        // 모달이 닫힌 후 페이지를 새로고침
+                        $('#myModal').on('hidden.bs.modal', function () {
+							window.location.href = '/cart/Cart.do?action=select&customerid='+customerid;		                        	                        	
+                        });
+
+					},
+					error : function(xhr, status, error) {
+						console.error('Error:', error);
+					}
+				});
+			} else {
+				console.error('goodsid or customerid is missing');
+			}
+		});
+		//구매 페이지로!
+		$('#buy-btn').click(function(event){
+			event.preventDefault();
+			var quantity = $('.pro-qty input').val();
+
+			var goodsid = getQueryParam('goodsid');
+
+			var customerid = $(this).data('customerid');
+			
+			if(goodsid && customerid){
+				var url = '/pay/Pay.do?action=detail';
+				$.ajax({
+					url : url,
+					method : 'POST',
+					data : {
+						goods_qty : quantity,
+						goodsid : goodsid,
+						customerid : customerid
+					},
+					success : function(response){
+						console.log('Success: ',response);
+						//redirect
+						window.location.href = "/pay/Pay.do";
+					},
+					error : function(xhr, status, error) {
+						console.error('Error:', error);
+					}
+				});
+			}else{
+				console.error('goodsid or customerid is missing');
+			}
+		});
+		
+		//좋아요 이벤트
+		$('.heart-icon').click(function(){
+			event.preventDefault();
+			var goodsid = ${goods.goodsid};
+			// heart-icon
+	        var icon = $('.heart-icon');
+			
+	        // 현재 상태에 따라 색상을 변경
+	        if (icon.css('color') === 'rgb(255, 0, 0)') {  // 빨간색 확인
+	            // 빨간색일 경우, 좋아요 취소, 원래 색상으로 변경
+	            var url = '/detail/Detail.do?action=likesMinus';
+	            $.ajax({
+					url : url,
+					method : 'POST',
+					data : {
+						goodsid : goodsid
+					},
+					success : function(response){
+						console.log('Success: ',response);
+	            		$('#likes-text').text(response.updated_likes);
+	            		var message = response.message;
+						//모달
+						// 모달에 메시지 설정
+                        $('#modal-body').text(message);
+
+                        $('#myModal').modal('show');
+
+	            		icon.css('color', '#6f6f6f');
+					},
+					error : function(xhr, status, error) {
+						console.error('Error:', error);
+					}
+				});	
+	        } else {
+	            // 좋아요 추가, 빨간색으로 변경
+				var url = '/detail/Detail.do?action=likesPlus';
+				$.ajax({
+					url : url,
+					method : 'POST',
+					data : {
+						goodsid : goodsid
+					},
+					success : function(response){
+						console.log('Success: ',response);
+	            		$('#likes-text').text(response.updated_likes);
+	            		var message = response.message;
+						//모달
+						// 모달에 메시지 설정
+                        $('#modal-body').text(message);
+
+                        $('#myModal').modal('show');
+	            		icon.css('color', 'rgb(255, 0, 0)');
+					},
+					error : function(xhr, status, error) {
+						console.error('Error:', error);
+					}
+				});	
+	        }
+		});
+		//사진 바뀌기!
+		$('.detail_img img').click(function(){
+			var imgScr = $(this).attr('src');
+			console.log(imgScr);
+			
+			$('.product__details__pic__item--large').attr('src',imgScr);
+		});
+	});
+
+	// URL에서 쿼리 파라미터를 추출하는 함수
+	function getQueryParam(name) {
+		var urlParams = new URLSearchParams(window.location.search);
+		return urlParams.get(name);
+	}
+	//숫자 콤마형식으로 바꾸기
+	function makeComma(number){
+		const c = number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+		return c;
+	}
+	$(document).ready(function(){
+		console.log("작동됨");
+		const price = ${goods.goods_price};
+		console.log(price);
+		const formattedPrice = makeComma(price);
+		$('#price').html("<span>&#8361;"+formattedPrice+"</span>");
+	});
+	
+</script>
+<style>
+.category-history a:hover{
+	color : red;
+}
+</style>
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
+	<!-- Page Preloder -->
+	<jsp:include page="header.jsp"></jsp:include>
+	<!-- Breadcrumb Section Begin -->
+<%-- 	<section class="breadcrumb-section set-bg"
+		data-setbg="/resource/img/breadcrumb.jpg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<div class="breadcrumb__text">
+						<h2>${goods.goods_name }</h2>
+						<div class="breadcrumb__option">
+							<a href="./index.jsp">Home</a> > <a href="#">${goods.goods_category }</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section> --%>
+	<!-- Breadcrumb Section End -->
+	<!--카테고리 만들기  -->
+	<nav class="container">
+	<div id="category-history" style="border-top:1px solid #ebebeb;border-bottom: 1px solid #ebebeb;padding-bottom: 20px;padding-top: 20px">
+		<ul style="list-style-type: none; display: flex; align-items: center;">
+			<li style="margin-right: 10px;"><a href="/main" aria-label="홈">
+					<img src="/resource/icons/home-icon.png" alt="홈 아이콘"
+					style="vertical-align: middle;" width="15px" height="15px">
+			</a> <span>&nbsp;></span></li>
+			<li style="margin-right: 10px;">
+			<button type="button" id="category-btn" onclick="window.location.href='/category/Category.do?action=selectMain&goodsCategory=${goods.goods_category }';">${goods.goods_category }</button>
+				<span>&nbsp;></span></li>
+			<li style="margin-right: 10px;font-weight: 700"><span>${goods.goods_name }</span>
+			</li>
+		</ul>
+	</div>
+	</nav>
 
-    <!-- Humberger Begin -->
-    <div class="humberger__menu__overlay"></div>
-    <div class="humberger__menu__wrapper">
-        <div class="humberger__menu__logo">
-            <a href="#"><img src="resource/img/logo.png" alt=""></a>
-        </div>
-        <div class="humberger__menu__cart">
-            <ul>
-                <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
-            </ul>
-            <div class="header__cart__price">item: <span>$150.00</span></div>
-        </div>
-        <div class="humberger__menu__widget">
-            <div class="header__top__right__language">
-                <img src="resource/img/language.png" alt="">
-                <div>English</div>
-                <span class="arrow_carrot-down"></span>
-                <ul>
-                    <li><a href="#">Spanis</a></li>
-                    <li><a href="#">English</a></li>
-                </ul>
-            </div>
-            <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
-            </div>
-        </div>
-        <nav class="humberger__menu__nav mobile-menu">
-            <ul>
-                <li class="active"><a href="./index.jsp">Home</a></li>
-                <li><a href="./shop-grid.jsp">Shop</a></li>
-                <li><a href="#">Pages</a>
-                    <ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.jsp">Shop Details</a></li>
-                        <li><a href="./shoping-cart.jsp">Shoping Cart</a></li>
-                        <li><a href="./checkout.jsp">Check Out</a></li>
-                        <li><a href="./blog-details.jsp">Blog Details</a></li>
-                    </ul>
-                </li>
-                <li><a href="./blog.jsp">Blog</a></li>
-                <li><a href="./contact.jsp">Contact</a></li>
-            </ul>
-        </nav>
-        <div id="mobile-menu-wrap"></div>
-        <div class="header__top__right__social">
-            <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-linkedin"></i></a>
-            <a href="#"><i class="fa fa-pinterest-p"></i></a>
-        </div>
-        <div class="humberger__menu__contact">
-            <ul>
-                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                <li>Free Shipping for all Order of $99</li>
-            </ul>
-        </div>
-    </div>
-    <!-- Humberger End -->
+	<!-- Product Details Section Begin -->
+	<section class="product-details spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-6">
+					<div class="product__details__pic">
+						<div class="product__details__pic__item">
+							<img class="product__details__pic__item--large"
+								src="/resource/img/goods/${goods.goods_fname_main }" alt="">
+						</div>
+<%-- 						<div class="product__details__pic__slider owl-carousel">
+							<img
+								data-imgbigurl="/resource/img/goods/${goods.goods_fname_sub }"
+								src="/resource/img/goods/${goods.goods_fname_sub }" alt=""> 
+						</div> --%>
+						<div class="detail_img">
+							<span><img src="/resource/img/goods/${goods.goods_fname_main }" alt=""></span>
+							<span><img src="/resource/img/goods/${goods.goods_fname_sub }" alt=""></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					<div class="product__details__text detailpage">
+						<h3>${goods.goods_name }</h3>
+						<div class="product__details__rating">
+							<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+								class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+								class="fa fa-star-half-o"></i> <span>(18 reviews)</span>
+						</div>
+						<div class="product__details__price" id="price"></div>
 
-    <!-- Header Section Begin -->
-    <header class="header">
-        <div class="header__top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="header__top__left">
-                            <ul>
-                                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                                <li>Free Shipping for all Order of $99</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="header__top__right">
-                            <div class="header__top__right__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-linkedin"></i></a>
-                                <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                            </div>
-                            <div class="header__top__right__language">
-                                <img src="resource/img/language.png" alt="">
-                                <div>English</div>
-                                <span class="arrow_carrot-down"></span>
-                                <ul>
-                                    <li><a href="#">Spanis</a></li>
-                                    <li><a href="#">English</a></li>
-                                </ul>
-                            </div>
-                            <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user"></i> Login</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="header__logo">
-                        <a href="./index.jsp"><img src="resource/img/logo.png" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <nav class="header__menu">
-                        <ul>
-                            <li><a href="./index.jsp">Home</a></li>
-                            <li class="active"><a href="./shop-grid.jsp">Shop</a></li>
-                            <li><a href="#">Pages</a>
-                                <ul class="header__menu__dropdown">
-                                    <li><a href="./shop-details.jsp">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.jsp">Shoping Cart</a></li>
-                                    <li><a href="./checkout.jsp">Check Out</a></li>
-                                    <li><a href="./blog-details.jsp">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="./blog.jsp">Blog</a></li>
-                            <li><a href="./contact.jsp">Contact</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="col-lg-3">
-                    <div class="header__cart">
-                        <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
-                        </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
-                    </div>
-                </div>
-            </div>
-            <div class="humberger__open">
-                <i class="fa fa-bars"></i>
-            </div>
-        </div>
-    </header>
-    <!-- Header Section End -->
+						<ul class="product__details__text__list">
+							<li><b>남은 수량</b> <span>${goods.goods_qty }</span></li>
+							<li><b>예상 배송일</b> <span>1일 이내 <samp>Free
+										pickup today</samp></span></li>
+							<li><b>상품 등록일</b> <span>${goods.goods_regidate }</span></li>
+							<li><b>공유하기</b>
+								<div class="share">
+									<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
+										class="fa fa-twitter"></i></a> <a href="#"><i
+										class="fa fa-instagram"></i></a> <a href="#"><i
+										class="fa fa-pinterest"></i></a>
+								</div></li>
+							<li><b>좋아요 수</b> <span id="likes-text">${goods.goods_likes }</span></li>
+						</ul>
 
-    <!-- Hero Section Begin -->
-    <section class="hero hero-normal">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="hero__categories">
-                        <div class="hero__categories__all">
-                            <i class="fa fa-bars"></i>
-                            <span>All departments</span>
-                        </div>
-                        <ul>
-                            <li><a href="#">Fresh Meat</a></li>
-                            <li><a href="#">Vegetables</a></li>
-                            <li><a href="#">Fruit & Nut Gifts</a></li>
-                            <li><a href="#">Fresh Berries</a></li>
-                            <li><a href="#">Ocean Foods</a></li>
-                            <li><a href="#">Butter & Eggs</a></li>
-                            <li><a href="#">Fastfood</a></li>
-                            <li><a href="#">Fresh Onion</a></li>
-                            <li><a href="#">Papayaya & Crisps</a></li>
-                            <li><a href="#">Oatmeal</a></li>
-                            <li><a href="#">Fresh Bananas</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-9">
-                    <div class="hero__search">
-                        <div class="hero__search__form">
-                            <form action="#">
-                                <div class="hero__search__categories">
-                                    All Categories
-                                    <span class="arrow_carrot-down"></span>
-                                </div>
-                                <input type="text" placeholder="What do yo u need?">
-                                <button type="submit" class="site-btn">SEARCH</button>
-                            </form>
-                        </div>
-                        <div class="hero__search__phone">
-                            <div class="hero__search__phone__icon">
-                                <i class="fa fa-phone"></i>
-                            </div>
-                            <div class="hero__search__phone__text">
-                                <h5>+65 11.188.888</h5>
-                                <span>support 24/7 time</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Hero Section End -->
+						<div class="product__details__quantity">
+							<div class="quantity">
+								<div class="pro-qty">
+									<input type="text" value="1">
+								</div>
+							</div>
+						</div>
+						<a href="#" class="primary-btn" id="add-btn"
+							data-customerid="${customerid}">ADD TO CART</a> 
+							<a href="#" class="primary-btn" id="buy-btn"
+							data-customerid="${customerid }">BUY</a>
+							<a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+					</div>
+				</div>
+				<div class="col-lg-12">
+					<div class="product__details__tab">
+						<ul class="nav nav-tabs" role="tablist">
+							<li class="nav-item"><a class="nav-link active"
+								data-toggle="tab" href="#tabs-1" role="tab" aria-selected="true">Description</a>
+							</li>
+							<li class="nav-item"><a class="nav-link" data-toggle="tab"
+								href="#tabs-3" role="tab" aria-selected="false">Reviews <span>(1)</span></a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="tabs-1" role="tabpanel">
+								<div class="product__details__tab__desc">
+									<div style="text-align : center;"><img src="/resource/img/goods/${goods.goods_desc }" alt=""></div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tabs-3" role="tabpanel">
+								<div class="product__details__tab__desc">
+									<h6>리뷰 추가할까 말까</h6>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Product Details Section End -->
 
-    <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="resource/img/breadcrumb.jpg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="breadcrumb__text">
-                        <h2>Vegetableâs Package</h2>
-                        <div class="breadcrumb__option">
-                            <a href="./index.jsp">Home</a>
-                            <a href="./index.jsp">Vegetables</a>
-                            <span>Vegetableâs Package</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Breadcrumb Section End -->
-
-    <!-- Product Details Section Begin -->
-    <section class="product-details spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="product__details__pic">
-                        <div class="product__details__pic__item">
-                            <img class="product__details__pic__item--large"
-                                src="resource/img/product/details/product-details-1.jpg" alt="">
-                        </div>
-                        <div class="product__details__pic__slider owl-carousel">
-                            <img data-imgbigurl="resource/img/product/details/product-details-2.jpg"
-                                src="resource/img/product/details/thumb-1.jpg" alt="">
-                            <img data-imgbigurl="resource/img/product/details/product-details-3.jpg"
-                                src="resource/img/product/details/thumb-2.jpg" alt="">
-                            <img data-imgbigurl="resource/img/product/details/product-details-5.jpg"
-                                src="resource/img/product/details/thumb-3.jpg" alt="">
-                            <img data-imgbigurl="resource/img/product/details/product-details-4.jpg"
-                                src="resource/img/product/details/thumb-4.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="product__details__text">
-                        <h3>Vetgetableâs Package</h3>
-                        <div class="product__details__rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-half-o"></i>
-                            <span>(18 reviews)</span>
-                        </div>
-                        <div class="product__details__price">$50.00</div>
-                        <p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam
-                            vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet
-                            quam vehicula elementum sed sit amet dui. Proin eget tortor risus.</p>
-                        <div class="product__details__quantity">
-                            <div class="quantity">
-                                <div class="pro-qty">
-                                    <input type="text" value="1">
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#" class="primary-btn">ADD TO CARD</a>
-                        <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
-                        <ul>
-                            <li><b>Availability</b> <span>In Stock</span></li>
-                            <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
-                            <li><b>Weight</b> <span>0.5 kg</span></li>
-                            <li><b>Share on</b>
-                                <div class="share">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-instagram"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="product__details__tab">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
-                                    aria-selected="true">Description</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
-                                    aria-selected="false">Information</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
-                                    aria-selected="false">Reviews <span>(1)</span></a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                                <div class="product__details__tab__desc">
-                                    <h6>Products Infomation</h6>
-                                    <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
-                                        Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus. Vivamus
-                                        suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam sit amet quam
-                                        vehicula elementum sed sit amet dui. Donec rutrum congue leo eget malesuada.
-                                        Vivamus suscipit tortor eget felis porttitor volutpat. Curabitur arcu erat,
-                                        accumsan id imperdiet et, porttitor at sem. Praesent sapien massa, convallis a
-                                        pellentesque nec, egestas non nisi. Vestibulum ac diam sit amet quam vehicula
-                                        elementum sed sit amet dui. Vestibulum ante ipsum primis in faucibus orci luctus
-                                        et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam
-                                        vel, ullamcorper sit amet ligula. Proin eget tortor risus.</p>
-                                        <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
-                                        ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
-                                        elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
-                                        porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
-                                        nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.
-                                        Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Sed
-                                        porttitor lectus nibh. Vestibulum ac diam sit amet quam vehicula elementum
-                                        sed sit amet dui. Proin eget tortor risus.</p>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="tabs-2" role="tabpanel">
-                                <div class="product__details__tab__desc">
-                                    <h6>Products Infomation</h6>
-                                    <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
-                                        Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
-                                        Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
-                                        sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
-                                        eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
-                                        Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
-                                        sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
-                                        diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
-                                        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-                                        Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
-                                        Proin eget tortor risus.</p>
-                                    <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
-                                        ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
-                                        elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
-                                        porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
-                                        nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.</p>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="tabs-3" role="tabpanel">
-                                <div class="product__details__tab__desc">
-                                    <h6>Products Infomation</h6>
-                                    <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
-                                        Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
-                                        Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
-                                        sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
-                                        eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
-                                        Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
-                                        sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
-                                        diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
-                                        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-                                        Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
-                                        Proin eget tortor risus.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Product Details Section End -->
-
-    <!-- Related Product Section Begin -->
-    <section class="related-product">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title related__product__title">
-                        <h2>Related Product</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="resource/img/product/product-1.jpg">
-                            <ul class="product__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="resource/img/product/product-2.jpg">
-                            <ul class="product__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="resource/img/product/product-3.jpg">
-                            <ul class="product__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="resource/img/product/product-7.jpg">
-                            <ul class="product__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Related Product Section End -->
-
-    <!-- Footer Section Begin -->
-    <footer class="footer spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="footer__about">
-                        <div class="footer__about__logo">
-                            <a href="./index.jsp"><img src="resource/img/logo.png" alt=""></a>
-                        </div>
-                        <ul>
-                            <li>Address: 60-49 Road 11378 New York</li>
-                            <li>Phone: +65 11.188.888</li>
-                            <li>Email: hello@colorlib.com</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
-                    <div class="footer__widget">
-                        <h6>Useful Links</h6>
-                        <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">About Our Shop</a></li>
-                            <li><a href="#">Secure Shopping</a></li>
-                            <li><a href="#">Delivery infomation</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Our Sitemap</a></li>
-                        </ul>
-                        <ul>
-                            <li><a href="#">Who We Are</a></li>
-                            <li><a href="#">Our Services</a></li>
-                            <li><a href="#">Projects</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Innovation</a></li>
-                            <li><a href="#">Testimonials</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-12">
-                    <div class="footer__widget">
-                        <h6>Join Our Newsletter Now</h6>
-                        <p>Get E-mail updates about our latest shop and special offers.</p>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your mail">
-                            <button type="submit" class="site-btn">Subscribe</button>
-                        </form>
-                        <div class="footer__widget__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="footer__copyright">
-                        <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
-                        <div class="footer__copyright__payment"><img src="resource/img/payment-item.png" alt=""></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer Section End -->
-
-    <!-- Js Plugins -->
-    <script src="resource/js/jquery-3.3.1.min.js"></script>
-    <script src="resource/js/bootstrap.min.js"></script>
-    <script src="resource/js/jquery.nice-select.min.js"></script>
-    <script src="resource/js/jquery-ui.min.js"></script>
-    <script src="resource/js/jquery.slicknav.js"></script>
-    <script src="resource/js/mixitup.min.js"></script>
-    <script src="resource/js/owl.carousel.min.js"></script>
-    <script src="resource/js/main.js"></script>
-
+	<!-- Related Product Section Begin -->
+<!-- 	<section class="related-product">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="section-title related__product__title">
+						<h2>Related Product</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-3 col-md-4 col-sm-6">
+					<div class="product__item">
+						<div class="product__item__pic set-bg"
+							data-setbg="/resource/img/product/product-1.jpg">
+							<ul class="product__item__pic__hover">
+								<li><a href="#"><i class="fa fa-heart"></i></a></li>
+								<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+								<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+							</ul>
+						</div>
+						<div class="product__item__text">
+							<h6>
+								<a href="#">Crab Pool Security</a>
+							</h6>
+							<h5>$30.00</h5>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-4 col-sm-6">
+					<div class="product__item">
+						<div class="product__item__pic set-bg"
+							data-setbg="/resource/img/product/product-2.jpg">
+							<ul class="product__item__pic__hover">
+								<li><a href="#"><i class="fa fa-heart"></i></a></li>
+								<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+								<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+							</ul>
+						</div>
+						<div class="product__item__text">
+							<h6>
+								<a href="#">Crab Pool Security</a>
+							</h6>
+							<h5>$30.00</h5>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-4 col-sm-6">
+					<div class="product__item">
+						<div class="product__item__pic set-bg"
+							data-setbg="/resource/img/product/product-3.jpg">
+							<ul class="product__item__pic__hover">
+								<li><a href="#"><i class="fa fa-heart"></i></a></li>
+								<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+								<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+							</ul>
+						</div>
+						<div class="product__item__text">
+							<h6>
+								<a href="#">Crab Pool Security</a>
+							</h6>
+							<h5>$30.00</h5>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-4 col-sm-6">
+					<div class="product__item">
+						<div class="product__item__pic set-bg"
+							data-setbg="/resource/img/product/product-7.jpg">
+							<ul class="product__item__pic__hover">
+								<li><a href="#"><i class="fa fa-heart"></i></a></li>
+								<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+								<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+							</ul>
+						</div>
+						<div class="product__item__text">
+							<h6>
+								<a href="#">Crab Pool Security</a>
+							</h6>
+							<h5>$30.00</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section> -->
+	<!-- Related Product Section End -->
+<!-- Modal -->
+   <div id="myModal" class="modal" tabindex="-1" role="dialog">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title"><i class="bi bi-exclamation-triangle"></i>&nbsp;&nbsp;올리브영 알림</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+           </button>
+         </div>
+         <div class="modal-body" id="modal-body">
+           <!-- 메시지가 동적으로 추가됩니다 -->
+         </div>
+         <div class="modal-footer">
+           <button type="button" id="login-modal-btn" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </div>
+       </div>
+     </div>
+   </div>
+	<jsp:include page="footer.jsp"></jsp:include>
 
 </body>
 

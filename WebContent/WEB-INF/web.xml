@@ -4,4 +4,12 @@
   <welcome-file-list>
     <welcome-file>/WEB-INF/views/index.jsp</welcome-file>
   </welcome-file-list>
+  <filter>
+  	<filter-name>AuthFilter</filter-name>
+  	<filter-class>com.exam.young.filter.AuthFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/manage/*</url-pattern>
+  </filter-mapping>
 </web-app>

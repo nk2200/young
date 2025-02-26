@@ -1,0 +1,180 @@
+@charset "UTF-8";
+body {
+    background-color: #F3F4F9;
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body #form-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body #form-inner-container {
+    background-color: white;
+    max-width: 70%;
+    border-radius: 8px;
+    box-shadow: 0 0 20px gainsboro;
+}
+
+body #sign-up-container, #sign-in-container {
+    padding: 60px 80px;
+    width: 360px;
+    display: inline-block;
+}
+
+form input:not(:last-of-type) {
+    display: block;
+    margin-bottom: 20px;
+    border: 1px solid #E5E9F5;
+    background-color: #F6F7FA;
+    padding: 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+    width: 320px;
+}
+
+#form-controls {
+    margin-bottom: 20px;
+}
+
+
+h3 {
+    color: #82dc28;
+    font-size: 150%;
+    font-weight: 500;
+}
+
+label {
+    color: #7369AB;
+}
+
+.btn-primary {
+   color: white;
+   background-color: #82dc28;
+   border-color:#82dc28;
+}
+
+.btn-primary:hover {
+   color: #82dc28;
+   background-color: #82dc28;
+   border-color: #82dc28;
+}
+#login-modal-btn {
+   color: #fff;
+   background-color: #ff7878;
+   border-color: #ff7878;
+}
+
+#login-modal-btn:hover {
+   color: #fff;
+   background-color: #5a6268;
+   border-color: #545b62
+}
+
+::placeholder {
+    color: #C0C7DB;
+    font-size: larger;
+    letter-spacing: 1.2px;
+}
+
+.form-controls {
+	margin-bottom: 20px;
+}
+
+.form-controls button {
+    border: none;
+    font-size: 120%;
+    padding: 16px 0 16px 35px;
+    background-color: transparent;
+    color: #82dc28;
+}
+
+#form-controls button:hover {
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    padding: 16px 75px;
+    background-color: #82dc28;
+    border-radius: 10px;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: #ff7878;
+}
+
+#toggleSignIn button{
+    padding: 16px 0 16px 35px;
+    background-color: transparent;
+    color: #82dc28;
+}
+
+#toggleSignIn button:hober {
+	color: #ff7878;
+}
+#terms {
+    width: 30px;
+    height: 30px;
+    appearance: none;
+    border: 2px solid #7369AB;
+    border-radius: 4px;
+    position: relative;
+}
+
+#terms:checked:after {
+    content: '\2713';
+    color: #7369AB;
+    font-size: 24px;
+    position: absolute;
+    top: 0;
+    left: 3px;
+}
+
+label[for="terms"] {
+    display: inline-block;
+    width: 80%;
+    margin-left: 10px;
+}
+
+.termsLink {
+    color: #EF7886;
+    text-decoration: none;
+}
+
+.hide {
+    display: none!important;
+}
+
+#animation-container {
+    display: inline-block;
+}
+
+*, *::before, *::after {
+    box-sizing: content-box;
+}
+
+.modal-header {
+   display: -ms-flexbox;
+   display: flex;
+   -ms-flex-align: start;
+   align-items: flex-start;
+   -ms-flex-pack: justify;
+   justify-content: space-between;
+   padding: 1rem 1rem;
+   border-bottom: 1px solid #dee2e6;
+   border-top-left-radius: calc(.3rem - 1px);
+   border-top-right-radius: calc(.3rem - 1px);
+   background-color: #82dc28;
+}
+
+.modal-body-confirm {
+   position: relative;
+   -ms-flex: 1 1 auto;
+   flex: 1 1 auto;
+   padding: 1rem
+}

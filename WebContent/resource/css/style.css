@@ -111,9 +111,13 @@ ol {
   Helper CSS
 -----------------------*/
 
+/* 위치 수정,yhl */
 .section-title {
 	margin-bottom: 50px;
-	text-align: center;
+/* 	text-align: center; */
+    display: flex;               /* flexbox 사용 */
+    align-items: baseline;         /* 수직 중앙 정렬 */
+
 }
 
 .section-title h2 {
@@ -121,8 +125,8 @@ ol {
 	font-weight: 700;
 	position: relative;
 }
-
-.section-title h2:after {
+/* 삭제,yhl */
+/* .section-title h2:after {
 	position: absolute;
 	left: 0;
 	bottom: -15px;
@@ -132,16 +136,16 @@ ol {
 	background: #7fad39;
 	content: "";
 	margin: 0 auto;
-}
+} */
 
 .set-bg {
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: top center;
 }
-
+/* 위치 이동, yhl */
 .spad {
-	padding-top: 100px;
+	/* padding-top: 100px; */
 	padding-bottom: 100px;
 }
 
@@ -492,9 +496,11 @@ ol {
 	display: block;
 }
 
+/* 위로 올림,yhl */
 .header__cart {
 	text-align: right;
-	padding: 24px 0;
+	margin-top: 20px; 
+	
 }
 
 .header__cart ul {
@@ -633,9 +639,11 @@ ol {
 	display: block;
 }
 
+/* 오른쪽으로 이동,yhl */
 .hero__search {
 	overflow: hidden;
 	margin-bottom: 30px;
+	margin-left: 30px;
 }
 
 .hero__search__form {
@@ -804,6 +812,22 @@ ol {
 .categories__slider.owl-carousel .owl-nav button.owl-next {
 	left: auto;
 	right: -35px;
+}
+
+.goRankbtn {
+    bottom: 20px;
+    height: 32px;
+    display: inline-block;
+    padding: 0 20px;
+    line-height: 30px;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #555;
+    text-align: center;
+    background-color: #fff;
+    /* transform: translate(-50%, 0);  <- 이 부분을 제거합니다 */
 }
 
 /*---------------------
@@ -1671,6 +1695,11 @@ ol {
 	min-width: 100%;
 }
 
+.detail_img img{
+	max-width: 25%;
+	cursor : pointer;
+}
+
 .product__details__pic__slider img {
 	cursor: pointer;
 }
@@ -1731,6 +1760,16 @@ ol {
 	margin-top: 50px;
 }
 
+.product__details__text .product__details__text__list {
+	border-bottom: 1px solid #ebebeb;
+	padding-top: 20px;
+	margin-bottom: 50px;
+	padding-bottom: 20px;
+	/* ul에서 상속된 스타일 초기화 */
+	border-top: none; /* border-top 제거 */
+	margin-top: 0; /* margin-top 제거 */
+}
+
 .product__details__text ul li {
 	font-size: 16px;
 	color: #1c1c1c;
@@ -1785,7 +1824,7 @@ ol {
 	color: #6f6f6f;
 	width: 50px;
 	border: none;
-	background: #f5f5f5;
+	
 	text-align: center;
 }
 
@@ -1876,8 +1915,8 @@ ol {
   Shop Cart
 -----------------------*/
 
+/* 위치 이동, yhl */
 .shoping-cart {
-	padding-top: 80px;
 	padding-bottom: 80px;
 }
 
@@ -1888,21 +1927,27 @@ ol {
 .shoping__cart__table table {
 	width: 100%;
 	text-align: center;
+	border-color: inherit;
 }
 
 .shoping__cart__table table thead tr {
-	border-bottom: 1px solid #ebebeb;
+	/* border-bottom: 1px solid #ebebeb; */
+	border-color: inherit;
 }
-
+/* css수정,yhl */
 .shoping__cart__table table thead th {
 	font-size: 20px;
 	font-weight: 700;
-	color: #1c1c1c;
-	padding-bottom: 20px;
+	color:#666;
+/* 	padding-bottom: 20px; */
+	border-top: 2px solid #d6d6d6;
+    border-bottom: 1px solid #ccc;
+    background: #fafafa;
+    
 }
 
 .shoping__cart__table table thead th.shoping__product {
-	text-align: left;
+	text-align: center;
 }
 
 .shoping__cart__table table tbody tr td {
@@ -1910,27 +1955,30 @@ ol {
 	padding-bottom: 30px;
 	border-bottom: 1px solid #ebebeb;
 }
-
+/* 위치수정, 정렬수정 yhl */
 .shoping__cart__table table tbody tr td.shoping__cart__item {
-	width: 630px;
+	width: 580px;
 	text-align: left;
+	padding-left:100px;
 }
-
+/* 크기 수정,yhl */
 .shoping__cart__table table tbody tr td.shoping__cart__item img {
 	display: inline-block;
-	margin-right: 25px;
+	 margin-right: 10px;
+    width: 100px; /* 원하는 너비로 설정 */
+    height: auto;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item h5 {
 	color: #1c1c1c;
 	display: inline-block;
 }
-
+/* 크기 수정,yhl */
 .shoping__cart__table table tbody tr td.shoping__cart__price {
 	font-size: 18px;
 	color: #1c1c1c;
 	font-weight: 700;
-	width: 100px;
+	width: 150px;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__total {
@@ -1939,6 +1987,18 @@ ol {
 	font-weight: 700;
 	width: 110px;
 }
+
+.shoping__cart__total .icon_cursor_alt,
+.shoping__cart__total .icon_close {
+    display: inline-block;
+    font-size: 16px;
+    color: #6f6f6f;
+    padding: 13px 16px 13px;
+    background: #f5f5f5;
+    display: block;
+    margin-bottom: 1px;
+}
+
 
 .shoping__cart__table table tbody tr td.shoping__cart__item__close {
 	text-align: right;
@@ -1949,9 +2009,9 @@ ol {
 	color: #b2b2b2;
 	cursor: pointer;
 }
-
+/* 크기수정,yhl */
 .shoping__cart__table table tbody tr td.shoping__cart__quantity {
-	width: 225px;
+	width: 200px;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty {
@@ -2019,11 +2079,24 @@ ol {
 }
 
 .shoping__checkout {
-	background: #f5f5f5;
-	padding: 30px;
-	padding-top: 20px;
-	margin-top: 50px;
+    background: #fff;
+    padding: 30px;
+    padding-top: 20px;
+    margin-top: 50px;
+    position: relative; 
 }
+
+.shoping__checkout::before {
+    content: ""; 
+    display: block; 
+    width: 100%; 
+    height: 5px;
+    background-color: #9bce26;
+    position: absolute; 
+    top: -10px; 
+    left: 0; 
+}
+
 
 .shoping__checkout h5 {
 	color: #1c1c1c;
@@ -2037,8 +2110,8 @@ ol {
 }
 
 .shoping__checkout ul li {
-	font-size: 16px;
-	color: #1c1c1c;
+	font-size: 20px;
+	color: black;
 	font-weight: 700;
 	list-style: none;
 	overflow: hidden;
@@ -2054,16 +2127,66 @@ ol {
 }
 
 .shoping__checkout ul li span {
-	font-size: 18px;
+	font-size: 20px;
 	color: #dd2222;
 	float: right;
 }
 
-.shoping__checkout .primary-btn {
-	display: block;
-	text-align: center;
+.shoping__checkout .select-btn {
+	width: 180px;
+	height: 50px;
+    background-color: #fff;
+    border: 1px solid #f27370;
+    padding: 11px 0 9px;
+    font-size: 16px;
+    line-height: 28px;
+    color: #f27370;
+    border-radius: 5px;
+	text-align: center
+	text-decoration: none;
+	 display: inline-block;
 }
 
+.shoping__checkout .select-btn:hover {
+    background-color: #f27370; 
+    color: #fff; 
+    border-color: #f27370; 
+}
+.order_btn_area {
+    margin: 30px 0 0;
+    text-align: center;
+}
+
+.order_btn_area a{
+	text-decoration: none;
+}
+
+.shoping__checkout .all-btn {
+	width: 180px;
+	height: 50px;
+    background-color: #f27370;
+    padding: 11px 0 9px;
+    font-size: 18px;
+    line-height: 30px;
+    border-radius: 5px;
+    color: white;
+     display: inline-block;
+}
+.shoping__checkout .all-btn:hover {
+    background-color: #fff;
+    color:  #f27370;  
+    border-color: #fff;
+}
+
+.shoping__cart__item__check		{
+    width: 12px;
+    height: 12px;
+    margin: 0 auto;
+    background: 0 0;
+    appearance: checkbox;
+    -webkit-appearance: checkbox;
+    vertical-align: middle;
+}
 /*---------------------
   Checkout
 -----------------------*/
@@ -2614,7 +2737,7 @@ ol {
 -----------------------*/
 
 .footer {
-	background: #F3F6FA;
+	background: #f9f9f9;
 	padding-top: 70px;
 	padding-bottom: 0;
 }
@@ -3465,4 +3588,7 @@ ol {
 	.blog__details__hero__text h2 {
 		font-size: 24px;
 	}
+	
+	
+	
 }

@@ -16,6 +16,9 @@ local.properties
 .classpath
 .project
 
+###img files###
+WebContent/resource/img
+
 
 # External tool builders
 .externalToolBuilders/
